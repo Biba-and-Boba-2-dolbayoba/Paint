@@ -50,23 +50,6 @@ namespace Paint
             this.TextToolStripMenuItem = new ToolStripMenuItem();
             this.FontToolStripMenuItem = new ToolStripMenuItem();
             this.SelectionToolStripMenuItem = new ToolStripMenuItem();
-            this.черныйToolStripMenuItem = new ToolStripMenuItem();
-            this.белыйToolStripMenuItem1 = new ToolStripMenuItem();
-            this.красныйToolStripMenuItem = new ToolStripMenuItem();
-            this.желтыйToolStripMenuItem1 = new ToolStripMenuItem();
-            this.зеленыйToolStripMenuItem1 = new ToolStripMenuItem();
-            this.голубойToolStripMenuItem1 = new ToolStripMenuItem();
-            this.синийToolStripMenuItem1 = new ToolStripMenuItem();
-            this.фиолетовыйToolStripMenuItem = new ToolStripMenuItem();
-            this.белыйToolStripMenuItem = new ToolStripMenuItem();
-            this.чёрныйToolStripMenuItem = new ToolStripMenuItem();
-            this.красныйToolStripMenuItem1 = new ToolStripMenuItem();
-            this.желтыйToolStripMenuItem = new ToolStripMenuItem();
-            this.зеленыйToolStripMenuItem = new ToolStripMenuItem();
-            this.голубойToolStripMenuItem = new ToolStripMenuItem();
-            this.синийToolStripMenuItem = new ToolStripMenuItem();
-            this.фиолетовыйToolStripMenuItem1 = new ToolStripMenuItem();
-            this.цветToolStripMenuItem = new ToolStripMenuItem();
             this.StatusStrip = new StatusStrip();
             this.PenSize = new ToolStripStatusLabel();
             this.PenColor = new ToolStripStatusLabel();
@@ -170,23 +153,23 @@ namespace Paint
             // PenColorToolStripMenuItem
             // 
             this.PenColorToolStripMenuItem.Name = "PenColorToolStripMenuItem";
-            this.PenColorToolStripMenuItem.Size = new Size(270, 34);
+            this.PenColorToolStripMenuItem.Size = new Size(241, 34);
             this.PenColorToolStripMenuItem.Text = "Цвет линии";
             this.PenColorToolStripMenuItem.Click += this.PenColorToolStripMenuItemClick;
             // 
             // FillingColorToolStripMenuItem
             // 
             this.FillingColorToolStripMenuItem.Name = "FillingColorToolStripMenuItem";
-            this.FillingColorToolStripMenuItem.Size = new Size(270, 34);
+            this.FillingColorToolStripMenuItem.Size = new Size(241, 34);
             this.FillingColorToolStripMenuItem.Text = "Цвет фона";
             this.FillingColorToolStripMenuItem.Click += this.FillingColorToolStripMenuItemClick;
             // 
             // PenSizeToolStripMenuItem
             // 
             this.PenSizeToolStripMenuItem.Name = "PenSizeToolStripMenuItem";
-            this.PenSizeToolStripMenuItem.Size = new Size(270, 34);
+            this.PenSizeToolStripMenuItem.Size = new Size(241, 34);
             this.PenSizeToolStripMenuItem.Text = "Толщина линии";
-            this.PenSizeToolStripMenuItem.Click += this.толщинаЛинииToolStripMenuItem_Click;
+            this.PenSizeToolStripMenuItem.Click += this.PenSizeToolStripMenuItemClick;
             // 
             // FigureToolStripMenuItem
             // 
@@ -202,28 +185,28 @@ namespace Paint
             this.RectangleToolStripMenuItem.Name = "RectangleToolStripMenuItem";
             this.RectangleToolStripMenuItem.Size = new Size(287, 34);
             this.RectangleToolStripMenuItem.Text = "Прямоугольник";
-            this.RectangleToolStripMenuItem.Click += this.прямоугольникToolStripMenuItem_CheckedChanged;
+            this.RectangleToolStripMenuItem.Click += this.RectangleToolStripMenuItemClick;
             // 
             // EllipseToolStripMenuItem
             // 
             this.EllipseToolStripMenuItem.Name = "EllipseToolStripMenuItem";
             this.EllipseToolStripMenuItem.Size = new Size(287, 34);
             this.EllipseToolStripMenuItem.Text = "Эллипс";
-            this.EllipseToolStripMenuItem.Click += this.эллипсToolStripMenuItem_CheckedChanged;
+            this.EllipseToolStripMenuItem.Click += this.EllipseToolStripMenuItemClick;
             // 
             // StraightLineToolStripMenuItem
             // 
             this.StraightLineToolStripMenuItem.Name = "StraightLineToolStripMenuItem";
             this.StraightLineToolStripMenuItem.Size = new Size(287, 34);
             this.StraightLineToolStripMenuItem.Text = "Прямая линия";
-            this.StraightLineToolStripMenuItem.Click += this.прямаяЛинияToolStripMenuItem_CheckStateChanged;
+            this.StraightLineToolStripMenuItem.Click += this.StraightLineToolStripMenuItemClick;
             // 
             // CurveLineToolStripMenuItem
             // 
             this.CurveLineToolStripMenuItem.Name = "CurveLineToolStripMenuItem";
             this.CurveLineToolStripMenuItem.Size = new Size(287, 34);
             this.CurveLineToolStripMenuItem.Text = "Произвольная линия";
-            this.CurveLineToolStripMenuItem.Click += this.произвольнаяЛинияToolStripMenuItem_CheckedChanged;
+            this.CurveLineToolStripMenuItem.Click += this.CurveLineToolStripMenuItemClick;
             // 
             // FillingToolStripMenuItem
             // 
@@ -231,21 +214,21 @@ namespace Paint
             this.FillingToolStripMenuItem.Name = "FillingToolStripMenuItem";
             this.FillingToolStripMenuItem.Size = new Size(287, 34);
             this.FillingToolStripMenuItem.Text = "Заливка";
-            this.FillingToolStripMenuItem.Click += this.заливкаToolStripMenuItem_Click;
+            this.FillingToolStripMenuItem.Click += this.FillingToolStripMenuItemClick;
             // 
             // TextToolStripMenuItem
             // 
             this.TextToolStripMenuItem.Name = "TextToolStripMenuItem";
             this.TextToolStripMenuItem.Size = new Size(287, 34);
             this.TextToolStripMenuItem.Text = "Текст";
-            this.TextToolStripMenuItem.Click += this.текстToolStripMenuItem_Click;
+            this.TextToolStripMenuItem.Click += this.TextToolStripMenuItemClick;
             // 
             // FontToolStripMenuItem
             // 
             this.FontToolStripMenuItem.Name = "FontToolStripMenuItem";
             this.FontToolStripMenuItem.Size = new Size(85, 29);
             this.FontToolStripMenuItem.Text = "Шрифт";
-            this.FontToolStripMenuItem.Click += this.выборШрифтаToolStripMenuItem_Click;
+            this.FontToolStripMenuItem.Click += this.FontToolStripMenuItemClick;
             // 
             // SelectionToolStripMenuItem
             // 
@@ -253,98 +236,14 @@ namespace Paint
             this.SelectionToolStripMenuItem.Size = new Size(177, 29);
             this.SelectionToolStripMenuItem.Text = "Режим выделения";
             // 
-            // черныйToolStripMenuItem
-            // 
-            this.черныйToolStripMenuItem.Name = "черныйToolStripMenuItem";
-            this.черныйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // белыйToolStripMenuItem1
-            // 
-            this.белыйToolStripMenuItem1.Name = "белыйToolStripMenuItem1";
-            this.белыйToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // красныйToolStripMenuItem
-            // 
-            this.красныйToolStripMenuItem.Name = "красныйToolStripMenuItem";
-            this.красныйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // желтыйToolStripMenuItem1
-            // 
-            this.желтыйToolStripMenuItem1.Name = "желтыйToolStripMenuItem1";
-            this.желтыйToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // зеленыйToolStripMenuItem1
-            // 
-            this.зеленыйToolStripMenuItem1.Name = "зеленыйToolStripMenuItem1";
-            this.зеленыйToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // голубойToolStripMenuItem1
-            // 
-            this.голубойToolStripMenuItem1.Name = "голубойToolStripMenuItem1";
-            this.голубойToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // синийToolStripMenuItem1
-            // 
-            this.синийToolStripMenuItem1.Name = "синийToolStripMenuItem1";
-            this.синийToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // фиолетовыйToolStripMenuItem
-            // 
-            this.фиолетовыйToolStripMenuItem.Name = "фиолетовыйToolStripMenuItem";
-            this.фиолетовыйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // белыйToolStripMenuItem
-            // 
-            this.белыйToolStripMenuItem.Name = "белыйToolStripMenuItem";
-            this.белыйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // чёрныйToolStripMenuItem
-            // 
-            this.чёрныйToolStripMenuItem.Name = "чёрныйToolStripMenuItem";
-            this.чёрныйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // красныйToolStripMenuItem1
-            // 
-            this.красныйToolStripMenuItem1.Name = "красныйToolStripMenuItem1";
-            this.красныйToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // желтыйToolStripMenuItem
-            // 
-            this.желтыйToolStripMenuItem.Name = "желтыйToolStripMenuItem";
-            this.желтыйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // зеленыйToolStripMenuItem
-            // 
-            this.зеленыйToolStripMenuItem.Name = "зеленыйToolStripMenuItem";
-            this.зеленыйToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // голубойToolStripMenuItem
-            // 
-            this.голубойToolStripMenuItem.Name = "голубойToolStripMenuItem";
-            this.голубойToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // синийToolStripMenuItem
-            // 
-            this.синийToolStripMenuItem.Name = "синийToolStripMenuItem";
-            this.синийToolStripMenuItem.Size = new Size(32, 19);
-            // 
-            // фиолетовыйToolStripMenuItem1
-            // 
-            this.фиолетовыйToolStripMenuItem1.Name = "фиолетовыйToolStripMenuItem1";
-            this.фиолетовыйToolStripMenuItem1.Size = new Size(32, 19);
-            // 
-            // цветToolStripMenuItem
-            // 
-            this.цветToolStripMenuItem.Name = "цветToolStripMenuItem";
-            this.цветToolStripMenuItem.Size = new Size(180, 22);
-            this.цветToolStripMenuItem.Text = "Цвет";
-            this.цветToolStripMenuItem.Click += this.цветToolStripMenuItem_Click;
-            // 
             // StatusStrip
             // 
+            this.StatusStrip.GripMargin = new Padding(20);
             this.StatusStrip.ImageScalingSize = new Size(24, 24);
             this.StatusStrip.Items.AddRange(new ToolStripItem[] { this.PenSize, this.PenColor, this.FillingColor, this.MouseCords, this.CanvasSize, this.FontName, this.FontSize });
+            this.StatusStrip.LayoutStyle = ToolStripLayoutStyle.Flow;
             this.StatusStrip.Location = new Point(0, 1337);
+            this.StatusStrip.Margin = new Padding(15);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new Padding(2, 0, 23, 0);
             this.StatusStrip.Size = new Size(1670, 32);
@@ -355,20 +254,24 @@ namespace Paint
             this.PenSize.Name = "PenSize";
             this.PenSize.Size = new Size(128, 25);
             this.PenSize.Text = "Размер пера -";
+            this.PenSize.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // PenColor
             // 
             this.PenColor.AutoSize = false;
+            this.PenColor.Margin = new Padding(20, 4, 0, 3);
             this.PenColor.Name = "PenColor";
-            this.PenColor.Size = new Size(90, 25);
+            this.PenColor.Size = new Size(150, 25);
             this.PenColor.Text = "Цвет пера";
+            this.PenColor.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // FillingColor
             // 
             this.FillingColor.AutoSize = false;
             this.FillingColor.Name = "FillingColor";
-            this.FillingColor.Size = new Size(90, 25);
+            this.FillingColor.Size = new Size(150, 25);
             this.FillingColor.Text = "Цвет заливки";
+            this.FillingColor.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // MouseCords
             // 
@@ -592,20 +495,6 @@ namespace Paint
         private System.Windows.Forms.ToolStripMenuItem черныйToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem красныйToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FillingColorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem белыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem красныйToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem белыйToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem желтыйToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem зеленыйToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem синийToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem желтыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem голубойToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem зеленыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem чёрныйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem голубойToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem синийToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem фиолетовыйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem фиолетовыйToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem CanvasSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FigureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RectangleToolStripMenuItem;
@@ -613,7 +502,6 @@ namespace Paint
         private System.Windows.Forms.ToolStripMenuItem StraightLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CurveLineToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FillingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem цветToolStripMenuItem;
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel PenColor;
         private System.Windows.Forms.ToolStripStatusLabel FillingColor;
