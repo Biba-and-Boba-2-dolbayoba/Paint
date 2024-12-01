@@ -238,12 +238,9 @@ namespace Paint
             // 
             // StatusStrip
             // 
-            this.StatusStrip.GripMargin = new Padding(20);
             this.StatusStrip.ImageScalingSize = new Size(24, 24);
             this.StatusStrip.Items.AddRange(new ToolStripItem[] { this.PenSize, this.PenColor, this.FillingColor, this.MouseCords, this.CanvasSize, this.FontName, this.FontSize });
-            this.StatusStrip.LayoutStyle = ToolStripLayoutStyle.Flow;
             this.StatusStrip.Location = new Point(0, 1337);
-            this.StatusStrip.Margin = new Padding(15);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new Padding(2, 0, 23, 0);
             this.StatusStrip.Size = new Size(1670, 32);
@@ -259,7 +256,6 @@ namespace Paint
             // PenColor
             // 
             this.PenColor.AutoSize = false;
-            this.PenColor.Margin = new Padding(20, 4, 0, 3);
             this.PenColor.Name = "PenColor";
             this.PenColor.Size = new Size(150, 25);
             this.PenColor.Text = "Цвет пера";
@@ -492,8 +488,6 @@ namespace Paint
         private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PenColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PenSizeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem черныйToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem красныйToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FillingColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem CanvasSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem FigureToolStripMenuItem;

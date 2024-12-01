@@ -1,9 +1,14 @@
-﻿namespace Paint;
+﻿using System.ComponentModel;
+
+namespace Paint;
 
 [Serializable()]
 public partial class UxCreateCanvas : Form {
-    public static required string height;
-    public static required string width;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static string CanvasWidth { get; private set; } = "320";
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static string CanvasHeight { get; private set; } = "240";
 
     public UxCreateCanvas() {
         this.InitializeComponent();
@@ -14,25 +19,25 @@ public partial class UxCreateCanvas : Form {
     }
 
     public static string getSizeWidth() {
-        return width;
+        return CanvasWidth;
     }
 
     public static string getSizeHeight() {
-        return height;
+        return CanvasHeight;
     }
 
     private void radioButton1_CheckedChanged(object sender, EventArgs e) {
-        height = "240";
-        width = "320";
+        CanvasHeight = "240";
+        CanvasWidth = "320";
     }
     private void radioButton2_CheckedChanged(object sender, EventArgs e) {
-        height = "480";
-        width = "640";
+        CanvasHeight = "480";
+        CanvasWidth = "640";
     }
 
     private void radioButton3_CheckedChanged(object sender, EventArgs e) {
-        height = "600";
-        width = "800";
+        CanvasHeight = "600";
+        CanvasWidth = "800";
     }
 
     private void label1_Click(object sender, EventArgs e) {
@@ -61,8 +66,8 @@ public partial class UxCreateCanvas : Form {
 
     public void button1_Click(object sender, EventArgs e) {
         if (this.checkBox1.Checked) {
-            height = this.textBox1.Text;
-            width = this.textBox2.Text;
+            CanvasHeight = this.textBox1.Text;
+            CanvasWidth = this.textBox2.Text;
         }
 
         this.DialogResult = DialogResult.OK;
@@ -75,7 +80,6 @@ public partial class UxCreateCanvas : Form {
     }
 
     private void radioButton1_Click(object sender, EventArgs e) {
-
 
     }
 

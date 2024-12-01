@@ -3,95 +3,74 @@
 namespace Paint;
 
 public partial class UxMainWindow : Form {
-    public static bool IsFilling = false;
-    public static int CanvasHeight;
-    public static int CanvasWidth;
-    public static int FigureType = 1;
-    public static Font TextFont = new("Times New Roman", 12.0f);
-    private bool IsSelectionMode = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static int CanvasWidth { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color LineColor { get; set; } = Color.Black;
+    public static int CanvasHeight { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color BackgroundColor { get; set; } = Color.White;
+    public static Color LineColor { get; private set; } = Color.Black;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static Color BackgroundColor { get; private set; } = Color.White;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static int FigureType { get; private set; } = 1;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static Font TextFont { get; private set; } = new("Times New Roman", 12.0f);
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static bool IsFilling { get; private set; } = false;
+
+    private bool IsSelectionMode { get; set; } = false;
 
     public UxMainWindow() {
         this.InitializeComponent();
     }
 
-    public static int SetWidth() {
-        return CanvasWidth;
-    }
-    public static int SetHeigh() {
-        return CanvasHeight;
-    }
+    public static void SaveFile(UxCanvasWindow canvas) {
+        string fileName;
+        UxCanvasWindow _canvas = canvas;
 
-    public static void SaveFile(UxCanvasWindow f) {
-        //string fileName;
-        //var f2 = f;
-        //List<Figure> array;
-
-        //BinaryWriter formatter = new BinaryWriter();
-
-        //if (f2.fileName == null) {
-        //    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-        //    saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
-        //    saveFileDialog1.Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*";
-        //    saveFileDialog1.FilterIndex = 1;
-        //    if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
-        //        fileName = saveFileDialog1.FileName;
-        //        f2.fileName = fileName;
-        //        array = f2.array;
-        //        var siz = f2.Sz;
-        //        Stream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None);
-        //        {
-        //            formatter.Serialize(stream, array);
-        //            formatter.Serialize(stream, siz);
-        //        }
-
-        //        using (var stream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.None)) {
-        //            using (var writter = new BinaryWriter(stream, Encoding.UTF8, false))
-        //            Image.Save()
-        //        }
-        //        //stream.Close();
-        //        f2.flag3 = false;
-        //    }
-        //} else {
-        //    fileName = f2.fileName;
-
-        //    array = f2.array;
-        //    var siz = f2.Sz;
-        //    Stream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.None);
-        //    {
-        //        formatter.Serialize(stream, array);
-        //        formatter.Serialize(stream, siz);
-        //    }
-        //    f2.Text = Path.GetFileName(fileName);
-        //    stream.Close();
-        //    f2.flag3 = false;
-        //}
+        if (_canvas.fileName == null) {
+            var saveFileDialog1 = new SaveFileDialog {
+                InitialDirectory = Environment.CurrentDirectory,
+                Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
+                FilterIndex = 1
+            };
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+                fileName = saveFileDialog1.FileName;
+                _canvas.fileName = fileName;
+                _canvas.flag3 = false;
+            }
+        } else {
+            fileName = _canvas.fileName;
+            _canvas.Text = Path.GetFileName(fileName);
+            _canvas.flag3 = false;
+        }
     }
 
     private void MainWindowMouseDown(object sender, MouseEventArgs e) {
-        Graphics g = this.CreateGraphics();
+        Graphics graphics = this.CreateGraphics();
 
         if (e.Button == MouseButtons.Left) {
             string s = e.Location.ToString();
 
-            g.DrawString(s, new Font("Times New Roman", 8),
+            graphics.DrawString(s, new Font("Times New Roman", 8),
             new SolidBrush(Color.Black), new Point(e.X, e.Y));
         }
 
         if (e.Button == MouseButtons.Right) {
             string s = "Hello";
-            g.DrawString(s, new Font("Times New Roman", 8),
+            graphics.DrawString(s, new Font("Times New Roman", 8),
             new SolidBrush(Color.Black), new Point(e.X, e.Y));
         }
 
         if (e.Button == MouseButtons.Middle) {
             _ = MessageBox.Show("Вы уверены что хотите удалить текст?", "Удаление");
-            g.Clear(Color.White);
+            graphics.Clear(Color.White);
         }
     }
 
@@ -101,33 +80,33 @@ public partial class UxMainWindow : Form {
     }
 
     private void NewFileToolStripMenuItemClick(object sender, EventArgs e) {
-        if (CanvasWidth > 0 && this.Height > 0) {
-            var f2 = new UxCanvasWindow {
+        if (CanvasWidth > 0 && CanvasHeight > 0) {
+            var CanvasWindow = new UxCanvasWindow {
                 MdiParent = this,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString()
             };
-            f2.CursorMoved += this.Form2_CursorMoved;
-            f2.FormActivated += this.Form2_FormActivated;
-            f2.Show();
+            CanvasWindow.CursorMoved += this.CanvasWindowCursorMove;
+            CanvasWindow.FormActivated += this.CanvasWindowFormActivated;
+            CanvasWindow.Show();
         } else {
             var sizeDialog = new UxCreateCanvas();
             _ = sizeDialog.ShowDialog(this);
-            CanvasWidth = int.Parse(UxCreateCanvas.getSizeWidth());
-            this.Height = int.Parse(UxCreateCanvas.getSizeHeight());
+            CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
+            CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
 
             if (CanvasWidth > 0 && this.Height > 0) {
-                var f2 = new UxCanvasWindow {
+                var CanvasWindow = new UxCanvasWindow {
                     MdiParent = this,
                     Text = "Рисунок " + this.MdiChildren.Length.ToString()
                 };
-                f2.CursorMoved += this.Form2_CursorMoved;
-                f2.FormActivated += this.Form2_FormActivated;
-                f2.Show();
+                CanvasWindow.CursorMoved += this.CanvasWindowCursorMove;
+                CanvasWindow.FormActivated += this.CanvasWindowFormActivated;
+                CanvasWindow.Show();
             }
         }
     }
 
-    private void Form2_CursorMoved(int x, int y) {
+    private void CanvasWindowCursorMove(int x, int y) {
         if (x <= UxCanvasWindow.windowsizex && y <= UxCanvasWindow.windowsizey) {
             this.MouseCords.Text = $"Положение курсора X: {x}, Y: {y}";
         } else if (x > UxCanvasWindow.windowsizex && y <= UxCanvasWindow.windowsizey) {
@@ -139,18 +118,22 @@ public partial class UxMainWindow : Form {
         }
     }
 
-    private void Form2_FormActivated(int x, int y) {
+    private void CanvasWindowFormActivated(int x, int y) {
         this.CanvasSize.Text = $"Размер окна X: {x}, Y: {y}";
     }
 
     private void SaveFileToolStripMenuItemClick(object sender, EventArgs e) {
-        SaveFile((UxCanvasWindow)this.ActiveMdiChild);
+        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+            SaveFile(activeForm);
+        }
     }
 
     public void SaveFileAsToolStripMenuItemClick(object sender, EventArgs e) {
-        var f2 = (UxCanvasWindow)this.ActiveMdiChild;
-        f2.fileName = null;
-        SaveFile(f2);
+        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+            UxCanvasWindow canvas = activeForm;
+            canvas.fileName = null;
+            SaveFile(canvas);
+        }
     }
 
     private void OpenFileToolStripMenuItemClick(object sender, EventArgs e) {
@@ -187,38 +170,34 @@ public partial class UxMainWindow : Form {
         //}
     }
 
-    public bool checkOpenWindows() {
-        return (UxCanvasWindow)this.ActiveMdiChild != null;
+    private bool IsWindowOpen() {
+        return (this.ActiveMdiChild as UxCanvasWindow) != null;
     }
 
     private void FileToolStripMenuItemClick(object sender, EventArgs e) {
-        this.SaveFileToolStripMenuItem.Enabled = this.checkOpenWindows();
-        this.SaveFileAsToolStripMenuItem.Enabled = this.checkOpenWindows();
+        this.SaveFileToolStripMenuItem.Enabled = this.IsWindowOpen();
+        this.SaveFileAsToolStripMenuItem.Enabled = this.IsWindowOpen();
     }
 
     private void PenSizeToolStripMenuItemClick(object sender, EventArgs e) {
-
-        var f = new UxBrushSize {
+        var BrushSize = new UxBrushSize {
             Text = "Изменение размера кисти",
             MdiParent = this
         };
-        f.FormClosing += new FormClosingEventHandler(this.f3_FormClosing);
-        f.Show();
+        BrushSize.FormClosing += this.BrushSizeFormClosing;
+        BrushSize.Show();
     }
 
-    private void toolStripComboBox1_Click(object sender, EventArgs e) {
-
-    }
-
-    private void pxToolStripMenuItem2_Click(object sender, EventArgs e) {
-
+    private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
+        this.StatusStrip.Invalidate();
+        this.PenSize.Text = "Размер пера - " + UxBrushSize.pix;
     }
 
     private void CanvasSizeToolStripMenuItemClick(object sender, EventArgs e) {
         var sizeDialog = new UxCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        CanvasWidth = int.Parse(UxCreateCanvas.getSizeWidth());
-        this.Height = int.Parse(UxCreateCanvas.getSizeHeight());
+        CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
+        CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
     }
 
     private void FillingToolStripMenuItemClick(object sender, EventArgs e) {
@@ -337,11 +316,6 @@ public partial class UxMainWindow : Form {
         var r = new Rectangle(this.Width / 10, 0, this.Width / 20, this.Height);
         g.FillRectangle(brush, r);
         g.DrawRectangle(RectColorPen, r);
-    }
-
-    private void f3_FormClosing(object sender, FormClosingEventArgs e) {
-        this.StatusStrip.Invalidate();
-        this.PenSize.Text = "Размер пера - " + UxBrushSize.pix;
     }
 
     private void MainWindowResizeBegin(object sender, EventArgs e) {
@@ -525,23 +499,21 @@ public partial class UxMainWindow : Form {
         this.CurveLineToolStripMenuItem.Checked = false;
         this.TextToolStripMenuItem.Checked = true;
 
-        {
-            this.StatusStrip.Invalidate();
-            this.RectangleButton.Checked = false;
-            this.EllipseButton.Checked = false;
-            this.StraightLineButton.Checked = false;
-            this.CurveLineButton.Checked = false;
-            this.TextButton.Checked = true;
-            this.FontName.Text = Convert.ToString(TextFont.Name);
-            this.FontSize.Text = Convert.ToString(TextFont.Size);
-            this.PenSize.Width = this.Width / 10;
-            this.PenColor.Width = this.Width / 20;
-            this.FillingColor.Width = this.Width / 20;
-            this.MouseCords.Width = this.Width / 5;
-            this.CanvasSize.Width = this.Width / 5;
-            this.FontName.Width = this.Width / 5;
-            this.FontSize.Width = this.Width / 5;
-        }
+        this.StatusStrip.Invalidate();
+        this.RectangleButton.Checked = false;
+        this.EllipseButton.Checked = false;
+        this.StraightLineButton.Checked = false;
+        this.CurveLineButton.Checked = false;
+        this.TextButton.Checked = true;
+        this.FontName.Text = Convert.ToString(TextFont.Name);
+        this.FontSize.Text = Convert.ToString(TextFont.Size);
+        this.PenSize.Width = this.Width / 10;
+        this.PenColor.Width = this.Width / 20;
+        this.FillingColor.Width = this.Width / 20;
+        this.MouseCords.Width = this.Width / 5;
+        this.CanvasSize.Width = this.Width / 5;
+        this.FontName.Width = this.Width / 5;
+        this.FontSize.Width = this.Width / 5;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
@@ -565,7 +537,7 @@ public partial class UxMainWindow : Form {
         this.FontToolStripMenuItemClick(sender, e);
     }
 
-    private void режимВыделенияToolStripMenuItem_Click(object sender, EventArgs e) {
+    private void SelectionToolStripMenuItemClick(object sender, EventArgs e) {
         this.SelectionModeSetter();
     }
 
