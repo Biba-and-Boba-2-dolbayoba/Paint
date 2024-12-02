@@ -29,7 +29,7 @@ namespace Paint
         /// </summary>
         private void InitializeComponent() {
             this.OkButton = new Button();
-            this.CancelButton = new Button();
+            this.DeclineButton = new Button();
             this.BrushSizeComboBox = new ComboBox();
             this.SuspendLayout();
             // 
@@ -46,14 +46,14 @@ namespace Paint
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new Point(192, 78);
-            this.CancelButton.Margin = new Padding(4, 3, 4, 3);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new Size(88, 27);
-            this.CancelButton.TabIndex = 1;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += this.CancelButtonClick;
+            this.DeclineButton.Location = new Point(192, 78);
+            this.DeclineButton.Margin = new Padding(4, 3, 4, 3);
+            this.DeclineButton.Name = "CancelButton";
+            this.DeclineButton.Size = new Size(88, 27);
+            this.DeclineButton.TabIndex = 1;
+            this.DeclineButton.Text = "Cancel";
+            this.DeclineButton.UseVisualStyleBackColor = true;
+            this.DeclineButton.Click += this.DeclineButtonClick;
             // 
             // BrushSizeComboBox
             // 
@@ -63,7 +63,6 @@ namespace Paint
             this.BrushSizeComboBox.Name = "BrushSizeComboBox";
             this.BrushSizeComboBox.Size = new Size(233, 23);
             this.BrushSizeComboBox.TabIndex = 2;
-            this.BrushSizeComboBox.SelectedIndexChanged += this.BrushSizeComboBox_SelectedIndexChanged;
             // 
             // UxBrushSize
             // 
@@ -71,7 +70,7 @@ namespace Paint
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(331, 117);
             this.Controls.Add(this.BrushSizeComboBox);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.DeclineButton);
             this.Controls.Add(this.OkButton);
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UxBrushSize";
@@ -82,7 +81,7 @@ namespace Paint
         #endregion
 
         private System.Windows.Forms.Button OkButton;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button DeclineButton;
         private System.Windows.Forms.ComboBox BrushSizeComboBox;
     }
 }

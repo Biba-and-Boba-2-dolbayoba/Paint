@@ -249,7 +249,7 @@ public partial class UxMainWindow : Form {
 
     private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
         this.StatusStrip.Invalidate();
-        this.PenSize.Text = "Размер пера - " + UxBrushSize.pix;
+        this.PenSize.Text = "Размер пера - " + UxBrushSize.BrushSize;
     }
 
     private void CanvasSizeToolStripMenuItemClick(object sender, EventArgs e) {

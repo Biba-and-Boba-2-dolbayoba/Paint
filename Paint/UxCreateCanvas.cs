@@ -13,7 +13,7 @@ public partial class UxCreateCanvas : Form {
     public UxCreateCanvas() {
         this.InitializeComponent();
     }
-    
+
     private void SizeSmallButtonCheckedChanged(object sender, EventArgs e) {
         CanvasHeight = "240";
         CanvasWidth = "320";

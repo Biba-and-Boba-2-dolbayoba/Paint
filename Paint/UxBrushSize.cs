@@ -1,21 +1,24 @@
-﻿namespace Paint;
+﻿using System.ComponentModel;
+
+namespace Paint;
 
 public partial class UxBrushSize : Form {
-    public static int pix = 1;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static int BrushSize { get; private set; } = 1;
 
     public UxBrushSize() {
         this.InitializeComponent();
 
-        this.BrushSizeComboBox.Text = Convert.ToString(pix);
+        this.BrushSizeComboBox.Text = Convert.ToString(BrushSize);
 
     }
 
     private void OkButtonClick(object sender, EventArgs e) {
-        pix = Convert.ToInt32(this.BrushSizeComboBox.Text);
+        BrushSize = Convert.ToInt32(this.BrushSizeComboBox.Text);
         this.Close();
     }
 
-    private void CancelButtonClick(object sender, EventArgs e) {
+    private void DeclineButtonClick(object sender, EventArgs e) {
         this.Close();
     }
 }
