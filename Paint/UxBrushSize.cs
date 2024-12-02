@@ -6,16 +6,16 @@ public partial class UxBrushSize : Form {
     public UxBrushSize() {
         this.InitializeComponent();
 
-        this.comboBox1.Text = Convert.ToString(pix);
+        this.BrushSizeComboBox.Text = Convert.ToString(pix);
 
     }
 
-    private void button1_Click(object sender, EventArgs e) {
-        pix = Convert.ToInt32(this.comboBox1.Text);
+    private void OkButtonClick(object sender, EventArgs e) {
+        pix = Convert.ToInt32(this.BrushSizeComboBox.Text);
         this.Close();
     }
 
-    private void button2_Click(object sender, EventArgs e) {
+    private void CancelButtonClick(object sender, EventArgs e) {
         this.Close();
     }
 }

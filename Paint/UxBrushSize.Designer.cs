@@ -28,50 +28,51 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.button1 = new Button();
-            this.button2 = new Button();
-            this.comboBox1 = new ComboBox();
+            this.OkButton = new Button();
+            this.CancelButton = new Button();
+            this.BrushSizeComboBox = new ComboBox();
             this.SuspendLayout();
             // 
-            // button1
+            // OkButton
             // 
-            this.button1.Location = new Point(47, 76);
-            this.button1.Margin = new Padding(4, 3, 4, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new Size(88, 27);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Ok";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += this.button1_Click;
+            this.OkButton.Location = new Point(47, 76);
+            this.OkButton.Margin = new Padding(4, 3, 4, 3);
+            this.OkButton.Name = "OkButton";
+            this.OkButton.Size = new Size(88, 27);
+            this.OkButton.TabIndex = 0;
+            this.OkButton.Text = "Ok";
+            this.OkButton.UseVisualStyleBackColor = true;
+            this.OkButton.Click += this.OkButtonClick;
             // 
-            // button2
+            // CancelButton
             // 
-            this.button2.Location = new Point(192, 76);
-            this.button2.Margin = new Padding(4, 3, 4, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new Size(88, 27);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += this.button2_Click;
+            this.CancelButton.Location = new Point(192, 78);
+            this.CancelButton.Margin = new Padding(4, 3, 4, 3);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new Size(88, 27);
+            this.CancelButton.TabIndex = 1;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += this.CancelButtonClick;
             // 
-            // comboBox1
+            // BrushSizeComboBox
             // 
-            this.comboBox1.Items.AddRange(new object[] { "1", "2", "5", "8", "10", "12", "15" });
-            this.comboBox1.Location = new Point(47, 14);
-            this.comboBox1.Margin = new Padding(4, 3, 4, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new Size(233, 23);
-            this.comboBox1.TabIndex = 2;
+            this.BrushSizeComboBox.Items.AddRange(new object[] { "1", "2", "5", "8", "10", "12", "15" });
+            this.BrushSizeComboBox.Location = new Point(47, 14);
+            this.BrushSizeComboBox.Margin = new Padding(4, 3, 4, 3);
+            this.BrushSizeComboBox.Name = "BrushSizeComboBox";
+            this.BrushSizeComboBox.Size = new Size(233, 23);
+            this.BrushSizeComboBox.TabIndex = 2;
+            this.BrushSizeComboBox.SelectedIndexChanged += this.BrushSizeComboBox_SelectedIndexChanged;
             // 
             // UxBrushSize
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(331, 117);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BrushSizeComboBox);
+            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.OkButton);
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UxBrushSize";
             this.Text = "Изменение размера кисти";
@@ -80,8 +81,8 @@ namespace Paint
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button OkButton;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.ComboBox BrushSizeComboBox;
     }
 }
