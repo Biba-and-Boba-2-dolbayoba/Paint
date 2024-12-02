@@ -52,7 +52,7 @@ public partial class UxMainWindow : Form {
         }
     }
 
-    private void MainWindowMouseDown(object sender, MouseEventArgs e) {
+    private void MouseDownHandler(object sender, MouseEventArgs e) {
         Graphics graphics = this.CreateGraphics();
 
         if (e.Button == MouseButtons.Left) {
@@ -74,9 +74,68 @@ public partial class UxMainWindow : Form {
         }
     }
 
-    private void MainWindowLoad(object sender, EventArgs e) {
+    private void LoadHandler(object sender, EventArgs e) {
         this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
         this.UpdateStyles();
+    }
+
+    private void ResizeBeginHandler(object sender, EventArgs e) {
+        this.StatusStrip.Invalidate();
+    }
+
+    private void ResizeHandler(object sender, EventArgs e) {
+        if (this.TextToolStripMenuItem.Checked) {
+            this.PenSize.Width = this.Width / 10;
+            this.PenColor.Width = this.Width / 20;
+            this.FillingColor.Width = this.Width / 20;
+            this.MouseCords.Width = this.Width / 5;
+            this.CanvasSize.Width = this.Width / 5;
+            this.FontName.Width = this.Width / 5;
+            this.FontSize.Width = this.Width / 5;
+        } else {
+            this.PenSize.Width = this.Width / 10;
+            this.PenColor.Width = this.Width / 20;
+            this.FillingColor.Width = this.Width / 20;
+            this.MouseCords.Width = this.Width / 25 * 10;
+            this.CanvasSize.Width = this.Width / 25 * 10;
+        }
+
+        Graphics g = this.StatusStrip.CreateGraphics();
+        var RectColorPen = new Pen(LineColor, 1);
+        Brush brush = new SolidBrush(LineColor);
+        var r = new Rectangle(this.Width / 10, 0, this.Width / 20, this.Height);
+        g.FillRectangle(brush, r);
+        g.DrawRectangle(RectColorPen, r);
+
+        RectColorPen = new Pen(BackgroundColor, 1);
+        brush = new SolidBrush(BackgroundColor);
+        r = new Rectangle((this.Width / 10) + (this.Width / 20), 0, this.Width / 20, this.Height);
+        g.FillRectangle(brush, r);
+        g.DrawRectangle(RectColorPen, r);
+    }
+    private void ResizeEndHandler(object sender, EventArgs e) {
+        if (this.TextToolStripMenuItem.Checked == true) {
+            this.PenSize.Width = this.Width / 10;
+            this.PenColor.Width = this.Width / 20;
+            this.FillingColor.Width = this.Width / 20;
+            this.MouseCords.Width = this.Width / 5;
+            this.CanvasSize.Width = this.Width / 5;
+            this.FontName.Width = this.Width / 5;
+            this.FontSize.Width = this.Width / 5;
+        }
+
+        Graphics g = this.StatusStrip.CreateGraphics();
+        var RectColorPen = new Pen(LineColor, 1);
+        Brush brush = new SolidBrush(LineColor);
+        var r = new Rectangle(this.Width / 10, 0, this.Width / 20, this.Height);
+        g.FillRectangle(brush, r);
+        g.DrawRectangle(RectColorPen, r);
+
+        RectColorPen = new Pen(BackgroundColor, 1);
+        brush = new SolidBrush(BackgroundColor);
+        r = new Rectangle((this.Width / 10) + (this.Width / 20), 0, this.Width / 20, this.Height);
+        g.FillRectangle(brush, r);
+        g.DrawRectangle(RectColorPen, r);
     }
 
     private void NewFileToolStripMenuItemClick(object sender, EventArgs e) {
@@ -318,65 +377,10 @@ public partial class UxMainWindow : Form {
         g.DrawRectangle(RectColorPen, r);
     }
 
-    private void MainWindowResizeBegin(object sender, EventArgs e) {
-        this.StatusStrip.Invalidate();
-    }
 
-    private void MainWindowResize(object sender, EventArgs e) {
-        if (this.TextToolStripMenuItem.Checked) {
-            this.PenSize.Width = this.Width / 10;
-            this.PenColor.Width = this.Width / 20;
-            this.FillingColor.Width = this.Width / 20;
-            this.MouseCords.Width = this.Width / 5;
-            this.CanvasSize.Width = this.Width / 5;
-            this.FontName.Width = this.Width / 5;
-            this.FontSize.Width = this.Width / 5;
-        } else {
-            this.PenSize.Width = this.Width / 10;
-            this.PenColor.Width = this.Width / 20;
-            this.FillingColor.Width = this.Width / 20;
-            this.MouseCords.Width = this.Width / 25 * 10;
-            this.CanvasSize.Width = this.Width / 25 * 10;
-        }
 
-        Graphics g = this.StatusStrip.CreateGraphics();
-        var RectColorPen = new Pen(LineColor, 1);
-        Brush brush = new SolidBrush(LineColor);
-        var r = new Rectangle(this.Width / 10, 0, this.Width / 20, this.Height);
-        g.FillRectangle(brush, r);
-        g.DrawRectangle(RectColorPen, r);
 
-        RectColorPen = new Pen(BackgroundColor, 1);
-        brush = new SolidBrush(BackgroundColor);
-        r = new Rectangle((this.Width / 10) + (this.Width / 20), 0, this.Width / 20, this.Height);
-        g.FillRectangle(brush, r);
-        g.DrawRectangle(RectColorPen, r);
-    }
 
-    private void MainWindowResizeEnd(object sender, EventArgs e) {
-        if (this.TextToolStripMenuItem.Checked == true) {
-            this.PenSize.Width = this.Width / 10;
-            this.PenColor.Width = this.Width / 20;
-            this.FillingColor.Width = this.Width / 20;
-            this.MouseCords.Width = this.Width / 5;
-            this.CanvasSize.Width = this.Width / 5;
-            this.FontName.Width = this.Width / 5;
-            this.FontSize.Width = this.Width / 5;
-        }
-
-        Graphics g = this.StatusStrip.CreateGraphics();
-        var RectColorPen = new Pen(LineColor, 1);
-        Brush brush = new SolidBrush(LineColor);
-        var r = new Rectangle(this.Width / 10, 0, this.Width / 20, this.Height);
-        g.FillRectangle(brush, r);
-        g.DrawRectangle(RectColorPen, r);
-
-        RectColorPen = new Pen(BackgroundColor, 1);
-        brush = new SolidBrush(BackgroundColor);
-        r = new Rectangle((this.Width / 10) + (this.Width / 20), 0, this.Width / 20, this.Height);
-        g.FillRectangle(brush, r);
-        g.DrawRectangle(RectColorPen, r);
-    }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
         this.NewFileToolStripMenuItemClick(sender, e);

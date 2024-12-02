@@ -1,7 +1,4 @@
-﻿using Paint.Figure;
-using System.ComponentModel;
-
-namespace Paint;
+﻿namespace Paint;
 
 [Serializable()]
 public partial class UxCanvasWindow : Form {
@@ -350,7 +347,7 @@ public partial class UxCanvasWindow : Form {
     }
 
     private void CanvasWindowActivated(object sender, EventArgs e) {
-        
+
     }
 
     public void MyTextBox_KeyDown(object sender, KeyEventArgs e) {
