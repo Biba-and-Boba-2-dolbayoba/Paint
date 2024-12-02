@@ -461,11 +461,11 @@ namespace Paint
             this.MinimumSize = new Size(1692, 1425);
             this.Name = "UxMainWindow";
             this.Text = "Paint";
-            this.Load += this.MainWindowLoad;
-            this.ResizeBegin += this.MainWindowResizeBegin;
-            this.ResizeEnd += this.MainWindowResizeEnd;
-            this.MouseDown += this.MainWindowMouseDown;
-            this.Resize += this.MainWindowResize;
+            this.Load += this.LoadHandler;
+            this.ResizeBegin += this.ResizeBeginHandler;
+            this.ResizeEnd += this.ResizeEndHandler;
+            this.MouseDown += this.MouseDownHandler;
+            this.Resize += this.ResizeHandler;
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.StatusStrip.ResumeLayout(false);
