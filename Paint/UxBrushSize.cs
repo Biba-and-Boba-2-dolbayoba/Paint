@@ -10,10 +10,6 @@ public partial class UxBrushSize : Form {
 
     }
 
-    private void Form3_Load(object sender, EventArgs e) {
-
-    }
-
     private void button1_Click(object sender, EventArgs e) {
         pix = Convert.ToInt32(this.comboBox1.Text);
         this.Close();
@@ -21,9 +17,5 @@ public partial class UxBrushSize : Form {
 
     private void button2_Click(object sender, EventArgs e) {
         this.Close();
-    }
-
-    private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
-
     }
 }

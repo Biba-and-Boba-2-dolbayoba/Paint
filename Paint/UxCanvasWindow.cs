@@ -30,7 +30,7 @@ public partial class UxCanvasWindow : Form {
         this.InitializeComponent();
     }
 
-    public void CanvasWindowMouseDown(object sender, MouseEventArgs e) {
+    public void MouseDownHandler(object sender, MouseEventArgs e) {
         this.points = [];
         scr_x = Math.Abs(this.AutoScrollPosition.X);
         scr_y = Math.Abs(this.AutoScrollPosition.Y);
@@ -74,7 +74,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void CanvasWindowMouseMove(object sender, MouseEventArgs e) {
+    private void MouseMoveHandler(object sender, MouseEventArgs e) {
         if (this.flag == 1) {
             this.DoubleBuffered = true;
             var bufferZone = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
@@ -201,7 +201,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void CanvvasWindowMouseUp(object sender, MouseEventArgs e) {
+    private void MouseUpHandler(object sender, MouseEventArgs e) {
         var no_font = new Font("", 1);
         var no_curve = new Point[1];
         string no_text = "";
@@ -289,7 +289,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void CanvasWindowPaint(object sender, PaintEventArgs e) {
+    private void PaintHandler(object sender, PaintEventArgs e) {
         this.DoubleBuffered = true;
         var buffer_ground = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
         this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
@@ -316,7 +316,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void CanvasWindowClose(object sender, FormClosingEventArgs e) {
+    private void CloseHandler(object sender, FormClosingEventArgs e) {
 
         if (!this.IsCanvasEmpty) {
             DialogResult res = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
@@ -328,7 +328,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void CanvasWindowLoad(object sender, EventArgs e) {
+    private void LoadHandler(object sender, EventArgs e) {
         scr_x = this.AutoScrollPosition.X;
         scr_y = this.AutoScrollPosition.Y;
 
@@ -346,7 +346,7 @@ public partial class UxCanvasWindow : Form {
         this.buffer.Dispose();
     }
 
-    private void CanvasWindowActivated(object sender, EventArgs e) {
+    private void ActivatedHandler(object sender, EventArgs e) {
 
     }
 
