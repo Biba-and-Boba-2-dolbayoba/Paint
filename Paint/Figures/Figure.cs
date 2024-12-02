@@ -1,4 +1,4 @@
-﻿namespace Paint;
+﻿namespace Paint.Figures;
 
 [Serializable()]
 public abstract class Figure {
@@ -235,7 +235,7 @@ public class Ellipse : Figure {
         double normalizedX = (p.X - centerX) / a;
         double normalizedY = (p.Y - centerY) / b;
 
-        return (normalizedX * normalizedX) + (normalizedY * normalizedY) <= 1;
+        return normalizedX * normalizedX + normalizedY * normalizedY <= 1;
     }
 }
 
@@ -287,10 +287,10 @@ public class Line : Figure {
     public override bool ContainsPoint(Point p) {
         const int tolerance = 3;
 
-        double distance = Math.Abs(((this.point2.Y - this.point1.Y) * p.X) -
-                                    ((this.point2.X - this.point1.X) * p.Y) +
-                                    (this.point2.X * this.point1.Y) -
-                                    (this.point2.Y * this.point1.X)) /
+        double distance = Math.Abs((this.point2.Y - this.point1.Y) * p.X -
+                                    (this.point2.X - this.point1.X) * p.Y +
+                                    this.point2.X * this.point1.Y -
+                                    this.point2.Y * this.point1.X) /
                           Math.Sqrt(Math.Pow(this.point2.Y - this.point1.Y, 2) +
                                     Math.Pow(this.point2.X - this.point1.X, 2));
 
@@ -360,10 +360,10 @@ public class CurveLine : Figure {
             Point start = this.mas_points[i];
             Point end = this.mas_points[i + 1];
 
-            double distance = Math.Abs(((end.Y - start.Y) * p.X) -
-                                        ((end.X - start.X) * p.Y) +
-                                        (end.X * start.Y) -
-                                        (end.Y * start.X)) /
+            double distance = Math.Abs((end.Y - start.Y) * p.X -
+                                        (end.X - start.X) * p.Y +
+                                        end.X * start.Y -
+                                        end.Y * start.X) /
                               Math.Sqrt(Math.Pow(end.Y - start.Y, 2) +
                                         Math.Pow(end.X - start.X, 2));
 

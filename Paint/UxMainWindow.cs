@@ -107,14 +107,14 @@ public partial class UxMainWindow : Form {
     }
 
     private void CanvasWindowCursorMove(int x, int y) {
-        if (x <= UxCanvasWindow.windowsizex && y <= UxCanvasWindow.windowsizey) {
+        if (x <= CanvasWidth && y <= CanvasHeight) {
             this.MouseCords.Text = $"Положение курсора X: {x}, Y: {y}";
-        } else if (x > UxCanvasWindow.windowsizex && y <= UxCanvasWindow.windowsizey) {
-            this.MouseCords.Text = $"Положение курсора X: {UxCanvasWindow.windowsizex}, Y: {y}";
-        } else if (x <= UxCanvasWindow.windowsizex && y > UxCanvasWindow.windowsizey) {
-            this.MouseCords.Text = $"Положение курсора X: {x}, Y: {UxCanvasWindow.windowsizey}";
-        } else if (x > UxCanvasWindow.windowsizex && y > UxCanvasWindow.windowsizey) {
-            this.MouseCords.Text = $"Положение курсора X: {UxCanvasWindow.windowsizex}, Y: {UxCanvasWindow.windowsizey}";
+        } else if (x > CanvasWidth && y <= CanvasHeight) {
+            this.MouseCords.Text = $"Положение курсора X: {CanvasWidth}, Y: {y}";
+        } else if (x <= CanvasWidth && y > CanvasHeight) {
+            this.MouseCords.Text = $"Положение курсора X: {x}, Y: {CanvasHeight}";
+        } else if (x > CanvasWidth && y > CanvasHeight) {
+            this.MouseCords.Text = $"Положение курсора X: {CanvasWidth}, Y: {CanvasHeight}";
         }
     }
 
@@ -222,7 +222,7 @@ public partial class UxMainWindow : Form {
 
         this.IsSelectionMode = false;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            activeForm.isSelectionMode = this.IsSelectionMode;
+            activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
 
@@ -244,7 +244,7 @@ public partial class UxMainWindow : Form {
 
         this.IsSelectionMode = false;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            activeForm.isSelectionMode = this.IsSelectionMode;
+            activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
 
@@ -266,7 +266,7 @@ public partial class UxMainWindow : Form {
 
         this.IsSelectionMode = false;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            activeForm.isSelectionMode = this.IsSelectionMode;
+            activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
 
@@ -288,7 +288,7 @@ public partial class UxMainWindow : Form {
 
         this.IsSelectionMode = false;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            activeForm.isSelectionMode = this.IsSelectionMode;
+            activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
 
@@ -418,7 +418,7 @@ public partial class UxMainWindow : Form {
 
             this.IsSelectionMode = false;
             if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-                activeForm.isSelectionMode = this.IsSelectionMode;
+                activeForm.IsSelectionMode = this.IsSelectionMode;
             }
         }
     }
@@ -435,7 +435,7 @@ public partial class UxMainWindow : Form {
 
             this.IsSelectionMode = false;
             if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-                activeForm.isSelectionMode = this.IsSelectionMode;
+                activeForm.IsSelectionMode = this.IsSelectionMode;
             }
         }
     }
@@ -452,7 +452,7 @@ public partial class UxMainWindow : Form {
 
             this.IsSelectionMode = false;
             if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-                activeForm.isSelectionMode = this.IsSelectionMode;
+                activeForm.IsSelectionMode = this.IsSelectionMode;
             }
         }
     }
@@ -469,7 +469,7 @@ public partial class UxMainWindow : Form {
 
             this.IsSelectionMode = false;
             if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-                activeForm.isSelectionMode = this.IsSelectionMode;
+                activeForm.IsSelectionMode = this.IsSelectionMode;
             }
         }
     }
@@ -486,7 +486,7 @@ public partial class UxMainWindow : Form {
 
             this.IsSelectionMode = false;
             if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-                activeForm.isSelectionMode = this.IsSelectionMode;
+                activeForm.IsSelectionMode = this.IsSelectionMode;
             }
         }
     }
@@ -560,7 +560,7 @@ public partial class UxMainWindow : Form {
 
         this.IsSelectionMode = true;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            activeForm.isSelectionMode = this.IsSelectionMode;
+            activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
 

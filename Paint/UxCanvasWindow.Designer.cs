@@ -27,28 +27,27 @@ namespace Paint
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             this.SuspendLayout();
             // 
-            // Form2
+            // UxCanvasWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.AutoScaleDimensions = new SizeF(10F, 25F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.BackColor = Color.LightGray;
+            this.ClientSize = new Size(1307, 1079);
             this.DoubleBuffered = true;
-            this.Name = "Form2";
-            this.Text = "Form2";
-            this.Activated += new System.EventHandler(this.Form2_Activated);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Close);
-            this.Load += new System.EventHandler(this.Form2_Load);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseUp);
+            this.Margin = new Padding(5, 6, 5, 6);
+            this.Name = "UxCanvasWindow";
+            this.Text = "Canvas";
+            this.Activated += this.CanvasWindowActivated;
+            this.FormClosing += this.CanvasWindowClose;
+            this.Load += this.CanvasWindowLoad;
+            this.Paint += this.CanvasWindowPaint;
+            this.MouseDown += this.CanvasWindowMouseDown;
+            this.MouseMove += this.CanvasWindowMouseMove;
+            this.MouseUp += this.CanvvasWindowMouseUp;
             this.ResumeLayout(false);
-
         }
 
         #endregion

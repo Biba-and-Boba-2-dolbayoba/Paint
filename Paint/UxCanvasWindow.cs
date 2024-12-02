@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Paint.Figure;
+using System.ComponentModel;
 
 namespace Paint;
 
@@ -8,47 +9,31 @@ public partial class UxCanvasWindow : Form {
     private int y1;
     private int x2;
     private int y2;
-    public static int x_mouse;
-    public static int y_mouse;
-    public static string TextXY = "Координаты мыши - " + x_mouse + " " + y_mouse;
     public string? fileName = null;
     public int flag;
     public bool flag3 = false;
-    public bool flagMod = true;
-    public List<Figure> array = [];
+    private bool IsCanvasEmpty { get; set; } = true;
+    private List<_Figure> Figures { get; set; } = [];
     public List<Point> points = [];
     public Size Sz = new(UxMainWindow.CanvasWidth, UxMainWindow.CanvasHeight);
     public static int scr_x;
     public static int scr_y;
-    public static int windowsizex;
-    public static int windowsizey;
-    private Figure? selectedFigure = null;
+    private _Figure? selectedFigure = null;
     private Point dragStartPoint;
     private bool isDragging = false;
 
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public bool isSelectionMode { get; set; }
+    private bool IsSelectionMode { get; set; }
 
-    private Font font = UxMainWindow.TextFont;
     public string text1 = "";
-
-    public event Action<int, int> CursorMoved;
-    public event Action<int, int> FormActivated;
 
     private BufferedGraphicsContext bufferPlace;
     private BufferedGraphics buffer;
 
     public UxCanvasWindow() {
         this.InitializeComponent();
-
-        this.AutoScroll = true;
-        this.AutoScrollMinSize = this.Sz;
-        this.MouseMove += this.Form2_MouseMove;
-        this.Activated += this.Form2_Activated;
-
     }
 
-    public void Form2_MouseDown(object sender, MouseEventArgs e) {
+    public void CanvasWindowMouseDown(object sender, MouseEventArgs e) {
         this.points = [];
         scr_x = Math.Abs(this.AutoScrollPosition.X);
         scr_y = Math.Abs(this.AutoScrollPosition.Y);
@@ -71,9 +56,9 @@ public partial class UxCanvasWindow : Form {
             this.flag = 1;
         }
 
-        if (this.isSelectionMode) {
+        if (this.IsSelectionMode) {
             if (e.Button == MouseButtons.Left) {
-                foreach (Figure figure in this.array) {
+                foreach (_Figure figure in this.Figures) {
                     // Проверяем, находится ли точка в границах фигуры
                     if (figure.ContainsPoint(new Point(e.X + scr_x, e.Y + scr_y))) {
                         this.selectedFigure = figure; // Устанавливаем выбранную фигуру
@@ -92,16 +77,14 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void Form2_MouseMove(object sender, MouseEventArgs e) {
-        CursorMoved?.Invoke(e.Location.X, e.Location.Y);
-
+    private void CanvasWindowMouseMove(object sender, MouseEventArgs e) {
         if (this.flag == 1) {
             this.DoubleBuffered = true;
             var bufferZone = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
             this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), bufferZone);
             var bg_color = new SolidBrush(Color.White);
             this.buffer.Graphics.FillRectangle(bg_color, bufferZone);
-            foreach (Figure f in this.array) {
+            foreach (_Figure f in this.Figures) {
                 f.Draw(this.buffer.Graphics);
             }
 
@@ -158,8 +141,8 @@ public partial class UxCanvasWindow : Form {
 
             if (UxMainWindow.FigureType == 4) {
 
-                var points1 = new Point[this.points.Count()];
-                for (int i = 0 ; i < this.points.Count() ; i++) {
+                var points1 = new Point[this.points.Count];
+                for (int i = 0 ; i < this.points.Count ; i++) {
                     points1[i] = this.points[i];
                 }
 
@@ -174,8 +157,8 @@ public partial class UxCanvasWindow : Form {
                     this.points.Add(new Point(this.x2 + scr_x, this.y2 + scr_y));
                 }
 
-                var points2 = new Point[this.points.Count()];
-                for (int i = 0 ; i < this.points.Count() ; i++) {
+                var points2 = new Point[this.points.Count];
+                for (int i = 0 ; i < this.points.Count ; i++) {
                     points2[i] = this.points[i];
                 }
 
@@ -221,7 +204,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void Form2_MouseUp(object sender, MouseEventArgs e) {
+    private void CanvvasWindowMouseUp(object sender, MouseEventArgs e) {
         var no_font = new Font("", 1);
         var no_curve = new Point[1];
         string no_text = "";
@@ -231,12 +214,12 @@ public partial class UxCanvasWindow : Form {
                 var r = new Rect(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.pix, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) <= this.Sz.Width && (this.y2 + scr_y) <= this.Sz.Height) {
                     r.Draw(g);
-                    this.array.Add(r);
+                    this.Figures.Add(r);
                     this.Invalidate();
                 }
 
                 this.flag = 0;
-                this.flagMod = true;
+                this.IsCanvasEmpty = false;
             }
 
             if (UxMainWindow.FigureType == 2) {
@@ -244,12 +227,12 @@ public partial class UxCanvasWindow : Form {
                 var r = new Ellipse(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.pix, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) <= this.Sz.Width && (this.y2 + scr_y) <= this.Sz.Height) {
                     r.Draw(g);
-                    this.array.Add(r);
+                    this.Figures.Add(r);
                     this.Invalidate();
                 }
 
                 this.flag = 0;
-                this.flagMod = true;
+                this.IsCanvasEmpty = false;
             }
 
             if (UxMainWindow.FigureType == 3) {
@@ -257,30 +240,30 @@ public partial class UxCanvasWindow : Form {
                 var r = new Line(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.pix, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) <= this.Sz.Width && (this.y2 + scr_y) <= this.Sz.Height) {
                     r.Draw(g);
-                    this.array.Add(r);
+                    this.Figures.Add(r);
                     this.Invalidate();
                 }
 
                 this.flag = 0;
-                this.flagMod = true;
+                this.IsCanvasEmpty = false;
             }
 
             if (UxMainWindow.FigureType == 4) {
                 Graphics g = this.CreateGraphics();
-                var points2 = new Point[this.points.Count()];
-                for (int i = 0 ; i < this.points.Count() ; i++) {
+                var points2 = new Point[this.points.Count];
+                for (int i = 0 ; i < this.points.Count ; i++) {
                     points2[i] = this.points[i];
                 }
 
                 var r = new CurveLine(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.pix, UxMainWindow.IsFilling, points2, no_font, no_text);
                 if ((this.x2 + scr_x) <= this.Sz.Width && (this.y2 + scr_y) <= this.Sz.Height) {
                     r.Draw(g);
-                    this.array.Add(r);
+                    this.Figures.Add(r);
                     this.Invalidate();
                 }
 
                 this.flag = 0;
-                this.flagMod = true;
+                this.IsCanvasEmpty = false;
                 this.points.Clear();
             }
 
@@ -298,17 +281,18 @@ public partial class UxCanvasWindow : Form {
                     MyTextBox.Height = this.y2 - this.y1;
                 }
 
+                this.IsCanvasEmpty = false;
                 this.flag = 0;
             }
 
             if (e.Button == MouseButtons.Left && this.isDragging) {
-                this.isDragging = false; // Завершаем перетаскивание
+                this.isDragging = false;
                 this.flag = 0;
             }
         }
     }
 
-    private void Form2_Paint(object sender, PaintEventArgs e) {
+    private void CanvasWindowPaint(object sender, PaintEventArgs e) {
         this.DoubleBuffered = true;
         var buffer_ground = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
         this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
@@ -318,7 +302,7 @@ public partial class UxCanvasWindow : Form {
             var background = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
             var bg_color = new SolidBrush(Color.White);
             this.buffer.Graphics.FillRectangle(bg_color, background);
-            foreach (Figure f in this.array) {
+            foreach (_Figure f in this.Figures) {
                 f.Draw(this.buffer.Graphics);
             }
         }
@@ -327,7 +311,7 @@ public partial class UxCanvasWindow : Form {
         this.buffer.Render(this.CreateGraphics());
         this.buffer.Dispose();
 
-        if (this.selectedFigure != null && this.isSelectionMode) {
+        if (this.selectedFigure != null && this.IsSelectionMode) {
             // Рисуем пунктирный контур вокруг выбранной фигуры
             Graphics graphics = e.Graphics;
             var pen = new Pen(Color.Blue, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash };
@@ -335,9 +319,9 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void Close(object sender, FormClosingEventArgs e) {
+    private void CanvasWindowClose(object sender, FormClosingEventArgs e) {
 
-        if (this.flagMod) {
+        if (!this.IsCanvasEmpty) {
             DialogResult res = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
             if (res == DialogResult.Yes) {
                 UxMainWindow.SaveFile(this);
@@ -347,7 +331,7 @@ public partial class UxCanvasWindow : Form {
         }
     }
 
-    private void Form2_Load(object sender, EventArgs e) {
+    private void CanvasWindowLoad(object sender, EventArgs e) {
         scr_x = this.AutoScrollPosition.X;
         scr_y = this.AutoScrollPosition.Y;
 
@@ -365,10 +349,8 @@ public partial class UxCanvasWindow : Form {
         this.buffer.Dispose();
     }
 
-    private void Form2_Activated(object sender, EventArgs e) {
-        windowsizex = this.Sz.Width;
-        windowsizey = this.Sz.Height;
-        FormActivated?.Invoke(this.Sz.Width, this.Sz.Height);
+    private void CanvasWindowActivated(object sender, EventArgs e) {
+        
     }
 
     public void MyTextBox_KeyDown(object sender, KeyEventArgs e) {
@@ -382,16 +364,15 @@ public partial class UxCanvasWindow : Form {
             Font font = UxMainWindow.TextFont;
             var r = new TxtBox(MyTextBox.Location, MyTextBox.Location + MyTextBox.Size, UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.pix, UxMainWindow.IsFilling, no_curve, font, this.text1);
             r.Draw(g);
-            this.array.Add(r);
+            this.Figures.Add(r);
             this.Invalidate();
             MyTextBox.Dispose();
             this.flag = 0;
-            this.flagMod = true;
         }
     }
     private void DeleteSelectedFigure() {
         if (this.selectedFigure != null) {
-            _ = this.array.Remove(this.selectedFigure); // Удаляем выбранную фигуру
+            _ = this.Figures.Remove(this.selectedFigure); // Удаляем выбранную фигуру
             this.selectedFigure = null;        // Сбрасываем выделение
             this.Invalidate();                 // Перерисовка
         }
