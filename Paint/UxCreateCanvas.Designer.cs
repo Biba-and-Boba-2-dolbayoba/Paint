@@ -183,7 +183,6 @@ namespace Paint
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UxCreateCanvas";
             this.Text = "Выбор размера окна";
-            this.Load += this.CreateCanvasLoad;
             this.CreateCanvasGroupBox.ResumeLayout(false);
             this.CreateCanvasGroupBox.PerformLayout();
             this.ResumeLayout(false);
