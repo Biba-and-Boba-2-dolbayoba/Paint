@@ -27,202 +27,181 @@ namespace Paint
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+        private void InitializeComponent() {
+            this.SizeSmallButton = new RadioButton();
+            this.SizeAverageButton = new RadioButton();
+            this.SizeBigButton = new RadioButton();
+            this.ManualSelectionCheckBox = new CheckBox();
+            this.HeightTextBox = new TextBox();
+            this.WidthTextBox = new TextBox();
+            this.HeightLabel = new Label();
+            this.WidthLabel = new Label();
+            this.OkButton = new Button();
+            this.CancelButton = new Button();
+            this.CreateCanvasGroupBox = new GroupBox();
+            this.CreateCanvasGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // radioButton1
+            // SizeSmallButton
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(9, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(66, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "320x240";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
-            this.radioButton1.Click += new System.EventHandler(this.radioButton1_Click);
+            this.SizeSmallButton.AutoSize = true;
+            this.SizeSmallButton.Location = new Point(10, 22);
+            this.SizeSmallButton.Margin = new Padding(4, 3, 4, 3);
+            this.SizeSmallButton.Name = "SizeSmallButton";
+            this.SizeSmallButton.Size = new Size(67, 19);
+            this.SizeSmallButton.TabIndex = 0;
+            this.SizeSmallButton.TabStop = true;
+            this.SizeSmallButton.Text = "320x240";
+            this.SizeSmallButton.UseVisualStyleBackColor = true;
+            this.SizeSmallButton.CheckedChanged += this.SizeSmallButtonCheckedChanged;
             // 
-            // radioButton2
+            // SizeAverageButton
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(148, 19);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(66, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "640x480";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
-            this.radioButton2.Click += new System.EventHandler(this.radioButton2_Click);
+            this.SizeAverageButton.AutoSize = true;
+            this.SizeAverageButton.Location = new Point(173, 22);
+            this.SizeAverageButton.Margin = new Padding(4, 3, 4, 3);
+            this.SizeAverageButton.Name = "SizeAverageButton";
+            this.SizeAverageButton.Size = new Size(67, 19);
+            this.SizeAverageButton.TabIndex = 1;
+            this.SizeAverageButton.TabStop = true;
+            this.SizeAverageButton.Text = "640x480";
+            this.SizeAverageButton.UseVisualStyleBackColor = true;
+            this.SizeAverageButton.CheckedChanged += this.SizeAverageButtonCheckedChanged;
             // 
-            // radioButton3
+            // SizeBigButton
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(285, 19);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(66, 17);
-            this.radioButton3.TabIndex = 2;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "800x600";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            this.radioButton3.CheckedChanged += new System.EventHandler(this.radioButton3_CheckedChanged);
-            this.radioButton3.Click += new System.EventHandler(this.radioButton3_Click);
+            this.SizeBigButton.AutoSize = true;
+            this.SizeBigButton.Location = new Point(332, 22);
+            this.SizeBigButton.Margin = new Padding(4, 3, 4, 3);
+            this.SizeBigButton.Name = "SizeBigButton";
+            this.SizeBigButton.Size = new Size(67, 19);
+            this.SizeBigButton.TabIndex = 2;
+            this.SizeBigButton.TabStop = true;
+            this.SizeBigButton.Text = "800x600";
+            this.SizeBigButton.UseVisualStyleBackColor = true;
+            this.SizeBigButton.CheckedChanged += this.SizeBigButtonCheckedChanged;
             // 
-            // label1
+            // ManualSelectionCheckBox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.ManualSelectionCheckBox.AutoSize = true;
+            this.ManualSelectionCheckBox.CheckAlign = ContentAlignment.MiddleRight;
+            this.ManualSelectionCheckBox.Location = new Point(40, 110);
+            this.ManualSelectionCheckBox.Margin = new Padding(4, 3, 4, 3);
+            this.ManualSelectionCheckBox.Name = "ManualSelectionCheckBox";
+            this.ManualSelectionCheckBox.Size = new Size(187, 19);
+            this.ManualSelectionCheckBox.TabIndex = 5;
+            this.ManualSelectionCheckBox.Text = "Ручной выбор размера окна:";
+            this.ManualSelectionCheckBox.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // HeightTextBox
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 95);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.HeightTextBox.Location = new Point(248, 135);
+            this.HeightTextBox.Margin = new Padding(4, 3, 4, 3);
+            this.HeightTextBox.Name = "HeightTextBox";
+            this.HeightTextBox.Size = new Size(116, 23);
+            this.HeightTextBox.TabIndex = 6;
+            this.HeightTextBox.Text = "320";
             // 
-            // checkBox1
+            // WidthTextBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(34, 95);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(173, 17);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Ручной выбор размера окна:";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.WidthTextBox.Location = new Point(372, 135);
+            this.WidthTextBox.Margin = new Padding(4, 3, 4, 3);
+            this.WidthTextBox.Name = "WidthTextBox";
+            this.WidthTextBox.Size = new Size(116, 23);
+            this.WidthTextBox.TabIndex = 7;
+            this.WidthTextBox.Text = "240";
             // 
-            // textBox1
+            // HeightLabel
             // 
-            this.textBox1.Location = new System.Drawing.Point(213, 117);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.Text = "320";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.HeightLabel.AutoSize = true;
+            this.HeightLabel.Location = new Point(248, 110);
+            this.HeightLabel.Margin = new Padding(4, 0, 4, 0);
+            this.HeightLabel.Name = "HeightLabel";
+            this.HeightLabel.Size = new Size(50, 15);
+            this.HeightLabel.TabIndex = 8;
+            this.HeightLabel.Text = "Высота:";
             // 
-            // textBox2
+            // WidthLabel
             // 
-            this.textBox2.Location = new System.Drawing.Point(319, 117);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 7;
-            this.textBox2.Text = "240";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.WidthLabel.AutoSize = true;
+            this.WidthLabel.Location = new Point(372, 110);
+            this.WidthLabel.Margin = new Padding(4, 0, 4, 0);
+            this.WidthLabel.Name = "WidthLabel";
+            this.WidthLabel.Size = new Size(55, 15);
+            this.WidthLabel.TabIndex = 9;
+            this.WidthLabel.Text = "Ширина:";
             // 
-            // label3
+            // OkButton
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(213, 95);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Высота:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.OkButton.Location = new Point(40, 177);
+            this.OkButton.Margin = new Padding(4, 3, 4, 3);
+            this.OkButton.Name = "OkButton";
+            this.OkButton.Size = new Size(88, 27);
+            this.OkButton.TabIndex = 10;
+            this.OkButton.Text = "Ok";
+            this.OkButton.UseVisualStyleBackColor = true;
+            this.OkButton.Click += this.OkButtonClick;
             // 
-            // label4
+            // CancelButton
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(316, 94);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 13);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Ширина:";
+            this.CancelButton.Location = new Point(401, 177);
+            this.CancelButton.Margin = new Padding(4, 3, 4, 3);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new Size(88, 27);
+            this.CancelButton.TabIndex = 11;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += this.CancelButtonClick;
             // 
-            // button1
+            // CreateCanvasGroupBox
             // 
-            this.button1.Location = new System.Drawing.Point(34, 153);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Ok";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.CreateCanvasGroupBox.Controls.Add(this.SizeSmallButton);
+            this.CreateCanvasGroupBox.Controls.Add(this.SizeAverageButton);
+            this.CreateCanvasGroupBox.Controls.Add(this.SizeBigButton);
+            this.CreateCanvasGroupBox.Location = new Point(40, 36);
+            this.CreateCanvasGroupBox.Margin = new Padding(4, 3, 4, 3);
+            this.CreateCanvasGroupBox.Name = "CreateCanvasGroupBox";
+            this.CreateCanvasGroupBox.Padding = new Padding(4, 3, 4, 3);
+            this.CreateCanvasGroupBox.Size = new Size(449, 55);
+            this.CreateCanvasGroupBox.TabIndex = 12;
+            this.CreateCanvasGroupBox.TabStop = false;
+            this.CreateCanvasGroupBox.Text = "Стандартные значения окон:";
             // 
-            // button2
+            // UxCreateCanvas
             // 
-            this.button2.Location = new System.Drawing.Point(344, 153);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Location = new System.Drawing.Point(34, 31);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(385, 48);
-            this.groupBox1.TabIndex = 12;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Стандартные значения окон:";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // Form4
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(471, 201);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Name = "Form4";
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(550, 232);
+            this.Controls.Add(this.CreateCanvasGroupBox);
+            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.OkButton);
+            this.Controls.Add(this.WidthLabel);
+            this.Controls.Add(this.HeightLabel);
+            this.Controls.Add(this.WidthTextBox);
+            this.Controls.Add(this.HeightTextBox);
+            this.Controls.Add(this.ManualSelectionCheckBox);
+            this.Margin = new Padding(4, 3, 4, 3);
+            this.Name = "UxCreateCanvas";
             this.Text = "Выбор размера окна";
-            this.Load += new System.EventHandler(this.Form4_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.Load += this.CreateCanvasLoad;
+            this.CreateCanvasGroupBox.ResumeLayout(false);
+            this.CreateCanvasGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
 
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton SizeSmallButton;
+        private System.Windows.Forms.RadioButton SizeAverageButton;
+        private System.Windows.Forms.RadioButton SizeBigButton;
+        private System.Windows.Forms.CheckBox ManualSelectionCheckBox;
+        private System.Windows.Forms.TextBox HeightTextBox;
+        private System.Windows.Forms.TextBox WidthTextBox;
+        private System.Windows.Forms.Label HeightLabel;
+        private System.Windows.Forms.Label WidthLabel;
+        private System.Windows.Forms.Button OkButton;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.GroupBox CreateCanvasGroupBox;
     }
 }
