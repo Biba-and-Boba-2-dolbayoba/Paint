@@ -66,7 +66,7 @@ public partial class UxMainWindow : Form {
     private void UpdateFontInfo() {
         this.FontInfo.Text = $"{TextFont.Name}, {TextFont.SizeInPoints} pt";
     }
-    
+
     private void UpdateBrushInfo() {
         string hexColor = Convert.ToHexString(
             [LineColor.A, LineColor.R, LineColor.G, LineColor.B]
@@ -226,19 +226,13 @@ public partial class UxMainWindow : Form {
     }
 
     private void FillingButtonClick(object sender, EventArgs e) {
-        if (this.FillingToolButton.Checked) {
-            this.FillingButton.Checked = true;
+        if (!this.FillingToolButton.Checked && !this.FillingButton.Checked) {
+            this.FillingToolButton.Checked = this.FillingButton.Checked = true;
+            IsFilling = true;
         } else {
-            this.FillingButton.Checked = false;
+            this.FillingToolButton.Checked = this.FillingButton.Checked = false;
+            IsFilling = false;
         }
-
-        if (this.FillingButton.Checked) {
-            this.FillingToolButton.Checked = true;
-        } else {
-            this.FillingToolButton.Checked = false;
-        }
-
-        IsFilling = this.FillingToolButton.Checked == true;
     }
 
     private void FillingColorButtonClick(object sender, EventArgs e) {
