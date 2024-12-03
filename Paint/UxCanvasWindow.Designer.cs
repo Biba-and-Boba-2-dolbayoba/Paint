@@ -40,7 +40,6 @@ namespace Paint
             this.Margin = new Padding(5, 6, 5, 6);
             this.Name = "UxCanvasWindow";
             this.Text = "Canvas";
-            this.Activated += this.ActivatedHandler;
             this.FormClosing += this.CloseHandler;
             this.Load += this.LoadHandler;
             this.Paint += this.PaintHandler;

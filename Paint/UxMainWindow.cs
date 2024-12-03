@@ -34,7 +34,7 @@ public partial class UxMainWindow : Form {
         string fileName;
         UxCanvasWindow _canvas = canvas;
 
-        if (_canvas.fileName == null) {
+        if (_canvas.CanvasName == null) {
             var saveFileDialog1 = new SaveFileDialog {
                 InitialDirectory = Environment.CurrentDirectory,
                 Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
@@ -42,13 +42,11 @@ public partial class UxMainWindow : Form {
             };
             if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
                 fileName = saveFileDialog1.FileName;
-                _canvas.fileName = fileName;
-                _canvas.flag3 = false;
+                _canvas.CanvasName = fileName;
             }
         } else {
-            fileName = _canvas.fileName;
+            fileName = _canvas.CanvasName;
             _canvas.Text = Path.GetFileName(fileName);
-            _canvas.flag3 = false;
         }
     }
 
@@ -144,8 +142,6 @@ public partial class UxMainWindow : Form {
                 MdiParent = this,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString()
             };
-            CanvasWindow.CursorMoved += this.CanvasWindowCursorMove;
-            CanvasWindow.FormActivated += this.CanvasWindowFormActivated;
             CanvasWindow.Show();
         } else {
             var sizeDialog = new UxCreateCanvas();
@@ -158,8 +154,6 @@ public partial class UxMainWindow : Form {
                     MdiParent = this,
                     Text = "Рисунок " + this.MdiChildren.Length.ToString()
                 };
-                CanvasWindow.CursorMoved += this.CanvasWindowCursorMove;
-                CanvasWindow.FormActivated += this.CanvasWindowFormActivated;
                 CanvasWindow.Show();
             }
         }
@@ -190,7 +184,7 @@ public partial class UxMainWindow : Form {
     public void SaveFileAsToolStripMenuItemClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
             UxCanvasWindow canvas = activeForm;
-            canvas.fileName = null;
+            canvas.CanvasName = null;
             SaveFile(canvas);
         }
     }
