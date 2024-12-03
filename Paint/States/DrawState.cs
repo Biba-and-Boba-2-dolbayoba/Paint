@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Paint.States;
+﻿namespace Paint.States;
 internal class DrawState : IState {
     public void MouseDownHandler(object sender, MouseEventArgs e) {
         throw new NotImplementedException();
