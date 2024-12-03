@@ -130,7 +130,7 @@
     <value>True</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="MouseCords.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="PointerInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         DAAACwwBP0AiyAAAAOdJREFUOE/F0DELAXEYx/GziAVvwK4sMprtFgYTkxHZjF6C0Wo0KLwERptIXoSF
@@ -140,14 +140,14 @@
         /j+O8wAemTQNwsr9rwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="CanvasSize.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="CanvasInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         DAAACwwBP0AiyAAAAE5JREFUOE9joBYIBeJVSBjERwd41YAEHkNpDEkoQDYAphYOYBLEAgz1FBsAch42
         Z+MCpKofEYDiQKQ4GqliAEVJGVkShAkZgEsNqYCBAQB3RiTB355VRQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="FontName.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="FontInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         DAAACwwBP0AiyAAAAIlJREFUOE/tk7ENgCAQRUEaqdjBIWzZwcVYg8RBGMQxLE5+whE9SdTYGYtX/OPf
@@ -155,7 +155,7 @@
         BJJf8E2Bc27ISxGLOGNQRBFvsn8lwN3z/7gneAZ1GyrGYVXoThuOAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="BrushSize.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="BrushInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         DAAACwwBP0AiyAAAALZJREFUOE+lkcEJwkAQRRdswQq8WYp60YN1CB4sQMuwA8GTetCTolUonlKCDfg+
@@ -164,7 +164,7 @@
         DzzgzPoYlE+84dX6O0IIb3ODNbiMz82mAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="FillingColor.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="FillingInfo.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         DAAACwwBP0AiyAAAAMdJREFUOE/FkU0OAUEQRtvCwk/iIsKSSGycYpZuIFzE2hE4AwviEDZOQOYIeF9T

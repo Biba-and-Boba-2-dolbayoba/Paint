@@ -10,6 +10,9 @@ public partial class UxMainWindow : Form {
     public static int CanvasHeight { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public static int BrushSize { get; private set; } = 12;
+
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public static Color LineColor { get; private set; } = Color.Black;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -49,14 +52,45 @@ public partial class UxMainWindow : Form {
             _canvas.Text = Path.GetFileName(fileName);
         }
     }
-    
+
     private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
         this.StatusStrip.Invalidate();
-        this.BrushSize.Text = "Размер пера - " + UxBrushSize.BrushSize;
+        BrushSize = Convert.ToInt32(UxBrushSize.BrushSize);
+        UpdateBrushInfo();
     }
 
     private bool IsWindowOpen() {
         return (this.ActiveMdiChild as UxCanvasWindow) != null;
+    }
+
+    private void UpdateFontInfo() {
+        this.FontInfo.Text = $"{TextFont.Name}, {TextFont.SizeInPoints} pt";
+    }
+    
+    private void UpdateBrushInfo() {
+        string hexColor = Convert.ToHexString(
+            [LineColor.A, LineColor.R, LineColor.G, LineColor.B]
+        );
+
+        if (LineColor.IsNamedColor) {
+            this.BrushInfo.Text = $"{LineColor.Name} ({hexColor}), {BrushSize} px";
+            return;
+        }
+
+        this.BrushInfo.Text = $"{hexColor}, {BrushSize} px";
+    }
+
+    private void UpdateFillingInfo() {
+        string hexColor = Convert.ToHexString(
+            [BackgroundColor.A, BackgroundColor.R, BackgroundColor.G, BackgroundColor.B]
+        );
+
+        if (BackgroundColor.IsNamedColor) {
+            this.FillingInfo.Text = $"{BackgroundColor.Name} ({hexColor})";
+            return;
+        }
+
+        this.FillingInfo.Text = $"{hexColor}";
     }
 
     private void MouseDownHandler(object sender, MouseEventArgs e) {
@@ -84,11 +118,15 @@ public partial class UxMainWindow : Form {
     private void LoadHandler(object sender, EventArgs e) {
         this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
         this.UpdateStyles();
+
+        UpdateFontInfo();
+        UpdateBrushInfo();
+        UpdateFillingInfo();
     }
 
     private void FileToolButtonClick(object sender, EventArgs e) {
-        this.SaveFileToolStripMenuItem.Enabled = this.IsWindowOpen();
-        this.SaveFileAsToolStripMenuItem.Enabled = this.IsWindowOpen();
+        this.SaveFileToolButton.Enabled = this.IsWindowOpen();
+        this.SaveFileAsToolButton.Enabled = this.IsWindowOpen();
     }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
@@ -168,7 +206,7 @@ public partial class UxMainWindow : Form {
         CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
         CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
     }
-    
+
     private void BrushSizeButtonClick(object sender, EventArgs e) {
         var BrushSize = new UxBrushSize {
             Text = "Изменение размера кисти",
@@ -183,40 +221,46 @@ public partial class UxMainWindow : Form {
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
         LineColor = colorDialog.Color;
+
+        UpdateBrushInfo();
     }
 
     private void FillingButtonClick(object sender, EventArgs e) {
-        if (this.FillingToolStripMenuItem.Checked) {
+        if (this.FillingToolButton.Checked) {
             this.FillingButton.Checked = true;
         } else {
             this.FillingButton.Checked = false;
         }
 
         if (this.FillingButton.Checked) {
-            this.FillingToolStripMenuItem.Checked = true;
+            this.FillingToolButton.Checked = true;
         } else {
-            this.FillingToolStripMenuItem.Checked = false;
+            this.FillingToolButton.Checked = false;
         }
 
-        IsFilling = this.FillingToolStripMenuItem.Checked == true;
+        IsFilling = this.FillingToolButton.Checked == true;
     }
 
     private void FillingColorButtonClick(object sender, EventArgs e) {
         this.StatusStrip.Invalidate();
+
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
+
         BackgroundColor = colorDialog.Color;
+
+        UpdateFillingInfo();
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
         FigureType = 1;
 
-        this.RectangleToolStripMenuItem.Checked = true;
-        this.EllipseToolStripMenuItem.Checked = false;
-        this.StraightLineToolStripMenuItem.Checked = false;
-        this.CurveLineToolStripMenuItem.Checked = false;
-        this.TextToolStripMenuItem.Checked = false;
-        this.SelectionToolStripMenuItem.Checked = false;
+        this.RectangleToolButton.Checked = true;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = false;
+        this.SelectionToolButton.Checked = false;
 
         this.RectangleButton.Checked = true;
         this.EllipseButton.Checked = false;
@@ -234,12 +278,12 @@ public partial class UxMainWindow : Form {
     private void EllipseButtonClick(object sender, EventArgs e) {
         FigureType = 2;
 
-        this.RectangleToolStripMenuItem.Checked = false;
-        this.EllipseToolStripMenuItem.Checked = true;
-        this.StraightLineToolStripMenuItem.Checked = false;
-        this.CurveLineToolStripMenuItem.Checked = false;
-        this.TextToolStripMenuItem.Checked = false;
-        this.SelectionToolStripMenuItem.Checked = false;
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = true;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = false;
+        this.SelectionToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = true;
@@ -257,12 +301,12 @@ public partial class UxMainWindow : Form {
     private void StraightLineButtonClick(object sender, EventArgs e) {
         FigureType = 3;
 
-        this.RectangleToolStripMenuItem.Checked = false;
-        this.EllipseToolStripMenuItem.Checked = false;
-        this.StraightLineToolStripMenuItem.Checked = true;
-        this.CurveLineToolStripMenuItem.Checked = false;
-        this.TextToolStripMenuItem.Checked = false;
-        this.SelectionToolStripMenuItem.Checked = false;
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = true;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = false;
+        this.SelectionToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
@@ -279,12 +323,12 @@ public partial class UxMainWindow : Form {
 
     private void CurveLineButtonClick(object sender, EventArgs e) {
         FigureType = 4;
-        this.RectangleToolStripMenuItem.Checked = false;
-        this.EllipseToolStripMenuItem.Checked = false;
-        this.StraightLineToolStripMenuItem.Checked = false;
-        this.CurveLineToolStripMenuItem.Checked = true;
-        this.TextToolStripMenuItem.Checked = false;
-        this.SelectionToolStripMenuItem.Checked = false;
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = true;
+        this.TextToolButton.Checked = false;
+        this.SelectionToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
@@ -302,11 +346,11 @@ public partial class UxMainWindow : Form {
     private void TextButtonClick(object sender, EventArgs e) {
         FigureType = 5;
 
-        this.RectangleToolStripMenuItem.Checked = false;
-        this.EllipseToolStripMenuItem.Checked = false;
-        this.StraightLineToolStripMenuItem.Checked = false;
-        this.CurveLineToolStripMenuItem.Checked = false;
-        this.TextToolStripMenuItem.Checked = true;
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = true;
 
         this.StatusStrip.Invalidate();
 
@@ -328,10 +372,9 @@ public partial class UxMainWindow : Form {
 
         _ = this.FontDialog.ShowDialog();
 
-        if (this.FontDialog.Font != TextFont) {
-            TextFont = this.FontDialog.Font;
-            this.FontName.Text = $"{TextFont.Name}, {TextFont.SizeInPoints} pt";
-        }
+        TextFont = this.FontDialog.Font;
+
+        UpdateFontInfo();
     }
 
     private void SelectionButtonClick(object sender, EventArgs e) {
@@ -344,12 +387,12 @@ public partial class UxMainWindow : Form {
         this.TextButton.Checked = false;
         this.SelectionButton.Checked = true;
 
-        this.RectangleToolStripMenuItem.Checked = false;
-        this.EllipseToolStripMenuItem.Checked = false;
-        this.StraightLineToolStripMenuItem.Checked = false;
-        this.CurveLineToolStripMenuItem.Checked = false;
-        this.TextToolStripMenuItem.Checked = false;
-        this.SelectionToolStripMenuItem.Checked = true;
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = false;
+        this.SelectionToolButton.Checked = true;
 
         this.IsSelectionMode = true;
         if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
