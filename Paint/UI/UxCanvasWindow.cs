@@ -1,4 +1,5 @@
 ﻿using Paint.Figures;
+using Paint.States;
 using System.ComponentModel;
 
 namespace Paint;
@@ -37,12 +38,16 @@ public partial class UxCanvasWindow : Form {
     private Point DragStartPoint { get; set; } = new();
 
     private bool IsDragging { get; set; } = false;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public IState? State { get; set; }  
 
     public UxCanvasWindow() {
         this.InitializeComponent();
+       
     }
 
     private void MouseDownHandler(object sender, MouseEventArgs e) {
+     
         this.Points = [];
         ScrollX = Math.Abs(this.AutoScrollPosition.X);
         ScrollY = Math.Abs(this.AutoScrollPosition.Y);
@@ -76,6 +81,7 @@ public partial class UxCanvasWindow : Form {
     }
 
     private void MouseMoveHandler(object sender, MouseEventArgs e) {
+        
         if (this.IsDrawing) {
             this.DoubleBuffered = true;
             var bufferZone = new Rectangle(0, 0, this.CanvasSize.Width, this.CanvasSize.Height);
@@ -196,6 +202,7 @@ public partial class UxCanvasWindow : Form {
     }
 
     private void MouseUpHandler(object sender, MouseEventArgs e) {
+       
         var no_font = new Font("", 1);
         var no_curve = new Point[1];
         string no_text = "";
@@ -365,4 +372,4 @@ public partial class UxCanvasWindow : Form {
 
         return base.ProcessCmdKey(ref msg, keyData);
     }
-}
+}  

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Paint.States;
-internal class DrawState : IState {
+public class DrawState : IState {
     public void MouseDownHandler(object sender, MouseEventArgs e) {
         throw new NotImplementedException();
     }
