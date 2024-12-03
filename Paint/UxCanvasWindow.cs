@@ -25,9 +25,6 @@ public partial class UxCanvasWindow : Form {
 
     public string text1 = "";
 
-    private BufferedGraphicsContext bufferPlace;
-    private BufferedGraphics buffer;
-
     public UxCanvasWindow() {
         this.InitializeComponent();
     }
@@ -45,14 +42,6 @@ public partial class UxCanvasWindow : Form {
             this.points.Add(new Point(this.x2 + scr_x, this.y2 + scr_y));
             this.flag = 1;
 
-        } else if (e.Button == MouseButtons.Left && this.flag == 5) {
-            this.x1 = e.X;
-            this.y1 = e.Y;
-            this.points.Add(new Point(this.x1 + scr_x, this.y1 + scr_y));
-            this.x2 = this.x1 + 1;
-            this.y2 = this.y1 + 1;
-            this.points.Add(new Point(this.x2 + scr_x, this.y2 + scr_y));
-            this.flag = 1;
         }
 
         if (this.IsSelectionMode) {
@@ -80,11 +69,14 @@ public partial class UxCanvasWindow : Form {
         if (this.flag == 1) {
             this.DoubleBuffered = true;
             var bufferZone = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
-            this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), bufferZone);
+
+            BufferedGraphicsContext bufferPlace = new();
+            BufferedGraphics buffer = bufferPlace.Allocate(this.CreateGraphics(), bufferZone);
+
             var bg_color = new SolidBrush(Color.White);
-            this.buffer.Graphics.FillRectangle(bg_color, bufferZone);
+            buffer.Graphics.FillRectangle(bg_color, bufferZone);
             foreach (Figure f in this.Figures) {
-                f.Draw(this.buffer.Graphics);
+                f.Draw(buffer.Graphics);
             }
 
             var no_curve = new Point[1];
@@ -96,13 +88,13 @@ public partial class UxCanvasWindow : Form {
                 this.y2 = e.Y;
                 var r = new Rect(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.Black, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Dash(this.buffer.Graphics);
-                    this.buffer.Render(this.CreateGraphics());
+                    r.Dash(buffer.Graphics);
+                    buffer.Render(this.CreateGraphics());
                 }
 
                 r = new Rect(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.White, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Hide(this.buffer.Graphics);
+                    r.Hide(buffer.Graphics);
                 }
             }
 
@@ -112,13 +104,13 @@ public partial class UxCanvasWindow : Form {
                 this.y2 = e.Y;
                 var r = new Ellipse(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.Black, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Dash(this.buffer.Graphics);
-                    this.buffer.Render(this.CreateGraphics());
+                    r.Dash(buffer.Graphics);
+                    buffer.Render(this.CreateGraphics());
                 }
 
                 r = new Ellipse(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.White, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Hide(this.buffer.Graphics);
+                    r.Hide(buffer.Graphics);
                 }
             }
 
@@ -128,13 +120,13 @@ public partial class UxCanvasWindow : Form {
                 this.y2 = e.Y;
                 var r = new Line(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.Black, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Dash(this.buffer.Graphics);
-                    this.buffer.Render(this.CreateGraphics());
+                    r.Dash(buffer.Graphics);
+                    buffer.Render(this.CreateGraphics());
                 }
 
                 r = new Line(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.White, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Hide(this.buffer.Graphics);
+                    r.Hide(buffer.Graphics);
                 }
             }
 
@@ -147,7 +139,7 @@ public partial class UxCanvasWindow : Form {
 
                 var CL1 = new CurveLine(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points1, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    CL1.Hide(this.buffer.Graphics);
+                    CL1.Hide(buffer.Graphics);
                 }
 
                 this.x2 = e.X;
@@ -163,8 +155,8 @@ public partial class UxCanvasWindow : Form {
 
                 var CL2 = new CurveLine(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points2, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    CL2.Dash(this.buffer.Graphics);
-                    this.buffer.Render(this.CreateGraphics());
+                    CL2.Dash(buffer.Graphics);
+                    buffer.Render(this.CreateGraphics());
                 }
             }
 
@@ -174,13 +166,13 @@ public partial class UxCanvasWindow : Form {
                 this.y2 = e.Y;
                 var r = new TxtBox(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.Black, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Dash(this.buffer.Graphics);
-                    this.buffer.Render(this.CreateGraphics());
+                    r.Dash(buffer.Graphics);
+                    buffer.Render(this.CreateGraphics());
                 }
 
                 r = new TxtBox(new Point(this.x1 + scr_x, this.y1 + scr_y), new Point(this.x2 + scr_x, this.y2 + scr_y), Color.White, Color.White, 1, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + scr_x) < (this.Sz.Width + scr_x) && (this.y2 + scr_y) < (this.Sz.Height + scr_y)) {
-                    r.Hide(this.buffer.Graphics);
+                    r.Hide(buffer.Graphics);
                 }
             }
 
@@ -199,7 +191,7 @@ public partial class UxCanvasWindow : Form {
             }
 
             this.DoubleBuffered = false;
-            this.buffer.Dispose();
+            buffer.Dispose();
         }
     }
 
@@ -294,21 +286,24 @@ public partial class UxCanvasWindow : Form {
     private void PaintHandler(object sender, PaintEventArgs e) {
         this.DoubleBuffered = true;
         var buffer_ground = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
-        this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
+
+        BufferedGraphicsContext bufferPlace = new();
+        BufferedGraphics buffer = bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
+
         scr_x = Math.Abs(this.AutoScrollPosition.X);
         scr_y = Math.Abs(this.AutoScrollPosition.Y);
         if (this.flag == 0) {
             var background = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
             var bg_color = new SolidBrush(Color.White);
-            this.buffer.Graphics.FillRectangle(bg_color, background);
+            buffer.Graphics.FillRectangle(bg_color, background);
             foreach (Figure f in this.Figures) {
-                f.Draw(this.buffer.Graphics);
+                f.Draw(buffer.Graphics);
             }
         }
 
         this.DoubleBuffered = false;
-        this.buffer.Render(this.CreateGraphics());
-        this.buffer.Dispose();
+        buffer.Render(this.CreateGraphics());
+        buffer.Dispose();
 
         if (this.selectedFigure != null && this.IsSelectionMode) {
             // Рисуем пунктирный контур вокруг выбранной фигуры
@@ -336,16 +331,17 @@ public partial class UxCanvasWindow : Form {
 
         var buffer_ground = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
         this.Size = new Size(this.Sz.Width, this.Sz.Height);
-        this.bufferPlace = BufferedGraphicsManager.Current;
-        this.bufferPlace.MaximumBuffer = new Size(SystemInformation.PrimaryMonitorMaximizedWindowSize.Width, SystemInformation.PrimaryMonitorMaximizedWindowSize.Height);
 
-        this.buffer = this.bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
+        BufferedGraphicsContext bufferPlace = BufferedGraphicsManager.Current;
+        bufferPlace.MaximumBuffer = new Size(SystemInformation.PrimaryMonitorMaximizedWindowSize.Width, SystemInformation.PrimaryMonitorMaximizedWindowSize.Height);
+        BufferedGraphics buffer = bufferPlace.Allocate(this.CreateGraphics(), buffer_ground);
+
         var background = new Rectangle(0, 0, this.Sz.Width, this.Sz.Height);
         var bg_color = new SolidBrush(Color.White);
-        this.buffer.Graphics.FillRectangle(bg_color, background);
-        this.DoubleBuffered = false;
-        this.buffer.Render(this.CreateGraphics());
-        this.buffer.Dispose();
+        buffer.Graphics.FillRectangle(bg_color, background);
+        DoubleBuffered = false;
+        buffer.Render(this.CreateGraphics());
+        buffer.Dispose();
     }
 
     private void CanvasWindowActivated(object sender, EventArgs e) {
