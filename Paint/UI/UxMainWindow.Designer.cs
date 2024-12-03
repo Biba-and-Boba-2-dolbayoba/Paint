@@ -229,7 +229,6 @@ namespace Paint
             // 
             // FillingToolButton
             // 
-            this.FillingToolButton.CheckOnClick = true;
             this.FillingToolButton.Name = "FillingToolButton";
             this.FillingToolButton.Size = new Size(191, 22);
             this.FillingToolButton.Text = "Заливка";

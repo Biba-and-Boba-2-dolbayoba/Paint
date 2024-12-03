@@ -28,16 +28,18 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxCanvasWindow));
             this.SuspendLayout();
             // 
             // UxCanvasWindow
             // 
-            this.AutoScaleDimensions = new SizeF(10F, 25F);
+            this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.BackColor = Color.LightGray;
-            this.ClientSize = new Size(1307, 1079);
+            this.ClientSize = new Size(915, 637);
             this.DoubleBuffered = true;
-            this.Margin = new Padding(5, 6, 5, 6);
+            this.Icon = (Icon)resources.GetObject("$this.Icon");
+            this.Margin = new Padding(4, 4, 4, 4);
             this.Name = "UxCanvasWindow";
             this.Text = "Canvas";
             this.FormClosing += this.CloseHandler;

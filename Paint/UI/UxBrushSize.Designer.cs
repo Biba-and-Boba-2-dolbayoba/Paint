@@ -28,9 +28,11 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxBrushSize));
             this.OkButton = new Button();
             this.DeclineButton = new Button();
-            this.BrushSizeComboBox = new ComboBox();
+            this.BrushSizeNumericForm = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)this.BrushSizeNumericForm).BeginInit();
             this.SuspendLayout();
             // 
             // OkButton
@@ -44,37 +46,41 @@ namespace Paint
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += this.OkButtonClick;
             // 
-            // CancelButton
+            // DeclineButton
             // 
             this.DeclineButton.Location = new Point(192, 78);
             this.DeclineButton.Margin = new Padding(4, 3, 4, 3);
-            this.DeclineButton.Name = "CancelButton";
+            this.DeclineButton.Name = "DeclineButton";
             this.DeclineButton.Size = new Size(88, 27);
             this.DeclineButton.TabIndex = 1;
             this.DeclineButton.Text = "Cancel";
             this.DeclineButton.UseVisualStyleBackColor = true;
             this.DeclineButton.Click += this.DeclineButtonClick;
             // 
-            // BrushSizeComboBox
+            // BrushSizeNumericForm
             // 
-            this.BrushSizeComboBox.Items.AddRange(new object[] { "1", "2", "5", "8", "10", "12", "15" });
-            this.BrushSizeComboBox.Location = new Point(47, 14);
-            this.BrushSizeComboBox.Margin = new Padding(4, 3, 4, 3);
-            this.BrushSizeComboBox.Name = "BrushSizeComboBox";
-            this.BrushSizeComboBox.Size = new Size(233, 23);
-            this.BrushSizeComboBox.TabIndex = 2;
+            this.BrushSizeNumericForm.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.BrushSizeNumericForm.Location = new Point(47, 21);
+            this.BrushSizeNumericForm.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
+            this.BrushSizeNumericForm.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.BrushSizeNumericForm.Name = "BrushSizeNumericForm";
+            this.BrushSizeNumericForm.Size = new Size(233, 29);
+            this.BrushSizeNumericForm.TabIndex = 3;
+            this.BrushSizeNumericForm.Value = new decimal(new int[] { 12, 0, 0, 0 });
             // 
             // UxBrushSize
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(331, 117);
-            this.Controls.Add(this.BrushSizeComboBox);
+            this.Controls.Add(this.BrushSizeNumericForm);
             this.Controls.Add(this.DeclineButton);
             this.Controls.Add(this.OkButton);
+            this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UxBrushSize";
             this.Text = "Изменение размера кисти";
+            ((System.ComponentModel.ISupportInitialize)this.BrushSizeNumericForm).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -82,6 +88,6 @@ namespace Paint
 
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.Button DeclineButton;
-        private System.Windows.Forms.ComboBox BrushSizeComboBox;
+        private NumericUpDown BrushSizeNumericForm;
     }
 }

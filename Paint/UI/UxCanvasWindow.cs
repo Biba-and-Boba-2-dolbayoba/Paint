@@ -143,7 +143,7 @@ public partial class UxCanvasWindow : Form {
                     points1[i] = this.Points[i];
                 }
 
-                var CL1 = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points1, no_font, no_text);
+                var CL1 = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points1, no_font, no_text);
                 if ((this.x2 + ScrollX) < (this.CanvasSize.Width + ScrollX) && (this.y2 + ScrollY) < (this.CanvasSize.Height + ScrollY)) {
                     CL1.Hide(graphics);
                 }
@@ -159,7 +159,7 @@ public partial class UxCanvasWindow : Form {
                     points2[i] = this.Points[i];
                 }
 
-                var CL2 = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points2, no_font, no_text);
+                var CL2 = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points2, no_font, no_text);
                 if ((this.x2 + ScrollX) < (this.CanvasSize.Width + ScrollX) && (this.y2 + ScrollY) < (this.CanvasSize.Height + ScrollY)) {
                     CL2.Dash(graphics);
                 }
@@ -202,7 +202,7 @@ public partial class UxCanvasWindow : Form {
         if (e.Button == MouseButtons.Left) {
             if (UxMainWindow.FigureType == 1) {
                 Graphics g = this.CreateGraphics();
-                var r = new Rect(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
+                var r = new Rect(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + ScrollX) <= this.CanvasSize.Width && (this.y2 + ScrollY) <= this.CanvasSize.Height) {
                     r.Draw(g);
                     this.Figures.Add(r);
@@ -215,7 +215,7 @@ public partial class UxCanvasWindow : Form {
 
             if (UxMainWindow.FigureType == 2) {
                 Graphics g = this.CreateGraphics();
-                var r = new Ellipse(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
+                var r = new Ellipse(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + ScrollX) <= this.CanvasSize.Width && (this.y2 + ScrollY) <= this.CanvasSize.Height) {
                     r.Draw(g);
                     this.Figures.Add(r);
@@ -228,7 +228,7 @@ public partial class UxCanvasWindow : Form {
 
             if (UxMainWindow.FigureType == 3) {
                 Graphics g = this.CreateGraphics();
-                var r = new Line(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
+                var r = new Line(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, no_font, no_text);
                 if ((this.x2 + ScrollX) <= this.CanvasSize.Width && (this.y2 + ScrollY) <= this.CanvasSize.Height) {
                     r.Draw(g);
                     this.Figures.Add(r);
@@ -246,7 +246,7 @@ public partial class UxCanvasWindow : Form {
                     points2[i] = this.Points[i];
                 }
 
-                var r = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points2, no_font, no_text);
+                var r = new CurveLine(new Point(this.x1 + ScrollX, this.y1 + ScrollY), new Point(this.x2 + ScrollX, this.y2 + ScrollY), UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, points2, no_font, no_text);
                 if ((this.x2 + ScrollX) <= this.CanvasSize.Width && (this.y2 + ScrollY) <= this.CanvasSize.Height) {
                     r.Draw(g);
                     this.Figures.Add(r);
@@ -266,7 +266,7 @@ public partial class UxCanvasWindow : Form {
                     MyTextBox.Parent = this;
                     MyTextBox.Font = font;
                     MyTextBox.Multiline = true;
-                    MyTextBox.ForeColor = UxMainWindow.LineColor;
+                    MyTextBox.ForeColor = UxMainWindow.BrushColor;
                     MyTextBox.Location = new Point(this.x1 + ScrollX, this.y1 + ScrollY);
                     MyTextBox.Width = this.x2 - this.x1;
                     MyTextBox.Height = this.y2 - this.y1;
@@ -340,7 +340,7 @@ public partial class UxCanvasWindow : Form {
             var no_curve = new Point[1];
             Graphics g = this.CreateGraphics();
             Font font = UxMainWindow.TextFont;
-            var r = new TxtBox(MyTextBox.Location, MyTextBox.Location + MyTextBox.Size, UxMainWindow.LineColor, UxMainWindow.BackgroundColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, font, MyTextBox.Text);
+            var r = new TxtBox(MyTextBox.Location, MyTextBox.Location + MyTextBox.Size, UxMainWindow.BrushColor, UxMainWindow.FillingColor, UxBrushSize.BrushSize, UxMainWindow.IsFilling, no_curve, font, MyTextBox.Text);
             r.Draw(g);
             this.Figures.Add(r);
             this.Invalidate();
