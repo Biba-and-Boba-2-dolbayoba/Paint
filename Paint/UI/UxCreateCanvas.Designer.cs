@@ -28,6 +28,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxCreateCanvas));
             this.SizeSmallButton = new RadioButton();
             this.SizeAverageButton = new RadioButton();
             this.SizeBigButton = new RadioButton();
@@ -142,11 +143,11 @@ namespace Paint
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += this.OkButtonClick;
             // 
-            // CancelButton
+            // DeclineButton
             // 
             this.DeclineButton.Location = new Point(401, 177);
             this.DeclineButton.Margin = new Padding(4, 3, 4, 3);
-            this.DeclineButton.Name = "CancelButton";
+            this.DeclineButton.Name = "DeclineButton";
             this.DeclineButton.Size = new Size(88, 27);
             this.DeclineButton.TabIndex = 11;
             this.DeclineButton.Text = "Cancel";
@@ -180,6 +181,7 @@ namespace Paint
             this.Controls.Add(this.WidthTextBox);
             this.Controls.Add(this.HeightTextBox);
             this.Controls.Add(this.ManualSelectionCheckBox);
+            this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UxCreateCanvas";
             this.Text = "Выбор размера окна";

@@ -10,13 +10,13 @@ public partial class UxMainWindow : Form {
     public static int CanvasHeight { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int BrushSize { get; private set; } = 12;
+    public static int BrushSize { get; private set; } = 2;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color LineColor { get; private set; } = Color.Black;
+    public static Color BrushColor { get; private set; } = Color.Black;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color BackgroundColor { get; private set; } = Color.White;
+    public static Color FillingColor { get; private set; } = Color.White;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public static int FigureType { get; private set; } = 1;
@@ -54,7 +54,6 @@ public partial class UxMainWindow : Form {
     }
 
     private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
-        this.StatusStrip.Invalidate();
         BrushSize = Convert.ToInt32(UxBrushSize.BrushSize);
         UpdateBrushInfo();
     }
@@ -69,11 +68,11 @@ public partial class UxMainWindow : Form {
 
     private void UpdateBrushInfo() {
         string hexColor = Convert.ToHexString(
-            [LineColor.A, LineColor.R, LineColor.G, LineColor.B]
+            [BrushColor.A, BrushColor.R, BrushColor.G, BrushColor.B]
         );
 
-        if (LineColor.IsNamedColor) {
-            this.BrushInfo.Text = $"{LineColor.Name} ({hexColor}), {BrushSize} px";
+        if (BrushColor.IsNamedColor) {
+            this.BrushInfo.Text = $"{BrushColor.Name} ({hexColor}), {BrushSize} px";
             return;
         }
 
@@ -82,11 +81,11 @@ public partial class UxMainWindow : Form {
 
     private void UpdateFillingInfo() {
         string hexColor = Convert.ToHexString(
-            [BackgroundColor.A, BackgroundColor.R, BackgroundColor.G, BackgroundColor.B]
+            [FillingColor.A, FillingColor.R, FillingColor.G, FillingColor.B]
         );
 
-        if (BackgroundColor.IsNamedColor) {
-            this.FillingInfo.Text = $"{BackgroundColor.Name} ({hexColor})";
+        if (FillingColor.IsNamedColor) {
+            this.FillingInfo.Text = $"{FillingColor.Name} ({hexColor})";
             return;
         }
 
@@ -130,25 +129,17 @@ public partial class UxMainWindow : Form {
     }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
-        if (CanvasWidth > 0 && CanvasHeight > 0) {
+        var sizeDialog = new UxCreateCanvas();
+        _ = sizeDialog.ShowDialog(this);
+        CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
+        CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
+
+        if (CanvasWidth > 0 && this.Height > 0) {
             var CanvasWindow = new UxCanvasWindow {
                 MdiParent = this,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString()
             };
             CanvasWindow.Show();
-        } else {
-            var sizeDialog = new UxCreateCanvas();
-            _ = sizeDialog.ShowDialog(this);
-            CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
-            CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
-
-            if (CanvasWidth > 0 && this.Height > 0) {
-                var CanvasWindow = new UxCanvasWindow {
-                    MdiParent = this,
-                    Text = "Рисунок " + this.MdiChildren.Length.ToString()
-                };
-                CanvasWindow.Show();
-            }
         }
     }
 
@@ -217,31 +208,30 @@ public partial class UxMainWindow : Form {
     }
 
     private void BrushColorButtonClick(object sender, EventArgs e) {
-        this.StatusStrip.Invalidate();
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
-        LineColor = colorDialog.Color;
+        BrushColor = colorDialog.Color;
 
         UpdateBrushInfo();
     }
 
     private void FillingButtonClick(object sender, EventArgs e) {
         if (!this.FillingToolButton.Checked && !this.FillingButton.Checked) {
-            this.FillingToolButton.Checked = this.FillingButton.Checked = true;
+            this.FillingToolButton.Checked = true;
+            this.FillingButton.Checked = true;
             IsFilling = true;
         } else {
-            this.FillingToolButton.Checked = this.FillingButton.Checked = false;
+            this.FillingToolButton.Checked = false;
+            this.FillingButton.Checked = false;
             IsFilling = false;
         }
     }
 
     private void FillingColorButtonClick(object sender, EventArgs e) {
-        this.StatusStrip.Invalidate();
-
         var colorDialog = new ColorDialog();
         colorDialog.ShowDialog();
 
-        BackgroundColor = colorDialog.Color;
+        FillingColor = colorDialog.Color;
 
         UpdateFillingInfo();
     }
@@ -346,8 +336,6 @@ public partial class UxMainWindow : Form {
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = true;
 
-        this.StatusStrip.Invalidate();
-
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = false;
@@ -362,8 +350,6 @@ public partial class UxMainWindow : Form {
     }
 
     private void FontButtonClick(object sender, EventArgs e) {
-        this.StatusStrip.Invalidate();
-
         _ = this.FontDialog.ShowDialog();
 
         TextFont = this.FontDialog.Font;

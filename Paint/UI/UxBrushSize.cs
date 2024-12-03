@@ -4,17 +4,16 @@ namespace Paint;
 
 public partial class UxBrushSize : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int BrushSize { get; private set; } = 1;
+    public static int BrushSize { get; private set; } = 2;
 
     public UxBrushSize() {
         this.InitializeComponent();
 
-        this.BrushSizeComboBox.Text = Convert.ToString(BrushSize);
-
+        this.BrushSizeNumericForm.Value = BrushSize;
     }
 
     private void OkButtonClick(object sender, EventArgs e) {
-        BrushSize = Convert.ToInt32(this.BrushSizeComboBox.Text);
+        BrushSize = (int) this.BrushSizeNumericForm.Value;
         this.Close();
     }
 
