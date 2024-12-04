@@ -4,28 +4,28 @@ namespace Paint;
 
 public partial class UiMainWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int CanvasWidth { get; private set; }
+    public int CanvasWidth { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int CanvasHeight { get; private set; }
+    public int CanvasHeight { get; private set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int BrushSize { get; private set; } = 2;
+    public Font TextFont { get; private set; } = new("Times New Roman", 12.0f);
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color BrushColor { get; private set; } = Color.Black;
+    public int BrushSize { get; private set; } = 2;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Color FillingColor { get; private set; } = Color.White;
+    public Color BrushColor { get; private set; } = Color.Black;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int FigureType { get; private set; } = 1;
+    public Color FillingColor { get; private set; } = Color.White;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static Font TextFont { get; private set; } = new("Times New Roman", 12.0f);
+    public bool IsFilling { get; private set; } = false;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static bool IsFilling { get; private set; } = false;
+    public int FigureType { get; private set; } = 1;
 
     private bool IsSelectionMode { get; set; } = false;
 
@@ -53,39 +53,36 @@ public partial class UiMainWindow : Form {
         }
     }
 
-    private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
-        BrushSize = Convert.ToInt32(UiBrushSize.BrushSize);
-        this.UpdateBrushInfo();
-    }
-
     private bool IsWindowOpen() {
         return (this.ActiveMdiChild as UiCanvasWindow) != null;
     }
 
-    private void UpdateFontInfo() {
-        this.FontInfo.Text = $"{TextFont.Name}, {TextFont.SizeInPoints} pt";
+    private void UpdateFontInfo(Font font) {
+        this.FontInfo.Text = $"{font.Name}, {font.SizeInPoints} pt";
     }
 
-    private void UpdateBrushInfo() {
+    public void UpdateBrushInfo(Color color, int size) {
+        this.BrushColor = color;
+        this.BrushSize = size;
+
         string hexColor = Convert.ToHexString(
-            [BrushColor.A, BrushColor.R, BrushColor.G, BrushColor.B]
+            [color.A, color.R, color.G, color.B]
         );
 
-        if (BrushColor.IsNamedColor) {
-            this.BrushInfo.Text = $"{BrushColor.Name} ({hexColor}), {BrushSize} px";
-            return;
+        if (color.IsNamedColor) {
+            this.BrushInfo.Text = $"{color.Name} ({hexColor}), {size} px";
         }
 
-        this.BrushInfo.Text = $"{hexColor}, {BrushSize} px";
+        this.BrushInfo.Text = $"{hexColor}, {size} px";
     }
 
-    private void UpdateFillingInfo() {
+    private void UpdateFillingInfo(Color color) {
         string hexColor = Convert.ToHexString(
-            [FillingColor.A, FillingColor.R, FillingColor.G, FillingColor.B]
+            [color.A, color.R, color.G, color.B]
         );
 
-        if (FillingColor.IsNamedColor) {
-            this.FillingInfo.Text = $"{FillingColor.Name} ({hexColor})";
+        if (color.IsNamedColor) {
+            this.FillingInfo.Text = $"{color.Name} ({hexColor})";
             return;
         }
 
@@ -118,9 +115,9 @@ public partial class UiMainWindow : Form {
         this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
         this.UpdateStyles();
 
-        this.UpdateFontInfo();
-        this.UpdateBrushInfo();
-        this.UpdateFillingInfo();
+        this.UpdateFontInfo(this.TextFont);
+        this.UpdateBrushInfo(this.BrushColor, this.BrushSize);
+        this.UpdateFillingInfo(this.FillingColor);
     }
 
     private void FileToolButtonClick(object sender, EventArgs e) {
@@ -131,10 +128,10 @@ public partial class UiMainWindow : Form {
     private void NewFileButtonClick(object sender, EventArgs e) {
         var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
-        CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
+        this.CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
+        this.CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
 
-        if (CanvasWidth > 0 && this.Height > 0) {
+        if (this.CanvasWidth > 0 && this.Height > 0) {
             var CanvasWindow = new UiCanvasWindow {
                 MdiParent = this,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString()
@@ -194,36 +191,34 @@ public partial class UiMainWindow : Form {
     private void CanvasSizeButtonClick(object sender, EventArgs e) {
         var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
-        CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
+        this.CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
+        this.CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
     }
 
     private void BrushSizeButtonClick(object sender, EventArgs e) {
-        var BrushSize = new UiBrushSize {
+        var BrushSizeForm = new UiBrushSize {
             Text = "Изменение размера кисти",
             MdiParent = this
         };
-        BrushSize.FormClosing += this.BrushSizeFormClosing;
-        BrushSize.Show();
+        BrushSizeForm.Show();
     }
 
     private void BrushColorButtonClick(object sender, EventArgs e) {
         var colorDialog = new ColorDialog();
         _ = colorDialog.ShowDialog();
-        BrushColor = colorDialog.Color;
 
-        this.UpdateBrushInfo();
+        this.UpdateBrushInfo(colorDialog.Color, this.BrushSize);
     }
 
     private void FillingButtonClick(object sender, EventArgs e) {
         if (!this.FillingToolButton.Checked && !this.FillingButton.Checked) {
             this.FillingToolButton.Checked = true;
             this.FillingButton.Checked = true;
-            IsFilling = true;
+            this.IsFilling = true;
         } else {
             this.FillingToolButton.Checked = false;
             this.FillingButton.Checked = false;
-            IsFilling = false;
+            this.IsFilling = false;
         }
     }
 
@@ -231,13 +226,13 @@ public partial class UiMainWindow : Form {
         var colorDialog = new ColorDialog();
         _ = colorDialog.ShowDialog();
 
-        FillingColor = colorDialog.Color;
+        this.FillingColor = colorDialog.Color;
 
-        this.UpdateFillingInfo();
+        this.UpdateFillingInfo(this.FillingColor);
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
-        FigureType = 1;
+        this.FigureType = 1;
 
         this.RectangleToolButton.Checked = true;
         this.EllipseToolButton.Checked = false;
@@ -260,7 +255,7 @@ public partial class UiMainWindow : Form {
     }
 
     private void EllipseButtonClick(object sender, EventArgs e) {
-        FigureType = 2;
+        this.FigureType = 2;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = true;
@@ -283,7 +278,7 @@ public partial class UiMainWindow : Form {
     }
 
     private void StraightLineButtonClick(object sender, EventArgs e) {
-        FigureType = 3;
+        this.FigureType = 3;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
@@ -306,7 +301,7 @@ public partial class UiMainWindow : Form {
     }
 
     private void CurveLineButtonClick(object sender, EventArgs e) {
-        FigureType = 4;
+        this.FigureType = 4;
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
         this.StraightLineToolButton.Checked = false;
@@ -328,7 +323,7 @@ public partial class UiMainWindow : Form {
     }
 
     private void TextButtonClick(object sender, EventArgs e) {
-        FigureType = 5;
+        this.FigureType = 5;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
@@ -352,13 +347,13 @@ public partial class UiMainWindow : Form {
     private void FontButtonClick(object sender, EventArgs e) {
         _ = this.FontDialog.ShowDialog();
 
-        TextFont = this.FontDialog.Font;
+        this.TextFont = this.FontDialog.Font;
 
-        this.UpdateFontInfo();
+        this.UpdateFontInfo(this.TextFont);
     }
 
     private void SelectionButtonClick(object sender, EventArgs e) {
-        FigureType = 6;
+        this.FigureType = 6;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;

@@ -1,19 +1,18 @@
-﻿using System.ComponentModel;
-
-namespace Paint;
+﻿namespace Paint;
 
 public partial class UiBrushSize : Form {
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public static int BrushSize { get; private set; } = 2;
-
     public UiBrushSize() {
         this.InitializeComponent();
 
-        this.BrushSizeNumericForm.Value = BrushSize;
+        this.BrushSizeNumericForm.Value = 2;
     }
 
     private void OkButtonClick(object sender, EventArgs e) {
-        BrushSize = (int)this.BrushSizeNumericForm.Value;
+        int brushSize = (int)this.BrushSizeNumericForm.Value;
+        if (this.MdiParent is UiMainWindow activeForm) {
+            _ = activeForm.Invoke(activeForm.UpdateBrushInfo, activeForm.BrushColor, brushSize);
+        }
+
         this.Close();
     }
 
