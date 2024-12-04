@@ -9,18 +9,18 @@ public class SelectState(List<Figure> figures) : IState, ISelectable {
 
     public void MouseDownHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left) {
-            foreach (Figure figure in Figures) {
+            foreach (Figure figure in this.Figures) {
                 if (figure.ContainsPoint(new Point(e.X, e.Y))) {
-                    SelectedFigure = figure;
+                    this.SelectedFigure = figure;
                     return;
                 }
             }
         }
 
         if (e.Button == MouseButtons.Right) {
-            foreach (Figure figure in Figures) {
+            foreach (Figure figure in this.Figures) {
                 if (figure.ContainsPoint(new Point(e.X, e.Y))) {
-                    SelectedFigures.Add(figure);
+                    this.SelectedFigures.Add(figure);
                 }
             }
         }

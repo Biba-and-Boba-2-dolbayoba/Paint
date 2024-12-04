@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace Paint;
 
@@ -56,10 +56,58 @@ public partial class UiMainWindow : Form {
             fileName = _canvas.CanvasName;
             _canvas.Text = Path.GetFileName(fileName);
         }
+
+        try {
+
+            using var bitmap = new Bitmap(_canvas.Width, _canvas.Height);
+            using (var g = Graphics.FromImage(bitmap)) {
+
+                g.Clear(Color.White);
+                _canvas.PaintBitmap(g);
+            }
+
+            if (_canvas.CanvasName is not null) {
+                bitmap.Save(_canvas.CanvasName, System.Drawing.Imaging.ImageFormat.Png);
+            }
+        } catch (Exception ex) {
+            _ = MessageBox.Show("Error saving file: " + ex.Message);
+        }
     }
 
-    private static void OpenFile() {
-        
+    private  UiCanvasWindow OpenFile () {
+        string fileName;
+        UiCanvasWindow _canvas = new UiCanvasWindow {
+            MdiParent = this, 
+        };
+
+        var openFileDialog = new OpenFileDialog {
+            InitialDirectory = Environment.CurrentDirectory,
+            Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
+            FilterIndex = 1
+        };
+
+        if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            try {
+                fileName = openFileDialog.FileName;
+                _canvas.CanvasName = fileName;
+                _canvas.Text = Path.GetFileName(fileName);
+
+
+                using var bitmap = new Bitmap(fileName);
+                _canvas.Width = bitmap.Width;
+                _canvas.Height = bitmap.Height;
+
+
+                _canvas.BackgroundImage = bitmap;
+                _canvas.BackgroundImageLayout = ImageLayout.Stretch;
+
+               
+
+            } catch (Exception ex) {
+                _ = MessageBox.Show("Error opening file: " + ex.Message);
+            }
+        }
+        return _canvas;
     }
 
     private bool IsWindowOpen() {
@@ -164,37 +212,9 @@ public partial class UiMainWindow : Form {
     }
 
     private void OpenFileButtonClick(object sender, EventArgs e) {
-        //string fileName;
 
-        //OpenFileDialog openFileDialog1 = new OpenFileDialog();
-        //openFileDialog1.InitialDirectory = Environment.CurrentDirectory;
-        //openFileDialog1.Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*";
-        //openFileDialog1.FilterIndex = 1;
-        //if (openFileDialog1.ShowDialog() == DialogResult.OK) {
-        //    try {
-
-        //        fileName = openFileDialog1.FileName;
-        //        BinaryFormatter formatter = new BinaryFormatter();
-        //        Stream stream2 = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-        //        List<Figure> array = (List<Figure>)formatter.Deserialize(stream2);
-        //        Size siz = (Size)formatter.Deserialize(stream2);
-        //        var f2 = new UxCanvasWindow();
-        //        f2.MdiParent = this;
-        //        f2.fileName = fileName;
-        //        f2.Text = openFileDialog1.SafeFileName;
-        //        f2.Sz = siz;
-        //        foreach (Figure f in array) {
-        //            f2.array.Add(f);
-        //        }
-        //        f2.CursorMoved += Form2_CursorMoved;
-        //        f2.FormActivated += Form2_FormActivated;
-        //        f2.Show();
-        //        stream2.Close();
-
-        //    } catch (Exception ex) {
-        //        MessageBox.Show("Error. " + ex.Message);
-        //    }
-        //}
+        UiCanvasWindow canvas = OpenFile();
+        canvas.Show();
     }
 
     private void CanvasSizeButtonClick(object sender, EventArgs e) {
