@@ -31,7 +31,7 @@ namespace Paint
             var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCanvasWindow));
             this.SuspendLayout();
             // 
-            // UxCanvasWindow
+            // UiCanvasWindow
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -39,8 +39,8 @@ namespace Paint
             this.ClientSize = new Size(915, 637);
             this.DoubleBuffered = true;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
-            this.Margin = new Padding(4, 4, 4, 4);
-            this.Name = "UxCanvasWindow";
+            this.Margin = new Padding(4);
+            this.Name = "UiCanvasWindow";
             this.Text = "Canvas";
             this.FormClosing += this.CloseHandler;
             this.Load += this.LoadHandler;
@@ -48,6 +48,7 @@ namespace Paint
             this.MouseDown += this.MouseDownHandler;
             this.MouseMove += this.MouseMoveHandler;
             this.MouseUp += this.MouseUpHandler;
+            this.Resize += this.ResizeHandler;
             this.ResumeLayout(false);
         }
 

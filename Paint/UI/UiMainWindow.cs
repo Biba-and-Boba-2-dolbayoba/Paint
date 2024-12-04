@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text;
 
 namespace Paint;
 
@@ -33,24 +34,32 @@ public partial class UiMainWindow : Form {
         this.InitializeComponent();
     }
 
+    public void UpdatePointerInfo(Point p1, Point p2) {
+        this.PointerInfo.Text = $"p1: {p1.X}, {p1.Y}; p2: {p2.X}, {p2.Y}";
+    }
+
     public static void SaveFile(UiCanvasWindow canvas) {
         string fileName;
         UiCanvasWindow _canvas = canvas;
 
         if (_canvas.CanvasName == null) {
-            var saveFileDialog1 = new SaveFileDialog {
+            var saveFileDialog = new SaveFileDialog {
                 InitialDirectory = Environment.CurrentDirectory,
                 Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
                 FilterIndex = 1
             };
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
-                fileName = saveFileDialog1.FileName;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                fileName = saveFileDialog.FileName;
                 _canvas.CanvasName = fileName;
             }
         } else {
             fileName = _canvas.CanvasName;
             _canvas.Text = Path.GetFileName(fileName);
         }
+    }
+
+    private static void OpenFile() {
+        
     }
 
     private bool IsWindowOpen() {

@@ -36,71 +36,44 @@ public abstract class Figure(Point point1, Point point2, Color line_color, Color
 [Serializable()]
 public class Rect(Point point1, Point point2, Color line_color, Color back_color, int px, bool back_TF, Point[] mas_points, Font font, string text) : Figure(point1, point2, line_color, back_color, px, back_TF, mas_points, font, text) {
     public override void Draw(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
-        if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
-        }
-
-        if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
-        }
-
         var pen = new Pen(this.line_color, this.px);
-        var r = Rectangle.FromLTRB(minx, miny, maxx, maxy);
+
+        var rect = Rectangle.FromLTRB(
+            Math.Min(this.point1.X, this.point2.X),
+            Math.Min(this.point1.Y, this.point2.Y),
+            Math.Max(this.point1.X, this.point2.X),
+            Math.Max(this.point1.Y, this.point2.Y)
+        );
         Brush brush = new SolidBrush(this.back_color);
         if (this.back_TF == true) {
-            g.FillRectangle(brush, r);
+            g.FillRectangle(brush, rect);
         }
 
-        g.DrawRectangle(pen, r);
-
+        g.DrawRectangle(pen, rect);
     }
 
     public override void Hide(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
-        if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
-        }
-
-        if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
-        }
-
         var penwhite = new Pen(Color.White, 1);
-        var r = Rectangle.FromLTRB(minx, miny, maxx, maxy);
-        g.DrawRectangle(penwhite, r);
+        var rect = Rectangle.FromLTRB(
+            Math.Min(this.point1.X, this.point2.X),
+            Math.Min(this.point1.Y, this.point2.Y),
+            Math.Max(this.point1.X, this.point2.X),
+            Math.Max(this.point1.Y, this.point2.Y)
+        );
+        g.DrawRectangle(penwhite, rect);
     }
 
     public override void Dash(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
-        if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
-        }
-
-        if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
-        }
-
         var pendash = new Pen(Color.Black, 1) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
-        var r = Rectangle.FromLTRB(minx, miny, maxx, maxy);
-        g.DrawRectangle(pendash, r);
+        var rect = Rectangle.FromLTRB(
+            Math.Min(this.point1.X, this.point2.X),
+            Math.Min(this.point1.Y, this.point2.Y),
+            Math.Max(this.point1.X, this.point2.X),
+            Math.Max(this.point1.Y, this.point2.Y)
+        );
+        g.DrawRectangle(pendash, rect);
     }
 
     public override void DrawSelection(Graphics g, Pen pen) {
@@ -114,31 +87,26 @@ public class Rect(Point point1, Point point2, Color line_color, Color back_color
     }
 
     public override bool ContainsPoint(Point p) {
-        var rect = Rectangle.FromLTRB(
-            Math.Min(this.point1.X, this.point2.X),
-            Math.Min(this.point1.Y, this.point2.Y),
-            Math.Max(this.point1.X, this.point2.X),
-            Math.Max(this.point1.Y, this.point2.Y)
-        );
-        return rect.Contains(p);
+        var r = new Rectangle(this.point1.X, this.point1.Y, Math.Abs(this.point2.X - this.point1.X), Math.Abs(this.point2.Y - this.point1.Y));
+        return r.Contains(p);
     }
 }
 
 [Serializable()]
 public class Ellipse(Point point1, Point point2, Color line_color, Color back_color, int px, bool back_TF, Point[] mas_points, Font font, string text) : Figure(point1, point2, line_color, back_color, px, back_TF, mas_points, font, text) {
     public override void Draw(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var pen = new Pen(this.line_color, this.px);
@@ -149,22 +117,21 @@ public class Ellipse(Point point1, Point point2, Color line_color, Color back_co
         }
 
         g.DrawEllipse(pen, r);
-
     }
 
     public override void Hide(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var penwhite = new Pen(Color.White, 1);
@@ -173,18 +140,18 @@ public class Ellipse(Point point1, Point point2, Color line_color, Color back_co
     }
 
     public override void Dash(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var pendash = new Pen(Color.Black, 1) {
@@ -227,29 +194,29 @@ public class Ellipse(Point point1, Point point2, Color line_color, Color back_co
 [Serializable()]
 public class Line(Point point1, Point point2, Color line_color, Color back_color, int px, bool back_TF, Point[] mas_points, Font font, string text) : Figure(point1, point2, line_color, back_color, px, back_TF, mas_points, font, text) {
     public override void Draw(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         var pen = new Pen(this.line_color, this.px);
         g.DrawLine(pen, minx, miny, maxx, maxy);
 
     }
 
     public override void Hide(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         var penwhite = new Pen(Color.White, 1);
         g.DrawLine(penwhite, minx, miny, maxx, maxy);
     }
 
     public override void Dash(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         var pendash = new Pen(Color.Black, 1) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
@@ -285,8 +252,8 @@ public class CurveLine(Point point1, Point point2, Color line_color, Color back_
     public override void Draw(Graphics g) {
         var points = new Point[this.mas_points.Length - 1];
         for (int i = 0 ; i < this.mas_points.Length - 1 ; i++) {
-            points[i].X = this.mas_points[i + 1].X - UiCanvasWindow.ScrollX;
-            points[i].Y = this.mas_points[i + 1].Y - UiCanvasWindow.ScrollY;
+            points[i].X = this.mas_points[i + 1].X;
+            points[i].Y = this.mas_points[i + 1].Y;
         }
 
         var pen = new Pen(this.line_color, this.px);
@@ -297,8 +264,8 @@ public class CurveLine(Point point1, Point point2, Color line_color, Color back_
     public override void Hide(Graphics g) {
         var points = new Point[this.mas_points.Length];
         for (int i = 0 ; i < this.mas_points.Length - 1 ; i++) {
-            points[i].X = this.mas_points[i + 1].X - UiCanvasWindow.ScrollX;
-            points[i].Y = this.mas_points[i + 1].Y - UiCanvasWindow.ScrollY;
+            points[i].X = this.mas_points[i + 1].X;
+            points[i].Y = this.mas_points[i + 1].Y;
         }
 
         var penwhite = new Pen(Color.White, 1);
@@ -312,8 +279,8 @@ public class CurveLine(Point point1, Point point2, Color line_color, Color back_
     public override void Dash(Graphics g) {
         var points = new Point[this.mas_points.Length - 1];
         for (int i = 0 ; i < this.mas_points.Length - 1 ; i++) {
-            points[i].X = this.mas_points[i + 1].X - UiCanvasWindow.ScrollX;
-            points[i].Y = this.mas_points[i + 1].Y - UiCanvasWindow.ScrollY;
+            points[i].X = this.mas_points[i + 1].X;
+            points[i].Y = this.mas_points[i + 1].Y;
         }
 
         var pendash = new Pen(Color.Black, 1) {
@@ -358,18 +325,18 @@ public class CurveLine(Point point1, Point point2, Color line_color, Color back_
 [Serializable()]
 public class TxtBox(Point point1, Point point2, Color line_color, Color back_color, int px, bool back_TF, Point[] mas_points, Font font, string text) : Figure(point1, point2, line_color, back_color, px, back_TF, mas_points, font, text) {
     public override void Draw(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var pen = new Pen(Color.Transparent, this.px);
@@ -386,18 +353,18 @@ public class TxtBox(Point point1, Point point2, Color line_color, Color back_col
     }
 
     public override void Hide(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var penwhite = new Pen(Color.White, 1);
@@ -406,18 +373,18 @@ public class TxtBox(Point point1, Point point2, Color line_color, Color back_col
     }
 
     public override void Dash(Graphics g) {
-        int minx = this.point1.X - UiCanvasWindow.ScrollX;
-        int miny = this.point1.Y - UiCanvasWindow.ScrollY;
-        int maxx = this.point2.X - UiCanvasWindow.ScrollX;
-        int maxy = this.point2.Y - UiCanvasWindow.ScrollY;
+        int minx = this.point1.X;
+        int miny = this.point1.Y;
+        int maxx = this.point2.X;
+        int maxy = this.point2.Y;
         if (minx > maxx) {
-            minx = this.point2.X - UiCanvasWindow.ScrollX;
-            maxx = this.point1.X - UiCanvasWindow.ScrollX;
+            minx = this.point2.X;
+            maxx = this.point1.X;
         }
 
         if (miny > maxy) {
-            miny = this.point2.Y - UiCanvasWindow.ScrollY;
-            maxy = this.point1.Y - UiCanvasWindow.ScrollY;
+            miny = this.point2.Y;
+            maxy = this.point1.Y;
         }
 
         var pendash = new Pen(Color.Black, 1) {
