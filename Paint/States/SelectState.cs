@@ -2,13 +2,13 @@
 
 namespace Paint.States;
 
-public class SelectState(List<Figure> figures, Size canvasSize) : IState, ISelection {
+public class SelectState : IState, ISelection {
     public Figure? SelectedFigure { get; set; } = null;
-    public List<Figure> Figures { get; set; } = figures;
+    public List<Figure> Figures { get; set; } = [];
     public List<Figure> SelectedFigures { get; set; } = [];
 
     public bool IsMoving { get; set; } = false;
-    public Size CanvasSize { get; set; } = canvasSize;
+    public Size CanvasSize { get; set; } = new Size(800, 600);
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
     public void MouseDownHandler(object sender, MouseEventArgs e) {
@@ -17,8 +17,8 @@ public class SelectState(List<Figure> figures, Size canvasSize) : IState, ISelec
         if (e.Button == MouseButtons.Left) {
             this.SelectedFigures.Clear();
 
-            if (SelectedFigure is not null && !IsMoving) {
-                IsMoving = true;
+            if (this.SelectedFigure is not null && !this.IsMoving) {
+                this.IsMoving = true;
                 return;
             }
 
@@ -31,7 +31,7 @@ public class SelectState(List<Figure> figures, Size canvasSize) : IState, ISelec
         }
 
         if (e.Button == MouseButtons.Right) {
-            SelectedFigure = null;
+            this.SelectedFigure = null;
             foreach (Figure figure in this.Figures) {
                 if (figure.ContainsPoint(new Point(e.X, e.Y))) {
                     this.SelectedFigures.Add(figure);
@@ -41,7 +41,7 @@ public class SelectState(List<Figure> figures, Size canvasSize) : IState, ISelec
     }
 
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigure is not null && IsMoving) {
+        if (this.SelectedFigure is not null && this.IsMoving) {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
 
@@ -53,8 +53,8 @@ public class SelectState(List<Figure> figures, Size canvasSize) : IState, ISelec
     }
 
     public void MouseUpHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigure is not null && IsMoving) {
-            IsMoving = false;
+        if (this.SelectedFigure is not null && this.IsMoving) {
+            this.IsMoving = false;
         }
     }
 }

@@ -73,10 +73,10 @@ public partial class UiMainWindow : Form {
         }
     }
 
-    private  UiCanvasWindow OpenFile () {
+    private UiCanvasWindow OpenFile() {
         string fileName;
-        UiCanvasWindow _canvas = new UiCanvasWindow {
-            MdiParent = this, 
+        var _canvas = new UiCanvasWindow {
+            MdiParent = this,
         };
 
         var openFileDialog = new OpenFileDialog {
@@ -91,21 +91,16 @@ public partial class UiMainWindow : Form {
                 _canvas.CanvasName = fileName;
                 _canvas.Text = Path.GetFileName(fileName);
 
-
                 using var bitmap = new Bitmap(fileName);
                 _canvas.Width = bitmap.Width;
                 _canvas.Height = bitmap.Height;
 
-
-                _canvas.BackgroundImage = bitmap;
-                _canvas.BackgroundImageLayout = ImageLayout.Stretch;
-
-               
-
+                _canvas.BackgroundImage = Image.FromHbitmap(bitmap.GetHbitmap());
             } catch (Exception ex) {
                 _ = MessageBox.Show("Error opening file: " + ex.Message);
             }
         }
+
         return _canvas;
     }
 
@@ -212,7 +207,7 @@ public partial class UiMainWindow : Form {
 
     private void OpenFileButtonClick(object sender, EventArgs e) {
 
-        UiCanvasWindow canvas = OpenFile();
+        UiCanvasWindow canvas = this.OpenFile();
         canvas.Show();
     }
 
