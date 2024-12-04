@@ -22,9 +22,11 @@ public partial class UiCanvasWindow : Form {
 
     private List<Point> Points { get; set; } = [];
 
-    private List<Figure> Figures { get; set; } = [];
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public List<Figure> Figures { get; set; } = [];
 
-    private Size CanvasSize { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public Size CanvasSize { get; set; }
 
     private Figure? SelectedFigure { get; set; } = null;
 
