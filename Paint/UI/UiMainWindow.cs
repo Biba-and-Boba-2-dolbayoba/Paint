@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Paint.Figures;
+using System.ComponentModel;
+using System.Text.Json;
 
 namespace Paint;
 
@@ -36,47 +38,88 @@ public partial class UiMainWindow : Form {
     public void UpdatePointerInfo(Point p1, Point p2) {
         this.PointerInfo.Text = $"p1: {p1.X}, {p1.Y}; p2: {p2.X}, {p2.Y}";
     }
+    class FigureJson {
+        public string fontName { get; set; }
+        public float fontSize { get; set; }
+        public string LineColor { get; set; }
+        public string BackColor { get; set; }
+        public Point Point1 { get; set; }
+        public Point Point2 { get; set; }
+        public string Text { get; set; }
+        public bool BackTF { get; set; }
+        public Point[] MasPoints { get; set; }
 
-    public static void SaveFile(UiCanvasWindow canvas) {
-        string fileName;
-        UiCanvasWindow _canvas = canvas;
+        public void Serialize(List<Figure> figures) {
+            foreach (Figure figure in figures) {
+                this.fontName = figure.font.Name;
+                this.fontSize = figure.font.Size;
+                this.LineColor = Convert.ToHexString(
+                    [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
 
-        if (_canvas.CanvasName == null) {
-            var saveFileDialog = new SaveFileDialog {
-                InitialDirectory = Environment.CurrentDirectory,
-                Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
-                FilterIndex = 1
-            };
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                fileName = saveFileDialog.FileName;
-                _canvas.CanvasName = fileName;
+                );
+                this.BackColor = Convert.ToHexString(
+                    [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
+                    );
+                this.Point1 = figure.point1;
+                this.Point2 = figure.point2;
+                this.Text = figure.text;
+                this.BackTF = figure.back_TF;
+                this.MasPoints = figure.mas_points;
+
             }
-        } else {
-            fileName = _canvas.CanvasName;
-            _canvas.Text = Path.GetFileName(fileName);
         }
 
+        //public Figure Decode() {
+        //    Figure figure = new Rect {
+        //        font = new Font(this.fontName, this.fontSize),
+        //        line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
+        //        back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
+        //        point1 = Point1,
+        //        point2 = Point2,
+        //        text = Text,
+        //        back_TF = BackTF,
+        //        mas_points = MasPoints.ToArray()
+        //    };
+        //    return figure ;
+        }
+    }
+    public class CanvasData {
+        public Size CanvasSize { get; set; }
+        public List<FigureJson> Figures { get; set; }
+
+        public CanvasData(Size size, List<Figure> figures) {
+            CanvasSize = size;
+            Figures = figures;
+        }
+    }
+    
+    public static void SaveFile(UiCanvasWindow canvas) {
         try {
+            
+            var canvasData = new CanvasData(
+                canvas.CanvasSize,  
+                canvas.Figures 
+            );
 
-            using var bitmap = new Bitmap(_canvas.Width, _canvas.Height);
-            using (var g = Graphics.FromImage(bitmap)) {
+            string json = JsonSerializer.Serialize(canvasData, new JsonSerializerOptions { WriteIndented = true });
 
-                g.Clear(Color.White);
-                _canvas.PaintBitmap(g);
-            }
-
-            if (_canvas.CanvasName is not null) {
-                bitmap.Save(_canvas.CanvasName, System.Drawing.Imaging.ImageFormat.Png);
+            
+            using (var saveFileDialog = new SaveFileDialog()) {
+                saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                    File.WriteAllText(saveFileDialog.FileName, json);
+                    MessageBox.Show("Файл сохранен!");
+                }
             }
         } catch (Exception ex) {
-            _ = MessageBox.Show("Error saving file: " + ex.Message);
+            MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
         }
     }
 
-    private  UiCanvasWindow OpenFile () {
+    private UiCanvasWindow OpenFile() {
         string fileName;
-        UiCanvasWindow _canvas = new UiCanvasWindow {
-            MdiParent = this, 
+        var _canvas = new UiCanvasWindow {
+            MdiParent = this,
         };
 
         var openFileDialog = new OpenFileDialog {
@@ -91,21 +134,18 @@ public partial class UiMainWindow : Form {
                 _canvas.CanvasName = fileName;
                 _canvas.Text = Path.GetFileName(fileName);
 
-
                 using var bitmap = new Bitmap(fileName);
                 _canvas.Width = bitmap.Width;
                 _canvas.Height = bitmap.Height;
 
-
                 _canvas.BackgroundImage = bitmap;
                 _canvas.BackgroundImageLayout = ImageLayout.Stretch;
-
-               
 
             } catch (Exception ex) {
                 _ = MessageBox.Show("Error opening file: " + ex.Message);
             }
         }
+
         return _canvas;
     }
 
@@ -212,7 +252,7 @@ public partial class UiMainWindow : Form {
 
     private void OpenFileButtonClick(object sender, EventArgs e) {
 
-        UiCanvasWindow canvas = OpenFile();
+        UiCanvasWindow canvas = this.OpenFile();
         canvas.Show();
     }
 
