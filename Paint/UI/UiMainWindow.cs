@@ -38,35 +38,42 @@ public partial class UiMainWindow : Form {
     public void UpdatePointerInfo(Point p1, Point p2) {
         this.PointerInfo.Text = $"p1: {p1.X}, {p1.Y}; p2: {p2.X}, {p2.Y}";
     }
-    class FigureJson {
-        public string fontName { get; set; }
-        public float fontSize { get; set; }
-        public string LineColor { get; set; }
-        public string BackColor { get; set; }
-        public Point Point1 { get; set; }
-        public Point Point2 { get; set; }
-        public string Text { get; set; }
-        public bool BackTF { get; set; }
-        public Point[] MasPoints { get; set; }
 
-        public void Serialize(List<Figure> figures) {
+    public class FigureJson {
+        public   string? FontName { get; set; }
+        public  float FontSize { get; set; }
+        public  string? LineColor { get; set; }
+        public  string? BackColor { get; set; }
+        public  Point Point1 { get; set; }
+        public  Point Point2 { get; set; }
+        public  string? Text { get; set; }
+        public  bool BackTF { get; set; }
+        public  Point[]? MasPoints { get; set; }
+
+        public static List<FigureJson> Serialize(List<Figure> figures) {
+            List<FigureJson> figureJsonList = [];
             foreach (Figure figure in figures) {
-                this.fontName = figure.font.Name;
-                this.fontSize = figure.font.Size;
-                this.LineColor = Convert.ToHexString(
+                FigureJson figureJson = new FigureJson() {
+                    FontName = figure.font.Name,
+                    FontSize = figure.font.Size,
+                    LineColor = Convert.ToHexString(
                     [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
 
-                );
-                this.BackColor = Convert.ToHexString(
+                ),
+                    BackColor = Convert.ToHexString(
                     [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
-                    );
-                this.Point1 = figure.point1;
-                this.Point2 = figure.point2;
-                this.Text = figure.text;
-                this.BackTF = figure.back_TF;
-                this.MasPoints = figure.mas_points;
+                    ),
+                    Point1 = figure.point1,
+                    Point2 = figure.point2,
+                    Text = figure.text,
+                    BackTF = figure.back_TF,
+                    MasPoints = figure.mas_points,
+                };
+                figureJsonList.Add(figureJson);
+                
 
             }
+            return figureJsonList;
         }
 
         //public Figure Decode() {
@@ -74,45 +81,43 @@ public partial class UiMainWindow : Form {
         //        font = new Font(this.fontName, this.fontSize),
         //        line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
         //        back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
-        //        point1 = Point1,
-        //        point2 = Point2,
-        //        text = Text,
-        //        back_TF = BackTF,
-        //        mas_points = MasPoints.ToArray()
+        //        point1 = this.Point1,
+        //        point2 = this.Point2,
+        //        text = this.Text,
+        //        back_TF = this.BackTF,
+        //        mas_points = this.MasPoints.ToArray()
         //    };
-        //    return figure ;
-        }
+        //    return figure;
+        //}
     }
     public class CanvasData {
         public Size CanvasSize { get; set; }
         public List<FigureJson> Figures { get; set; }
 
         public CanvasData(Size size, List<Figure> figures) {
-            CanvasSize = size;
-            Figures = figures;
+            this.CanvasSize = size;
+            this.Figures = FigureJson.Serialize(figures);
         }
     }
-    
+
     public static void SaveFile(UiCanvasWindow canvas) {
         try {
-            
+
             var canvasData = new CanvasData(
-                canvas.CanvasSize,  
-                canvas.Figures 
+                canvas.CanvasSize,
+                canvas.Figures
             );
 
             string json = JsonSerializer.Serialize(canvasData, new JsonSerializerOptions { WriteIndented = true });
 
-            
-            using (var saveFileDialog = new SaveFileDialog()) {
-                saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-                if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                    File.WriteAllText(saveFileDialog.FileName, json);
-                    MessageBox.Show("Файл сохранен!");
-                }
+            using var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                File.WriteAllText(saveFileDialog.FileName, json);
+                _ = MessageBox.Show("Файл сохранен!");
             }
         } catch (Exception ex) {
-            MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
+            _ = MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
         }
     }
 
