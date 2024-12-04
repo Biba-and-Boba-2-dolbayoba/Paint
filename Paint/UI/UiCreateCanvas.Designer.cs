@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UxCreateCanvas
+    partial class UiCreateCanvas
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxCreateCanvas));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCreateCanvas));
             this.SizeSmallButton = new RadioButton();
             this.SizeAverageButton = new RadioButton();
             this.SizeBigButton = new RadioButton();

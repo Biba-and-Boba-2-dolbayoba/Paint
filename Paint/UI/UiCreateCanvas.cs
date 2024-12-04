@@ -3,14 +3,14 @@
 namespace Paint;
 
 [Serializable()]
-public partial class UxCreateCanvas : Form {
+public partial class UiCreateCanvas : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public static string CanvasWidth { get; private set; } = "320";
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public static string CanvasHeight { get; private set; } = "240";
 
-    public UxCreateCanvas() {
+    public UiCreateCanvas() {
         this.InitializeComponent();
     }
 

@@ -2,7 +2,7 @@
 
 namespace Paint;
 
-public partial class UxMainWindow : Form {
+public partial class UiMainWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public static int CanvasWidth { get; private set; }
 
@@ -29,13 +29,13 @@ public partial class UxMainWindow : Form {
 
     private bool IsSelectionMode { get; set; } = false;
 
-    public UxMainWindow() {
+    public UiMainWindow() {
         this.InitializeComponent();
     }
 
-    public static void SaveFile(UxCanvasWindow canvas) {
+    public static void SaveFile(UiCanvasWindow canvas) {
         string fileName;
-        UxCanvasWindow _canvas = canvas;
+        UiCanvasWindow _canvas = canvas;
 
         if (_canvas.CanvasName == null) {
             var saveFileDialog1 = new SaveFileDialog {
@@ -54,12 +54,12 @@ public partial class UxMainWindow : Form {
     }
 
     private void BrushSizeFormClosing(object? sender, FormClosingEventArgs e) {
-        BrushSize = Convert.ToInt32(UxBrushSize.BrushSize);
-        UpdateBrushInfo();
+        BrushSize = Convert.ToInt32(UiBrushSize.BrushSize);
+        this.UpdateBrushInfo();
     }
 
     private bool IsWindowOpen() {
-        return (this.ActiveMdiChild as UxCanvasWindow) != null;
+        return (this.ActiveMdiChild as UiCanvasWindow) != null;
     }
 
     private void UpdateFontInfo() {
@@ -118,9 +118,9 @@ public partial class UxMainWindow : Form {
         this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
         this.UpdateStyles();
 
-        UpdateFontInfo();
-        UpdateBrushInfo();
-        UpdateFillingInfo();
+        this.UpdateFontInfo();
+        this.UpdateBrushInfo();
+        this.UpdateFillingInfo();
     }
 
     private void FileToolButtonClick(object sender, EventArgs e) {
@@ -129,13 +129,13 @@ public partial class UxMainWindow : Form {
     }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
-        var sizeDialog = new UxCreateCanvas();
+        var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
-        CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
+        CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
+        CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
 
         if (CanvasWidth > 0 && this.Height > 0) {
-            var CanvasWindow = new UxCanvasWindow {
+            var CanvasWindow = new UiCanvasWindow {
                 MdiParent = this,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString()
             };
@@ -144,14 +144,14 @@ public partial class UxMainWindow : Form {
     }
 
     private void SaveFileButtonClick(object sender, EventArgs e) {
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             SaveFile(activeForm);
         }
     }
 
     private void SaveFileAsButtonClick(object sender, EventArgs e) {
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
-            UxCanvasWindow canvas = activeForm;
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
+            UiCanvasWindow canvas = activeForm;
             canvas.CanvasName = null;
             SaveFile(canvas);
         }
@@ -192,14 +192,14 @@ public partial class UxMainWindow : Form {
     }
 
     private void CanvasSizeButtonClick(object sender, EventArgs e) {
-        var sizeDialog = new UxCreateCanvas();
+        var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        CanvasWidth = int.Parse(UxCreateCanvas.CanvasWidth);
-        CanvasHeight = int.Parse(UxCreateCanvas.CanvasHeight);
+        CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
+        CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
     }
 
     private void BrushSizeButtonClick(object sender, EventArgs e) {
-        var BrushSize = new UxBrushSize {
+        var BrushSize = new UiBrushSize {
             Text = "Изменение размера кисти",
             MdiParent = this
         };
@@ -209,10 +209,10 @@ public partial class UxMainWindow : Form {
 
     private void BrushColorButtonClick(object sender, EventArgs e) {
         var colorDialog = new ColorDialog();
-        colorDialog.ShowDialog();
+        _ = colorDialog.ShowDialog();
         BrushColor = colorDialog.Color;
 
-        UpdateBrushInfo();
+        this.UpdateBrushInfo();
     }
 
     private void FillingButtonClick(object sender, EventArgs e) {
@@ -229,11 +229,11 @@ public partial class UxMainWindow : Form {
 
     private void FillingColorButtonClick(object sender, EventArgs e) {
         var colorDialog = new ColorDialog();
-        colorDialog.ShowDialog();
+        _ = colorDialog.ShowDialog();
 
         FillingColor = colorDialog.Color;
 
-        UpdateFillingInfo();
+        this.UpdateFillingInfo();
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
@@ -254,7 +254,7 @@ public partial class UxMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
@@ -277,7 +277,7 @@ public partial class UxMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
@@ -300,7 +300,7 @@ public partial class UxMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
@@ -322,7 +322,7 @@ public partial class UxMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
@@ -344,7 +344,7 @@ public partial class UxMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }
@@ -354,7 +354,7 @@ public partial class UxMainWindow : Form {
 
         TextFont = this.FontDialog.Font;
 
-        UpdateFontInfo();
+        this.UpdateFontInfo();
     }
 
     private void SelectionButtonClick(object sender, EventArgs e) {
@@ -375,7 +375,7 @@ public partial class UxMainWindow : Form {
         this.SelectionToolButton.Checked = true;
 
         this.IsSelectionMode = true;
-        if (this.ActiveMdiChild is UxCanvasWindow activeForm) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             activeForm.IsSelectionMode = this.IsSelectionMode;
         }
     }

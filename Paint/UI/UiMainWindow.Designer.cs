@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UxMainWindow
+    partial class UiMainWindow
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,7 +28,7 @@ namespace Paint
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxMainWindow));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiMainWindow));
             this.MenuStrip = new MenuStrip();
             this.FileToolButton = new ToolStripMenuItem();
             this.NewFileToolButton = new ToolStripMenuItem();

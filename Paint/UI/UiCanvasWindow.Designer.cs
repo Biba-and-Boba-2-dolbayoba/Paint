@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UxCanvasWindow
+    partial class UiCanvasWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxCanvasWindow));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCanvasWindow));
             this.SuspendLayout();
             // 
             // UxCanvasWindow

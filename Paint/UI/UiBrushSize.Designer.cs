@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UxBrushSize
+    partial class UiBrushSize
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UxBrushSize));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiBrushSize));
             this.OkButton = new Button();
             this.DeclineButton = new Button();
             this.BrushSizeNumericForm = new NumericUpDown();
