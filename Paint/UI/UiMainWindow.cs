@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Text;
 
 namespace Paint;
 
@@ -59,7 +58,7 @@ public partial class UiMainWindow : Form {
     }
 
     private static void OpenFile() {
-        
+
     }
 
     private bool IsWindowOpen() {

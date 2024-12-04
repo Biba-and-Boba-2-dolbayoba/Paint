@@ -2,10 +2,12 @@
 
 namespace Paint.States;
 
-internal interface ISelectable {
+internal interface ISelection {
     public Figure? SelectedFigure { get; set; }
     public List<Figure> Figures { get; set; }
     public List<Figure> SelectedFigures { get; set; }
 
-    public Point Drag
+    public bool IsMoving { get; set; }
+    public Size CanvasSize { get; set; }
+    public Point DragStartPoint { get; set; }
 }
