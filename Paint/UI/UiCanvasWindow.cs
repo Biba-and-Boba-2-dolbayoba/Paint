@@ -64,6 +64,7 @@ public partial class UiCanvasWindow : Form {
 
         if (this.State is SelectState selection) {
             selection.MouseDownHandler(sender, e);
+        }
 
         if (this.State is DrawState) {
             return;
@@ -394,12 +395,6 @@ public partial class UiCanvasWindow : Form {
         if (this.GraphicsBuffer is not null) {
             Graphics graphics = this.GraphicsBuffer.Graphics;
             graphics.FillRectangle(bg_color, background);
-        }
-    }
-
-    public void PaintBitmap(Graphics g) {
-        foreach (Figure f in this.Figures) {
-            f.Draw(g);
         }
     }
 }
