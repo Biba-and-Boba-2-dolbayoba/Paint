@@ -35,33 +35,28 @@ public partial class UiMainWindow : Form {
         this.InitializeComponent();
     }
 
-    public void UpdatePointerInfo(Point p1, Point p2) {
-        this.PointerInfo.Text = $"p1: {p1.X}, {p1.Y}; p2: {p2.X}, {p2.Y}";
-    }
-
     public class FigureJson {
-        public   string? FontName { get; set; }
-        public  float FontSize { get; set; }
-        public  string? LineColor { get; set; }
-        public  string? BackColor { get; set; }
-        public  Point Point1 { get; set; }
-        public  Point Point2 { get; set; }
-        public  string? Text { get; set; }
-        public  bool BackTF { get; set; }
-        public  Point[]? MasPoints { get; set; }
+        public string? FontName { get; set; }
+        public float FontSize { get; set; }
+        public string? LineColor { get; set; }
+        public string? BackColor { get; set; }
+        public Point Point1 { get; set; }
+        public Point Point2 { get; set; }
+        public string? Text { get; set; }
+        public bool BackTF { get; set; }
+        public Point[]? MasPoints { get; set; }
 
         public static List<FigureJson> Serialize(List<Figure> figures) {
             List<FigureJson> figureJsonList = [];
             foreach (Figure figure in figures) {
-                FigureJson figureJson = new FigureJson() {
+                var figureJson = new FigureJson() {
                     FontName = figure.font.Name,
                     FontSize = figure.font.Size,
                     LineColor = Convert.ToHexString(
-                    [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
-
-                ),
+                        [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
+                    ),
                     BackColor = Convert.ToHexString(
-                    [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
+                        [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
                     ),
                     Point1 = figure.point1,
                     Point2 = figure.point2,
@@ -70,9 +65,9 @@ public partial class UiMainWindow : Form {
                     MasPoints = figure.mas_points,
                 };
                 figureJsonList.Add(figureJson);
-                
 
             }
+
             return figureJsonList;
         }
 
@@ -90,14 +85,9 @@ public partial class UiMainWindow : Form {
         //    return figure;
         //}
     }
-    public class CanvasData {
-        public Size CanvasSize { get; set; }
-        public List<FigureJson> Figures { get; set; }
-
-        public CanvasData(Size size, List<Figure> figures) {
-            this.CanvasSize = size;
-            this.Figures = FigureJson.Serialize(figures);
-        }
+    public class CanvasData(Size size, List<Figure> figures) {
+        public Size CanvasSize { get; set; } = size;
+        public List<FigureJson> Figures { get; set; } = FigureJson.Serialize(figures);
     }
 
     public static void SaveFile(UiCanvasWindow canvas) {
@@ -154,6 +144,14 @@ public partial class UiMainWindow : Form {
 
     private bool IsWindowOpen() {
         return (this.ActiveMdiChild as UiCanvasWindow) != null;
+    }
+
+    public void UpdatePointerInfo(Point point) {
+        this.PointerInfo.Text = $"{point.X}, {point.Y} px";
+    }
+
+    public void UpdateCanvasInfo(Size canvasSize) {
+        this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
     }
 
     private void UpdateFontInfo(Font font) {

@@ -28,7 +28,6 @@ public class DrawState : IState, IDrawing {
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
         if (this.FigureType == FiguresEnum.Rectangle) {
             this.EndPoint = new Point(e.X, e.Y);
-            _ = new Rect(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
         }
 
         if (this.FigureType == FiguresEnum.Ellipse) {

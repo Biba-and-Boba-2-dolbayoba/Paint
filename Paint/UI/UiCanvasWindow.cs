@@ -76,114 +76,120 @@ public partial class UiCanvasWindow : Form {
     }
 
     private void MouseMoveHandler(object sender, MouseEventArgs e) {
-        if (this.IsDrawing && this.MdiParent is UiMainWindow parent && this.GraphicsBuffer is not null) {
-            this.DoubleBuffered = true;
-            var bufferZone = new Rectangle(0, 0, this.CanvasSize.Width, this.CanvasSize.Height);
+        if (this.MdiParent is UiMainWindow parent) {
+            parent.UpdatePointerInfo(new Point(e.X, e.Y));
 
-            Graphics graphics = this.GraphicsBuffer.Graphics;
+            if (this.IsDrawing && this.GraphicsBuffer is not null) {
+                this.DoubleBuffered = true;
 
-            var bg_color = new SolidBrush(Color.White);
-            graphics.FillRectangle(bg_color, bufferZone);
-            foreach (Figure f in this.Figures) {
-                f.Draw(graphics);
-            }
+                parent.UpdatePointerInfo(new Point(e.X, e.Y));
 
-            var no_curve = new Point[1];
-            var no_font = new Font("", 1);
-            string no_text = "";
-            if (parent.FigureType == 1) {
-                this.EndPoint = new Point(e.X, e.Y);
-                var r = new Rect(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Dash(graphics);
-                    this.GraphicsBuffer.Render(this.CreateGraphics());
+                var bufferZone = new Rectangle(0, 0, this.CanvasSize.Width, this.CanvasSize.Height);
+
+                Graphics graphics = this.GraphicsBuffer.Graphics;
+
+                var bg_color = new SolidBrush(Color.White);
+                graphics.FillRectangle(bg_color, bufferZone);
+                foreach (Figure f in this.Figures) {
+                    f.Draw(graphics);
                 }
 
-                parent.UpdatePointerInfo(this.StartPoint, this.EndPoint);
-                r.Hide(graphics);
-            }
+                var no_curve = new Point[1];
+                var no_font = new Font("", 1);
+                string no_text = "";
+                if (parent.FigureType == 1) {
+                    this.EndPoint = new Point(e.X, e.Y);
+                    var r = new Rect(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Dash(graphics);
+                        this.GraphicsBuffer.Render(this.CreateGraphics());
+                    }
 
-            if (parent.FigureType == 2) {
-                this.EndPoint = new Point(e.X, e.Y);
-                var r = new Ellipse(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Dash(graphics);
-                    this.GraphicsBuffer.Render(this.CreateGraphics());
-                }
-
-                r = new Ellipse(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
                     r.Hide(graphics);
                 }
+
+                if (parent.FigureType == 2) {
+                    this.EndPoint = new Point(e.X, e.Y);
+                    var r = new Ellipse(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Dash(graphics);
+                        this.GraphicsBuffer.Render(this.CreateGraphics());
+                    }
+
+                    r = new Ellipse(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Hide(graphics);
+                    }
+                }
+
+                if (parent.FigureType == 3) {
+                    this.EndPoint = new Point(e.X, e.Y);
+                    var r = new Line(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Dash(graphics);
+                        this.GraphicsBuffer.Render(this.CreateGraphics());
+                    }
+
+                    r = new Line(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Hide(graphics);
+                    }
+                }
+
+                if (parent.FigureType == 4) {
+                    var points1 = new Point[this.Points.Count];
+                    for (int i = 0 ; i < this.Points.Count ; i++) {
+                        points1[i] = this.Points[i];
+                    }
+
+                    var CL1 = new CurveLine(this.StartPoint, this.EndPoint, parent.BrushColor, parent.FillingColor, parent.BrushSize, parent.IsFilling, points1, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        CL1.Hide(graphics);
+                    }
+
+                    this.EndPoint = new Point(e.X, e.Y);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        this.Points.Add(this.EndPoint);
+                    }
+
+                    var points2 = new Point[this.Points.Count];
+                    for (int i = 0 ; i < this.Points.Count ; i++) {
+                        points2[i] = this.Points[i];
+                    }
+
+                    var CL2 = new CurveLine(this.StartPoint, this.EndPoint, parent.BrushColor, parent.FillingColor, parent.BrushSize, parent.IsFilling, points2, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        CL2.Dash(graphics);
+                        this.GraphicsBuffer.Render(this.CreateGraphics());
+                    }
+                }
+
+                if (parent.FigureType == 5) {
+                    this.EndPoint = new Point(e.X, e.Y);
+                    var r = new TxtBox(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Dash(graphics);
+                        this.GraphicsBuffer.Render(this.CreateGraphics());
+                    }
+
+                    r = new TxtBox(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
+                    if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                        r.Hide(graphics);
+                    }
+                }
+
+                if (this.IsDragging && this.SelectedFigure != null) {
+                    int dx = e.X - this.DragStartPoint.X;
+                    int dy = e.Y - this.DragStartPoint.Y;
+
+                    if (this.SelectedFigure.CanMove(dx, dy, this.CanvasSize)) {
+                        this.SelectedFigure.Move(dx, dy);
+                        this.DragStartPoint = new Point(e.X, e.Y);
+                    }
+                }
+
+                this.DoubleBuffered = false;
             }
-
-            if (parent.FigureType == 3) {
-                this.EndPoint = new Point(e.X, e.Y);
-                var r = new Line(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Dash(graphics);
-                    this.GraphicsBuffer.Render(this.CreateGraphics());
-                }
-
-                r = new Line(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Hide(graphics);
-                }
-            }
-
-            if (parent.FigureType == 4) {
-                var points1 = new Point[this.Points.Count];
-                for (int i = 0 ; i < this.Points.Count ; i++) {
-                    points1[i] = this.Points[i];
-                }
-
-                var CL1 = new CurveLine(this.StartPoint, this.EndPoint, parent.BrushColor, parent.FillingColor, parent.BrushSize, parent.IsFilling, points1, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    CL1.Hide(graphics);
-                }
-
-                this.EndPoint = new Point(e.X, e.Y);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    this.Points.Add(this.EndPoint);
-                }
-
-                var points2 = new Point[this.Points.Count];
-                for (int i = 0 ; i < this.Points.Count ; i++) {
-                    points2[i] = this.Points[i];
-                }
-
-                var CL2 = new CurveLine(this.StartPoint, this.EndPoint, parent.BrushColor, parent.FillingColor, parent.BrushSize, parent.IsFilling, points2, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    CL2.Dash(graphics);
-                    this.GraphicsBuffer.Render(this.CreateGraphics());
-                }
-            }
-
-            if (parent.FigureType == 5) {
-                this.EndPoint = new Point(e.X, e.Y);
-                var r = new TxtBox(this.StartPoint, this.EndPoint, Color.Black, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Dash(graphics);
-                    this.GraphicsBuffer.Render(this.CreateGraphics());
-                }
-
-                r = new TxtBox(this.StartPoint, this.EndPoint, Color.White, Color.White, 1, parent.IsFilling, no_curve, no_font, no_text);
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    r.Hide(graphics);
-                }
-            }
-
-            if (this.IsDragging && this.SelectedFigure != null) {
-                int dx = e.X - this.DragStartPoint.X;
-                int dy = e.Y - this.DragStartPoint.Y;
-
-                if (this.SelectedFigure.CanMove(dx, dy, this.CanvasSize)) {
-                    this.SelectedFigure.Move(dx, dy);
-                    this.DragStartPoint = new Point(e.X, e.Y);
-                }
-            }
-
-            this.DoubleBuffered = false;
         }
     }
 
@@ -381,6 +387,10 @@ public partial class UiCanvasWindow : Form {
         var bg_color = new SolidBrush(Color.White);
         this.CanvasSize = this.Size;
         this.UpdateGraphicsBuffer(background);
+
+        if (this.MdiParent is UiMainWindow parent) {
+            parent.UpdateCanvasInfo(this.CanvasSize);
+        }
 
         if (this.GraphicsBuffer is not null) {
             Graphics graphics = this.GraphicsBuffer.Graphics;
