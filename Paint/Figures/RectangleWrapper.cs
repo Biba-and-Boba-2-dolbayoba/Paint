@@ -50,8 +50,6 @@ public class RectangleWrapper : Movable, IFigure {
         );
 
         graphics.DrawRectangle(pen, rectangle);
-
-        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {

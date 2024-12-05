@@ -2,14 +2,12 @@
 
 namespace Paint.States;
 
-public interface IDrawing {
+public interface IDrawing : ICanvasSizeDepended {
     public bool IsDrawing { get; set; }
 
     public Point StartPoint { get; set; }
     public Point EndPoint { get; set; }
     public List<Point> Points { get; set; }
-
-    public Size CanvasSize { get; set; }
 
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -20,6 +18,7 @@ public interface IDrawing {
     public Font TextFont { get; set; }
 
     public FiguresEnum FigureType { get; set; }
+    public Tuple<IFigure?, IFigure?> DashFigures { get; set; }
     public List<IFigure> Figures { get; set; }
 
     public BufferedGraphics? GraphicsBuffer { get; set; }

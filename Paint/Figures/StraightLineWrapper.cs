@@ -22,8 +22,6 @@ public class StraightLineWrapper : Movable, IFigure {
         };
 
         graphics.DrawLine(pen, this.StartPoint, this.EndPoint);
-
-        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {

@@ -42,13 +42,13 @@ namespace Paint
             this.Margin = new Padding(4);
             this.Name = "UiCanvasWindow";
             this.Text = "Canvas";
-            this.FormClosing += this.CloseHandler;
-            this.Load += this.LoadHandler;
-            this.Paint += this.PaintHandler;
-            this.MouseDown += this.MouseDownHandler;
-            this.MouseMove += this.MouseMoveHandler;
-            this.MouseUp += this.MouseUpHandler;
-            this.Resize += this.ResizeHandler;
+            this.FormClosing += this.OnClose;
+            this.Load += this.OnLoad;
+            this.KeyDown += this.OnKeyDown;
+            this.MouseDown += this.OnMouseDown;
+            this.MouseMove += this.OnMouseMove;
+            this.MouseUp += this.OnMouseUp;
+            this.Resize += this.OnResize;
             this.ResumeLayout(false);
         }
 

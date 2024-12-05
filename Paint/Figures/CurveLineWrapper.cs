@@ -24,8 +24,6 @@ public class CurveLineWrapper : Movable, IFigure {
         };
 
         graphics.DrawCurve(pen, this.Points.ToArray());
-
-        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {

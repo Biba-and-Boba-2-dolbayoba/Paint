@@ -1,33 +1,16 @@
-﻿using System.ComponentModel;
+﻿using Paint.Figures;
+using Paint.States;
 
 namespace Paint;
 
 public partial class UiMainWindow : Form {
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public int CanvasWidth { get; private set; }
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public int CanvasHeight { get; private set; }
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public Font TextFont { get; private set; } = new("Times New Roman", 12.0f);
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public int BrushSize { get; private set; } = 2;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public Color BrushColor { get; private set; } = Color.Black;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public Color FillingColor { get; private set; } = Color.White;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public bool IsFilling { get; private set; } = false;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public int FigureType { get; private set; } = 1;
-
-    private bool IsSelectionMode { get; set; } = false;
+    private Size CanvasSize { get; set; }
+    private int PenSize { get; set; } = 2;
+    private bool IsFilling { get; set; } = false;
+    private Color PenColor { get; set; } = Color.Black;
+    private Color BrushColor { get; set; } = Color.White;
+    private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
+    private FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
 
     public UiMainWindow() {
         this.InitializeComponent();
@@ -150,15 +133,25 @@ public partial class UiMainWindow : Form {
 
     public void UpdateCanvasInfo(Size canvasSize) {
         this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDepended state) {
+            state.CanvasSize = canvasSize;
+        }
     }
 
     private void UpdateFontInfo(Font font) {
+        this.TextFont = font;
+
         this.FontInfo.Text = $"{font.Name}, {font.SizeInPoints} pt";
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.TextFont = this.TextFont;
+        }
     }
 
-    public void UpdateBrushInfo(Color color, int size) {
-        this.BrushColor = color;
-        this.BrushSize = size;
+    public void UpdatePenInfo(Color color, int size) {
+        this.PenColor = color;
+        this.PenSize = size;
 
         string hexColor = Convert.ToHexString(
             [color.A, color.R, color.G, color.B]
@@ -169,9 +162,16 @@ public partial class UiMainWindow : Form {
         }
 
         this.BrushInfo.Text = $"{hexColor}, {size} px";
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.PenColor = this.PenColor;
+            state.PenSize = this.PenSize;
+        }
     }
 
-    private void UpdateFillingInfo(Color color) {
+    private void UpdateBrushInfo(Color color) {
+        this.BrushColor = color;
+
         string hexColor = Convert.ToHexString(
             [color.A, color.R, color.G, color.B]
         );
@@ -182,37 +182,19 @@ public partial class UiMainWindow : Form {
         }
 
         this.FillingInfo.Text = $"{hexColor}";
-    }
 
-    private void MouseDownHandler(object sender, MouseEventArgs e) {
-        Graphics graphics = this.CreateGraphics();
-
-        if (e.Button == MouseButtons.Left) {
-            string s = e.Location.ToString();
-
-            graphics.DrawString(s, new Font("Times New Roman", 8),
-            new SolidBrush(Color.Black), new Point(e.X, e.Y));
-        }
-
-        if (e.Button == MouseButtons.Right) {
-            string s = "Hello";
-            graphics.DrawString(s, new Font("Times New Roman", 8),
-            new SolidBrush(Color.Black), new Point(e.X, e.Y));
-        }
-
-        if (e.Button == MouseButtons.Middle) {
-            _ = MessageBox.Show("Вы уверены что хотите удалить текст?", "Удаление");
-            graphics.Clear(Color.White);
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.BrushColor = this.BrushColor;
         }
     }
 
-    private void LoadHandler(object sender, EventArgs e) {
+    private void OnLoad(object sender, EventArgs e) {
         this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
         this.UpdateStyles();
 
         this.UpdateFontInfo(this.TextFont);
-        this.UpdateBrushInfo(this.BrushColor, this.BrushSize);
-        this.UpdateFillingInfo(this.FillingColor);
+        this.UpdatePenInfo(this.PenColor, this.PenSize);
+        this.UpdateBrushInfo(this.BrushColor);
     }
 
     private void FileToolButtonClick(object sender, EventArgs e) {
@@ -223,13 +205,26 @@ public partial class UiMainWindow : Form {
     private void NewFileButtonClick(object sender, EventArgs e) {
         var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        this.CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
-        this.CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
 
-        if (this.CanvasWidth > 0 && this.Height > 0) {
+        this.CanvasSize = sizeDialog.CanvasSize;
+
+        this.DrawingToolButtonClick(sender, e);
+
+        var state = new DrawState() {
+            PenColor = this.PenColor,
+            PenSize = this.PenSize,
+            BrushColor = this.BrushColor,
+            TextFont = this.TextFont,
+            FigureType = this.FigureType,
+        };
+
+        this.UpdateCanvasInfo(this.CanvasSize);
+
+        if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
             var CanvasWindow = new UiCanvasWindow {
                 MdiParent = this,
-                Text = "Рисунок " + this.MdiChildren.Length.ToString()
+                Text = "Рисунок " + this.MdiChildren.Length.ToString(),
+                State = state
             };
             CanvasWindow.Show();
         }
@@ -258,127 +253,152 @@ public partial class UiMainWindow : Form {
     private void CanvasSizeButtonClick(object sender, EventArgs e) {
         var sizeDialog = new UiCreateCanvas();
         _ = sizeDialog.ShowDialog(this);
-        this.CanvasWidth = int.Parse(UiCreateCanvas.CanvasWidth);
-        this.CanvasHeight = int.Parse(UiCreateCanvas.CanvasHeight);
+        this.CanvasSize = sizeDialog.CanvasSize;
     }
 
-    private void BrushSizeButtonClick(object sender, EventArgs e) {
+    private void PenSizeButtonClick(object sender, EventArgs e) {
         var BrushSizeForm = new UiBrushSize {
             Text = "Изменение размера кисти",
-            MdiParent = this
+            MdiParent = this,
+            PenColor = this.PenColor
         };
         BrushSizeForm.Show();
+    }
+
+    private void PenColorButtonClick(object sender, EventArgs e) {
+        var colorDialog = new ColorDialog();
+        _ = colorDialog.ShowDialog();
+
+        this.UpdatePenInfo(colorDialog.Color, this.PenSize);
+    }
+
+    private void FillingButtonClick(object sender, EventArgs e) {
+        if (this.IsFilling) {
+            this.IsFilling = false;
+            this.FillingButton.Checked = false;
+            this.FillingToolButton.Checked = false;
+
+            return;
+        }
+
+        this.IsFilling = true;
+        this.FillingButton.Checked = true;
+        this.FillingToolButton.Checked = true;
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.IsFilling = this.IsFilling;
+        }
     }
 
     private void BrushColorButtonClick(object sender, EventArgs e) {
         var colorDialog = new ColorDialog();
         _ = colorDialog.ShowDialog();
 
-        this.UpdateBrushInfo(colorDialog.Color, this.BrushSize);
-    }
-
-    private void FillingButtonClick(object sender, EventArgs e) {
-        if (!this.FillingToolButton.Checked && !this.FillingButton.Checked) {
-            this.FillingToolButton.Checked = true;
-            this.FillingButton.Checked = true;
-            this.IsFilling = true;
-        } else {
-            this.FillingToolButton.Checked = false;
-            this.FillingButton.Checked = false;
-            this.IsFilling = false;
-        }
-    }
-
-    private void FillingColorButtonClick(object sender, EventArgs e) {
-        var colorDialog = new ColorDialog();
-        _ = colorDialog.ShowDialog();
-
-        this.FillingColor = colorDialog.Color;
-
-        this.UpdateFillingInfo(this.FillingColor);
+        this.UpdateBrushInfo(colorDialog.Color);
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
-        this.FigureType = 1;
+        this.FigureType = FiguresEnum.Rectangle;
 
         this.RectangleToolButton.Checked = true;
         this.EllipseToolButton.Checked = false;
         this.StraightLineToolButton.Checked = false;
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = false;
+
         this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = false;
 
         this.RectangleButton.Checked = true;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = false;
         this.CurveLineButton.Checked = false;
         this.TextButton.Checked = false;
+
         this.SelectionButton.Checked = false;
 
-        this.IsSelectionMode = false;
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.FigureType = FiguresEnum.Rectangle;
+        }
     }
 
     private void EllipseButtonClick(object sender, EventArgs e) {
-        this.FigureType = 2;
+        this.FigureType = FiguresEnum.Ellipse;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = true;
         this.StraightLineToolButton.Checked = false;
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = false;
+
         this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = true;
         this.StraightLineButton.Checked = false;
         this.CurveLineButton.Checked = false;
         this.TextButton.Checked = false;
+
         this.SelectionButton.Checked = false;
 
-        this.IsSelectionMode = false;
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.FigureType = FiguresEnum.Ellipse;
+        }
     }
 
     private void StraightLineButtonClick(object sender, EventArgs e) {
-        this.FigureType = 3;
+        this.FigureType = FiguresEnum.Line;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
         this.StraightLineToolButton.Checked = true;
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = false;
+
         this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = true;
         this.CurveLineButton.Checked = false;
         this.TextButton.Checked = false;
+
         this.SelectionButton.Checked = false;
 
-        this.IsSelectionMode = false;
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.FigureType = FiguresEnum.Line;
+        }
     }
 
     private void CurveLineButtonClick(object sender, EventArgs e) {
-        this.FigureType = 4;
+        this.FigureType = FiguresEnum.CurveLine;
+
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
         this.StraightLineToolButton.Checked = false;
         this.CurveLineToolButton.Checked = true;
         this.TextToolButton.Checked = false;
+
         this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = false;
 
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = false;
         this.CurveLineButton.Checked = true;
         this.TextButton.Checked = false;
+
         this.SelectionButton.Checked = false;
 
-        this.IsSelectionMode = false;
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.FigureType = FiguresEnum.CurveLine;
+        }
     }
 
     private void TextButtonClick(object sender, EventArgs e) {
-        this.FigureType = 5;
+        this.FigureType = FiguresEnum.TextBox;
 
         this.RectangleToolButton.Checked = false;
         this.EllipseToolButton.Checked = false;
@@ -386,32 +406,35 @@ public partial class UiMainWindow : Form {
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = true;
 
+        this.SelectionButton.Checked = false;
+
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = false;
         this.CurveLineButton.Checked = false;
         this.TextButton.Checked = true;
-        this.SelectionButton.Checked = false;
 
-        this.IsSelectionMode = false;
+        this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = false;
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.FigureType = FiguresEnum.TextBox;
+        }
     }
 
     private void FontButtonClick(object sender, EventArgs e) {
         _ = this.FontDialog.ShowDialog();
 
-        this.TextFont = this.FontDialog.Font;
-
-        this.UpdateFontInfo(this.TextFont);
+        this.UpdateFontInfo(this.FontDialog.Font);
     }
 
     private void SelectionButtonClick(object sender, EventArgs e) {
-        this.FigureType = 6;
-
         this.RectangleButton.Checked = false;
         this.EllipseButton.Checked = false;
         this.StraightLineButton.Checked = false;
         this.CurveLineButton.Checked = false;
         this.TextButton.Checked = false;
+
         this.SelectionButton.Checked = true;
 
         this.RectangleToolButton.Checked = false;
@@ -419,8 +442,49 @@ public partial class UiMainWindow : Form {
         this.StraightLineToolButton.Checked = false;
         this.CurveLineToolButton.Checked = false;
         this.TextToolButton.Checked = false;
-        this.SelectionToolButton.Checked = true;
 
-        this.IsSelectionMode = true;
+        this.SelectionToolButton.Checked = true;
+        this.DrawingToolButton.Checked = false;
+
+        if (this.ActiveMdiChild is UiCanvasWindow children) {
+            var state = new SelectState() {
+                Figures = children.Figures,
+                CanvasSize = this.CanvasSize
+            };
+
+            children.State = state;
+        }
+    }
+
+    private void DrawingToolButtonClick(object sender, EventArgs e) {
+        this.RectangleButton.Checked = false;
+        this.EllipseButton.Checked = false;
+        this.StraightLineButton.Checked = false;
+        this.CurveLineButton.Checked = false;
+        this.TextButton.Checked = false;
+
+        this.SelectionButton.Checked = false;
+
+        this.RectangleToolButton.Checked = false;
+        this.EllipseToolButton.Checked = false;
+        this.StraightLineToolButton.Checked = false;
+        this.CurveLineToolButton.Checked = false;
+        this.TextToolButton.Checked = false;
+
+        this.SelectionToolButton.Checked = false;
+        this.DrawingToolButton.Checked = true;
+
+        if (this.ActiveMdiChild is UiCanvasWindow children) {
+            var state = new DrawState() {
+                PenColor = this.PenColor,
+                PenSize = this.PenSize,
+                BrushColor = this.BrushColor,
+                TextFont = this.TextFont,
+                FigureType = this.FigureType,
+                Figures = children.Figures,
+            };
+
+            children.State = state;
+        }
     }
 }

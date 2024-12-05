@@ -3,7 +3,6 @@
 namespace Paint.States;
 
 public class SelectState : IState, ISelection {
-    public IFigure? SelectedFigure { get; set; } = null;
     public List<IFigure> Figures { get; set; } = [];
     public List<IFigure> SelectedFigures { get; set; } = [];
 
@@ -27,6 +26,8 @@ public class SelectState : IState, ISelection {
                     }
 
                     isPointUsed = true;
+                } else {
+                    this.SelectedFigures.Clear();
                 }
 
                 if (isPointUsed) {
@@ -53,7 +54,7 @@ public class SelectState : IState, ISelection {
     }
 
     public void MouseUpHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigure is not null && this.IsMoving) {
+        if (this.SelectedFigures.Count == 1 && this.IsMoving) {
             this.IsMoving = false;
         }
     }

@@ -50,8 +50,6 @@ public class EllipseWrapper : Movable, IFigure {
         );
 
         graphics.DrawEllipse(pen, rectangle);
-
-        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {

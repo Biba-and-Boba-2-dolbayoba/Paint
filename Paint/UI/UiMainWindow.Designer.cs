@@ -109,14 +109,14 @@ namespace Paint
             // NewFileToolButton
             // 
             this.NewFileToolButton.Name = "NewFileToolButton";
-            this.NewFileToolButton.Size = new Size(163, 22);
+            this.NewFileToolButton.Size = new Size(162, 22);
             this.NewFileToolButton.Text = "Новый";
             this.NewFileToolButton.Click += this.NewFileButtonClick;
             // 
             // OpenFileToolButton
             // 
             this.OpenFileToolButton.Name = "OpenFileToolButton";
-            this.OpenFileToolButton.Size = new Size(163, 22);
+            this.OpenFileToolButton.Size = new Size(162, 22);
             this.OpenFileToolButton.Text = "Открыть";
             this.OpenFileToolButton.Click += this.OpenFileButtonClick;
             // 
@@ -124,7 +124,7 @@ namespace Paint
             // 
             this.SaveFileToolButton.Enabled = false;
             this.SaveFileToolButton.Name = "SaveFileToolButton";
-            this.SaveFileToolButton.Size = new Size(163, 22);
+            this.SaveFileToolButton.Size = new Size(162, 22);
             this.SaveFileToolButton.Text = "Сохранить";
             this.SaveFileToolButton.Click += this.SaveFileButtonClick;
             // 
@@ -132,7 +132,7 @@ namespace Paint
             // 
             this.SaveFileAsToolButton.Enabled = false;
             this.SaveFileAsToolButton.Name = "SaveFileAsToolButton";
-            this.SaveFileAsToolButton.Size = new Size(163, 22);
+            this.SaveFileAsToolButton.Size = new Size(162, 22);
             this.SaveFileAsToolButton.Text = "Сохранить как...";
             this.SaveFileAsToolButton.Click += this.SaveFileAsButtonClick;
             // 
@@ -146,35 +146,35 @@ namespace Paint
             // BrushColorToolButton
             // 
             this.BrushColorToolButton.Name = "BrushColorToolButton";
-            this.BrushColorToolButton.Size = new Size(211, 22);
+            this.BrushColorToolButton.Size = new Size(210, 22);
             this.BrushColorToolButton.Text = "Изменить цвет кисти";
-            this.BrushColorToolButton.Click += this.BrushColorButtonClick;
+            this.BrushColorToolButton.Click += this.PenColorButtonClick;
             // 
             // BrushSizeToolButton
             // 
             this.BrushSizeToolButton.Name = "BrushSizeToolButton";
-            this.BrushSizeToolButton.Size = new Size(211, 22);
+            this.BrushSizeToolButton.Size = new Size(210, 22);
             this.BrushSizeToolButton.Text = "Изменить размер кисти";
-            this.BrushSizeToolButton.Click += this.BrushSizeButtonClick;
+            this.BrushSizeToolButton.Click += this.PenSizeButtonClick;
             // 
             // FillingColorToolButton
             // 
             this.FillingColorToolButton.Name = "FillingColorToolButton";
-            this.FillingColorToolButton.Size = new Size(211, 22);
+            this.FillingColorToolButton.Size = new Size(210, 22);
             this.FillingColorToolButton.Text = "Изменить цвет заливки";
-            this.FillingColorToolButton.Click += this.FillingColorButtonClick;
+            this.FillingColorToolButton.Click += this.BrushColorButtonClick;
             // 
             // CanvasSizeToolButton
             // 
             this.CanvasSizeToolButton.Name = "CanvasSizeToolButton";
-            this.CanvasSizeToolButton.Size = new Size(211, 22);
+            this.CanvasSizeToolButton.Size = new Size(210, 22);
             this.CanvasSizeToolButton.Text = "Изменить размер холста";
             this.CanvasSizeToolButton.Click += this.CanvasSizeButtonClick;
             // 
             // FontToolButton
             // 
             this.FontToolButton.Name = "FontToolButton";
-            this.FontToolButton.Size = new Size(211, 22);
+            this.FontToolButton.Size = new Size(210, 22);
             this.FontToolButton.Text = "Изменить шрифт";
             this.FontToolButton.Click += this.FontButtonClick;
             // 
@@ -246,6 +246,7 @@ namespace Paint
             this.DrawingToolButton.Name = "DrawingToolButton";
             this.DrawingToolButton.Size = new Size(163, 22);
             this.DrawingToolButton.Text = "Рисование";
+            this.DrawingToolButton.Click += this.DrawingToolButtonClick;
             // 
             // SelectionToolButton
             // 
@@ -408,14 +409,14 @@ namespace Paint
             this.BrushColorButton.Name = "BrushColorButton";
             this.BrushColorButton.Size = new Size(205, 22);
             this.BrushColorButton.Text = "Изменить цвет кисти";
-            this.BrushColorButton.Click += this.BrushColorButtonClick;
+            this.BrushColorButton.Click += this.PenColorButtonClick;
             // 
             // BrushSizeButton
             // 
             this.BrushSizeButton.Name = "BrushSizeButton";
             this.BrushSizeButton.Size = new Size(205, 22);
             this.BrushSizeButton.Text = "Изменить размер кисти";
-            this.BrushSizeButton.Click += this.BrushSizeButtonClick;
+            this.BrushSizeButton.Click += this.PenSizeButtonClick;
             // 
             // FillingDropDownButton
             // 
@@ -440,7 +441,7 @@ namespace Paint
             this.FillingColorButton.Name = "FillingColorButton";
             this.FillingColorButton.Size = new Size(202, 22);
             this.FillingColorButton.Text = "Изменить цвет заливки";
-            this.FillingColorButton.Click += this.FillingColorButtonClick;
+            this.FillingColorButton.Click += this.BrushColorButtonClick;
             // 
             // FuguresGroupSeparator
             // 
@@ -543,7 +544,7 @@ namespace Paint
             this.SelectionButton.Text = "Выделение";
             this.SelectionButton.Click += this.SelectionButtonClick;
             // 
-            // UxMainWindow
+            // UiMainWindow
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -555,10 +556,9 @@ namespace Paint
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.IsMdiContainer = true;
             this.Margin = new Padding(4);
-            this.Name = "UxMainWindow";
+            this.Name = "UiMainWindow";
             this.Text = "Paint";
-            this.Load += this.LoadHandler;
-            this.MouseDown += this.MouseDownHandler;
+            this.Load += this.OnLoad;
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.StatusStrip.ResumeLayout(false);
