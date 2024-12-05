@@ -62,9 +62,8 @@ public partial class UiCanvasWindow : Form {
             this.IsDrawing = true;
         }
 
-        //if (this.State is SelectState state) {
-        //    state.MouseDownHandler(sender, e);
-        //}
+        if (this.State is SelectState selection) {
+            selection.MouseDownHandler(sender, e);
 
         if (this.State is DrawState) {
             return;
