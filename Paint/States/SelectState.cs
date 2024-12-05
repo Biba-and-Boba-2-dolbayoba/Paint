@@ -3,9 +3,9 @@
 namespace Paint.States;
 
 public class SelectState : IState, ISelection {
-    public Figure? SelectedFigure { get; set; } = null;
-    public List<Figure> Figures { get; set; } = [];
-    public List<Figure> SelectedFigures { get; set; } = [];
+    public IFigure? SelectedFigure { get; set; } = null;
+    public List<IFigure> Figures { get; set; } = [];
+    public List<IFigure> SelectedFigures { get; set; } = [];
 
     public bool IsMoving { get; set; } = false;
     public Size CanvasSize { get; set; } = new Size(800, 600);
@@ -15,38 +15,38 @@ public class SelectState : IState, ISelection {
         this.DragStartPoint = new Point(e.X, e.Y);
 
         if (e.Button == MouseButtons.Left) {
-            this.SelectedFigures.Clear();
+            var point = new Point(e.X, e.Y);
+            bool isPointUsed;
+            foreach (IFigure figure in this.Figures) {
+                isPointUsed = false;
+                if (figure.ContainsPoint(point) && !isPointUsed) {
+                    if (this.SelectedFigures.Contains(figure)) {
+                        _ = this.SelectedFigures.Remove(figure);
+                    } else {
+                        this.SelectedFigures.Add(figure);
+                    }
 
-            if (this.SelectedFigure is not null && !this.IsMoving) {
+                    isPointUsed = true;
+                }
+
+                if (isPointUsed) {
+                    break;
+                }
+            }
+
+            if (this.SelectedFigures.Count == 1 && !this.IsMoving) {
                 this.IsMoving = true;
-                return;
-            }
-
-            foreach (Figure figure in this.Figures) {
-                if (figure.ContainsPoint(new Point(e.X, e.Y))) {
-                    this.SelectedFigure = figure == this.SelectedFigure ? null : figure;
-                    return;
-                }
-            }
-        }
-
-        if (e.Button == MouseButtons.Right) {
-            this.SelectedFigure = null;
-            foreach (Figure figure in this.Figures) {
-                if (figure.ContainsPoint(new Point(e.X, e.Y))) {
-                    this.SelectedFigures.Add(figure);
-                }
             }
         }
     }
 
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigure is not null && this.IsMoving) {
+        if (this.SelectedFigures.Count == 1 && this.IsMoving) {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
 
-            if (this.SelectedFigure.CanMove(dx, dy, this.CanvasSize)) {
-                this.SelectedFigure.Move(dx, dy);
+            if (this.SelectedFigures[0].CanMove(dx, dy, this.CanvasSize)) {
+                this.SelectedFigures[0].Move(dx, dy);
                 this.DragStartPoint = new Point(e.X, e.Y);
             }
         }

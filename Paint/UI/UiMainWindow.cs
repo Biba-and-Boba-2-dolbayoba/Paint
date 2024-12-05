@@ -1,6 +1,4 @@
-﻿using Paint.Figures;
-using System.ComponentModel;
-using System.Text.Json;
+﻿using System.ComponentModel;
 
 namespace Paint;
 
@@ -35,80 +33,80 @@ public partial class UiMainWindow : Form {
         this.InitializeComponent();
     }
 
-    public class FigureJson {
-        public string? FontName { get; set; }
-        public float FontSize { get; set; }
-        public string? LineColor { get; set; }
-        public string? BackColor { get; set; }
-        public Point Point1 { get; set; }
-        public Point Point2 { get; set; }
-        public string? Text { get; set; }
-        public bool BackTF { get; set; }
-        public Point[]? MasPoints { get; set; }
+    //public class FigureJson {
+    //    public string? FontName { get; set; }
+    //    public float FontSize { get; set; }
+    //    public string? LineColor { get; set; }
+    //    public string? BackColor { get; set; }
+    //    public Point Point1 { get; set; }
+    //    public Point Point2 { get; set; }
+    //    public string? Text { get; set; }
+    //    public bool BackTF { get; set; }
+    //    public Point[]? MasPoints { get; set; }
 
-        public static List<FigureJson> Serialize(List<Figure> figures) {
-            List<FigureJson> figureJsonList = [];
-            foreach (Figure figure in figures) {
-                var figureJson = new FigureJson() {
-                    FontName = figure.font.Name,
-                    FontSize = figure.font.Size,
-                    LineColor = Convert.ToHexString(
-                        [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
-                    ),
-                    BackColor = Convert.ToHexString(
-                        [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
-                    ),
-                    Point1 = figure.point1,
-                    Point2 = figure.point2,
-                    Text = figure.text,
-                    BackTF = figure.back_TF,
-                    MasPoints = figure.mas_points,
-                };
-                figureJsonList.Add(figureJson);
+    //    public static List<FigureJson> Serialize(List<IFigure> figures) {
+    //        List<FigureJson> figureJsonList = [];
+    //        foreach (IFigure figure in figures) {
+    //            var figureJson = new FigureJson() {
+    //                FontName = figure.TextFont.Name,
+    //                FontSize = figure.font.Size,
+    //                LineColor = Convert.ToHexString(
+    //                    [figure.line_color.A, figure.line_color.R, figure.line_color.G, figure.line_color.B]
+    //                ),
+    //                BackColor = Convert.ToHexString(
+    //                    [figure.back_color.A, figure.back_color.R, figure.back_color.G, figure.back_color.B]
+    //                ),
+    //                Point1 = figure.point1,
+    //                Point2 = figure.point2,
+    //                Text = figure.text,
+    //                BackTF = figure.back_TF,
+    //                MasPoints = figure.mas_points,
+    //            };
+    //            figureJsonList.Add(figureJson);
 
-            }
+    //        }
 
-            return figureJsonList;
-        }
+    //        return figureJsonList;
+    //    }
 
-        //public Figure Decode() {
-        //    Figure figure = new Rect {
-        //        font = new Font(this.fontName, this.fontSize),
-        //        line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
-        //        back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
-        //        point1 = this.Point1,
-        //        point2 = this.Point2,
-        //        text = this.Text,
-        //        back_TF = this.BackTF,
-        //        mas_points = this.MasPoints.ToArray()
-        //    };
-        //    return figure;
-        //}
-    }
-    public class CanvasData(Size size, List<Figure> figures) {
-        public Size CanvasSize { get; set; } = size;
-        public List<FigureJson> Figures { get; set; } = FigureJson.Serialize(figures);
-    }
+    //    //public Figure Decode() {
+    //    //    Figure figure = new Rect {
+    //    //        font = new Font(this.fontName, this.fontSize),
+    //    //        line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
+    //    //        back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
+    //    //        point1 = this.Point1,
+    //    //        point2 = this.Point2,
+    //    //        text = this.Text,
+    //    //        back_TF = this.BackTF,
+    //    //        mas_points = this.MasPoints.ToArray()
+    //    //    };
+    //    //    return figure;
+    //    //}
+    //}
+    //public class CanvasData(Size size, List<Figure> figures) {
+    //    public Size CanvasSize { get; set; } = size;
+    //    public List<FigureJson> Figures { get; set; } = FigureJson.Serialize(figures);
+    //}
 
     public static void SaveFile(UiCanvasWindow canvas) {
-        try {
+        //try {
 
-            var canvasData = new CanvasData(
-                canvas.CanvasSize,
-                canvas.Figures
-            );
+        //    var canvasData = new CanvasData(
+        //        canvas.CanvasSize,
+        //        canvas.Figures
+        //    );
 
-            string json = JsonSerializer.Serialize(canvasData, new JsonSerializerOptions { WriteIndented = true });
+        //    string json = JsonSerializer.Serialize(canvasData, new JsonSerializerOptions { WriteIndented = true });
 
-            using var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                File.WriteAllText(saveFileDialog.FileName, json);
-                _ = MessageBox.Show("Файл сохранен!");
-            }
-        } catch (Exception ex) {
-            _ = MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
-        }
+        //    using var saveFileDialog = new SaveFileDialog();
+        //    saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+        //    if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+        //        File.WriteAllText(saveFileDialog.FileName, json);
+        //        _ = MessageBox.Show("Файл сохранен!");
+        //    }
+        //} catch (Exception ex) {
+        //    _ = MessageBox.Show($"Ошибка при сохранении файла: {ex.Message}");
+        //}
     }
 
     private UiCanvasWindow OpenFile() {
@@ -318,9 +316,6 @@ public partial class UiMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 
     private void EllipseButtonClick(object sender, EventArgs e) {
@@ -341,9 +336,6 @@ public partial class UiMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 
     private void StraightLineButtonClick(object sender, EventArgs e) {
@@ -364,9 +356,6 @@ public partial class UiMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 
     private void CurveLineButtonClick(object sender, EventArgs e) {
@@ -386,9 +375,6 @@ public partial class UiMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 
     private void TextButtonClick(object sender, EventArgs e) {
@@ -408,9 +394,6 @@ public partial class UiMainWindow : Form {
         this.SelectionButton.Checked = false;
 
         this.IsSelectionMode = false;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 
     private void FontButtonClick(object sender, EventArgs e) {
@@ -439,8 +422,5 @@ public partial class UiMainWindow : Form {
         this.SelectionToolButton.Checked = true;
 
         this.IsSelectionMode = true;
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            activeForm.IsSelectionMode = this.IsSelectionMode;
-        }
     }
 }

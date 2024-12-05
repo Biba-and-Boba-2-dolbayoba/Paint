@@ -8,12 +8,7 @@ public enum FiguresEnum {
     TextBox
 }
 
-public interface IStartEndPoint {
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
-}
-
-public interface IFigure : IStartEndPoint {
+public interface IFigure : IMovable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
@@ -27,5 +22,5 @@ public interface IFigure : IStartEndPoint {
 
     public void DrawSelection(Graphics graphics);
 
-    public bool ContainPoint(Point point);
+    public bool ContainsPoint(Point point);
 }

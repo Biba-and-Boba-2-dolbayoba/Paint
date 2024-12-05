@@ -6,8 +6,8 @@ public class TextBoxWrapper : Movable, IFigure {
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
 
-    public required string Text { get; set; }
-    public required Font TextFont { get; set; }
+    public string Text { get; set; } = "";
+    public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(Color.Transparent, this.PenSize);
@@ -51,6 +51,8 @@ public class TextBoxWrapper : Movable, IFigure {
         );
 
         graphics.DrawRectangle(pen, rectangle);
+
+        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {
@@ -68,7 +70,7 @@ public class TextBoxWrapper : Movable, IFigure {
         graphics.DrawRectangle(pen, rectangle);
     }
 
-    public bool ContainPoint(Point point) {
+    public bool ContainsPoint(Point point) {
         var rectangle = Rectangle.FromLTRB(
             Math.Min(this.StartPoint.X, this.EndPoint.X),
             Math.Min(this.StartPoint.Y, this.EndPoint.Y),

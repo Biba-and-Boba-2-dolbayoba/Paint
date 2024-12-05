@@ -50,6 +50,8 @@ public class EllipseWrapper : Movable, IFigure {
         );
 
         graphics.DrawEllipse(pen, rectangle);
+
+        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {
@@ -67,7 +69,7 @@ public class EllipseWrapper : Movable, IFigure {
         graphics.DrawRectangle(pen, rectangle);
     }
 
-    public bool ContainPoint(Point point) {
+    public bool ContainsPoint(Point point) {
         var rectangle = Rectangle.FromLTRB(
             Math.Min(this.StartPoint.X, this.EndPoint.X),
             Math.Min(this.StartPoint.Y, this.EndPoint.Y),

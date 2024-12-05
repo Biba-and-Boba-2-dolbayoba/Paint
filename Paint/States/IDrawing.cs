@@ -1,5 +1,26 @@
-﻿namespace Paint.States;
+﻿using Paint.Figures;
+
+namespace Paint.States;
 
 public interface IDrawing {
+    public bool IsDrawing { get; set; }
 
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
+    public List<Point> Points { get; set; }
+
+    public Size CanvasSize { get; set; }
+
+    public int PenSize { get; set; }
+    public Color PenColor { get; set; }
+    public Color BrushColor { get; set; }
+    public bool IsFilling { get; set; }
+
+    public string Text { get; set; }
+    public Font TextFont { get; set; }
+
+    public FiguresEnum FigureType { get; set; }
+    public List<IFigure> Figures { get; set; }
+
+    public BufferedGraphics? GraphicsBuffer { get; set; }
 }

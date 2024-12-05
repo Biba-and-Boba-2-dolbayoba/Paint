@@ -1,5 +1,10 @@
 ﻿namespace Paint.Figures;
 
+public interface IStartEndPoint {
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
+}
+
 public interface IMovable : IStartEndPoint {
     public bool CanMove(int dx, int dy, Size canvasSize);
 

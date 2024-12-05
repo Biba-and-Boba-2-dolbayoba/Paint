@@ -3,9 +3,9 @@
 namespace Paint.States;
 
 internal interface ISelection {
-    public Figure? SelectedFigure { get; set; }
-    public List<Figure> Figures { get; set; }
-    public List<Figure> SelectedFigures { get; set; }
+    public IFigure? SelectedFigure { get; set; }
+    public List<IFigure> Figures { get; set; }
+    public List<IFigure> SelectedFigures { get; set; }
 
     public bool IsMoving { get; set; }
     public Size CanvasSize { get; set; }

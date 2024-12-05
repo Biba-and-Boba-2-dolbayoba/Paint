@@ -24,6 +24,8 @@ public class CurveLineWrapper : Movable, IFigure {
         };
 
         graphics.DrawCurve(pen, this.Points.ToArray());
+
+        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {
@@ -41,7 +43,7 @@ public class CurveLineWrapper : Movable, IFigure {
         graphics.DrawRectangle(pen, rectangle);
     }
 
-    public bool ContainPoint(Point point) {
+    public bool ContainsPoint(Point point) {
         const int tolerance = 3;
 
         for (int i = 0 ; i < this.Points.Count - 1 ; i++) {

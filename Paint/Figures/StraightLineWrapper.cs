@@ -22,6 +22,8 @@ public class StraightLineWrapper : Movable, IFigure {
         };
 
         graphics.DrawLine(pen, this.StartPoint, this.EndPoint);
+
+        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {
@@ -39,7 +41,7 @@ public class StraightLineWrapper : Movable, IFigure {
         graphics.DrawRectangle(pen, rectangle);
     }
 
-    public bool ContainPoint(Point point) {
+    public bool ContainsPoint(Point point) {
         const int tolerance = 3;
 
         int abs = Math.Abs(
