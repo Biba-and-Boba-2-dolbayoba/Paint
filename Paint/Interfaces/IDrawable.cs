@@ -8,6 +8,10 @@ internal enum FiguresEnum {
     TextBox
 }
 
+internal interface IFigureTypeDepends {
+    public FiguresEnum FigureType { get; set; }
+}
+
 internal interface IDrawDepends {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -25,7 +29,7 @@ internal interface ITopBottomDepends {
     public Point BotPoint { get; set; }
 }
 
-internal interface IDrawable : IDrawDepends, IMovable {
+internal interface IDrawable : IDrawDepends, IMovable, IFigureTypeDepends {
     public void Draw(Graphics graphics);
     public void Hide(Graphics graphics);
     public void DrawDash(Graphics graphics);
