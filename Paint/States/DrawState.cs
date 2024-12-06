@@ -32,7 +32,7 @@ internal class DrawState : IState, IDrawing {
             this.Points.Clear();
 
             this.StartPoint = new Point(e.X, e.Y);
-            this.EndPoint = new Point(e.X + 1, e.Y + 1);
+            this.EndPoint = new Point(e.X, e.Y);
 
             this.Points.Add(this.StartPoint);
             this.Points.Add(this.EndPoint);
@@ -110,7 +110,6 @@ internal class DrawState : IState, IDrawing {
                 };
 
                 if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    wrapper.Points.Add(this.EndPoint);
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
@@ -135,111 +134,112 @@ internal class DrawState : IState, IDrawing {
     }
 
     public void MouseUpHandler(object sender, MouseEventArgs e) {
-        if (this.FigureType == FiguresEnum.Rectangle) {
-            this.EndPoint = new Point(e.X, e.Y);
+        if (e.Button == MouseButtons.Left && this.IsDrawing) {
+            if (this.FigureType == FiguresEnum.Rectangle) {
+                this.EndPoint = new Point(e.X, e.Y);
 
-            var wrapper = new RectangleWrapper() {
-                StartPoint = this.StartPoint,
-                EndPoint = this.EndPoint,
-                PenSize = this.PenSize,
-                PenColor = this.PenColor,
-                BrushColor = this.BrushColor,
-                IsFilling = this.IsFilling
-            };
+                var wrapper = new RectangleWrapper() {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint,
+                    PenSize = this.PenSize,
+                    PenColor = this.PenColor,
+                    BrushColor = this.BrushColor,
+                    IsFilling = this.IsFilling
+                };
 
-            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                this.Figures.Add(wrapper);
-            }
-        }
-
-        if (this.FigureType == FiguresEnum.Ellipse) {
-            this.EndPoint = new Point(e.X, e.Y);
-
-            var wrapper = new EllipseWrapper() {
-                StartPoint = this.StartPoint,
-                EndPoint = this.EndPoint,
-                PenSize = this.PenSize,
-                PenColor = this.PenColor,
-                BrushColor = this.BrushColor,
-                IsFilling = this.IsFilling
-            };
-
-            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                this.Figures.Add(wrapper);
-            }
-        }
-
-        if (this.FigureType == FiguresEnum.Line) {
-            this.EndPoint = new Point(e.X, e.Y);
-
-            var wrapper = new StraightLineWrapper() {
-                StartPoint = this.StartPoint,
-                EndPoint = this.EndPoint,
-                PenSize = this.PenSize,
-                PenColor = this.PenColor,
-                BrushColor = this.BrushColor,
-                IsFilling = this.IsFilling
-            };
-
-            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                this.Figures.Add(wrapper);
-            }
-        }
-
-        if (this.FigureType == FiguresEnum.CurveLine) {
-            this.EndPoint = new Point(e.X, e.Y);
-
-            var wrapper = new CurveLineWrapper() {
-                StartPoint = this.StartPoint,
-                EndPoint = this.EndPoint,
-                Points = this.Points,
-                PenSize = this.PenSize,
-                PenColor = this.PenColor,
-                BrushColor = this.BrushColor,
-                IsFilling = this.IsFilling
-            };
-
-            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                wrapper.Points.Add(this.EndPoint);
-                this.Figures.Add(wrapper);
+                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                    this.Figures.Add(wrapper);
+                }
             }
 
-            this.Points.Clear();
-        }
+            if (this.FigureType == FiguresEnum.Ellipse) {
+                this.EndPoint = new Point(e.X, e.Y);
 
-        if (this.FigureType == FiguresEnum.TextBox) {
-            this.EndPoint = new Point(e.X, e.Y);
+                var wrapper = new EllipseWrapper() {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint,
+                    PenSize = this.PenSize,
+                    PenColor = this.PenColor,
+                    BrushColor = this.BrushColor,
+                    IsFilling = this.IsFilling
+                };
 
-            var wrapper = new TextBoxWrapper() {
-                StartPoint = this.StartPoint,
-                EndPoint = this.EndPoint,
-                PenSize = this.PenSize,
-                PenColor = this.PenColor,
-                BrushColor = this.BrushColor,
-                IsFilling = this.IsFilling,
-                TextFont = this.TextFont
-            };
-
-            var placeholder = new UiTextBoxPlaceholder() {
-                Parent = this.ParentReference,
-                Size = new(this.EndPoint.X - this.StartPoint.X, this.EndPoint.Y - this.StartPoint.Y),
-                Font = this.TextFont,
-                Multiline = true,
-                ForeColor = this.PenColor,
-                Location = this.StartPoint,
-                Width = this.EndPoint.X - this.StartPoint.X,
-                Height = this.EndPoint.Y - this.StartPoint.Y,
-                Wrapper = wrapper,
-                GraphicsBuffer = this.GraphicsBuffer
-            };
-
-            placeholder.Show();
-
-            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                this.Figures.Add(wrapper);
+                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                    this.Figures.Add(wrapper);
+                }
             }
-        }
 
-        this.IsDrawing = false;
+            if (this.FigureType == FiguresEnum.Line) {
+                this.EndPoint = new Point(e.X, e.Y);
+
+                var wrapper = new StraightLineWrapper() {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint,
+                    PenSize = this.PenSize,
+                    PenColor = this.PenColor,
+                    BrushColor = this.BrushColor,
+                    IsFilling = this.IsFilling
+                };
+
+                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                    this.Figures.Add(wrapper);
+                }
+            }
+
+            if (this.FigureType == FiguresEnum.CurveLine) {
+                this.EndPoint = new Point(e.X, e.Y);
+                this.Points.Add(this.EndPoint);
+
+                var wrapper = new CurveLineWrapper() {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint,
+                    PenSize = this.PenSize,
+                    PenColor = this.PenColor,
+                    BrushColor = this.BrushColor,
+                    IsFilling = this.IsFilling,
+                    Points = this.Points
+                };
+
+                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                    this.Figures.Add(wrapper);
+                }
+            }
+
+            if (this.FigureType == FiguresEnum.TextBox) {
+                this.EndPoint = new Point(e.X, e.Y);
+
+                var wrapper = new TextBoxWrapper() {
+                    StartPoint = this.StartPoint,
+                    EndPoint = this.EndPoint,
+                    PenSize = this.PenSize,
+                    PenColor = this.PenColor,
+                    BrushColor = this.BrushColor,
+                    IsFilling = this.IsFilling,
+                    TextFont = this.TextFont
+                };
+
+                var placeholder = new UiTextBoxPlaceholder() {
+                    Parent = this.ParentReference,
+                    Size = new(this.EndPoint.X - this.StartPoint.X, this.EndPoint.Y - this.StartPoint.Y),
+                    Font = this.TextFont,
+                    Multiline = true,
+                    ForeColor = this.PenColor,
+                    Location = this.StartPoint,
+                    Width = this.EndPoint.X - this.StartPoint.X,
+                    Height = this.EndPoint.Y - this.StartPoint.Y,
+                    Wrapper = wrapper,
+                    GraphicsBuffer = this.GraphicsBuffer
+                };
+
+                placeholder.Show();
+
+                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                    this.Figures.Add(wrapper);
+                }
+            }
+
+            DashFigures = new(null, null);
+            this.IsDrawing = false;
+        }
     }
 }

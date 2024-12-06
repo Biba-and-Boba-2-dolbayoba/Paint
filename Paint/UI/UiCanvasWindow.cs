@@ -1,6 +1,6 @@
 ﻿using Paint.Figures;
-using Paint.States;
 using Paint.Serialization;
+using Paint.States;
 using System.ComponentModel;
 
 namespace Paint;
@@ -91,7 +91,7 @@ internal partial class UiCanvasWindow : Form {
         graphicsBuffer.Render();
     }
 
-    private void RerenderAll() {
+    private void Render() {
         var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
         var backgroundColor = new SolidBrush(Color.White);
         this.UpdateGraphicsBuffer(background);
@@ -122,7 +122,7 @@ internal partial class UiCanvasWindow : Form {
             return;
         }
 
-        this.RerenderAll();
+        this.Render();
     }
 
     private void OnMouseMove(object sender, MouseEventArgs e) {
@@ -148,7 +148,7 @@ internal partial class UiCanvasWindow : Form {
             return;
         }
 
-        this.RerenderAll();
+        this.Render();
     }
 
     private void OnMouseUp(object sender, MouseEventArgs e) {
@@ -170,12 +170,11 @@ internal partial class UiCanvasWindow : Form {
             return;
         }
 
-        this.RerenderAll();
+        this.Render();
     }
 
     private void OnLoad(object sender, EventArgs e) {
-        this.Size = new Size(this.Size.Width + 1, this.Size.Height + 1);
-        this.Size = new Size(this.Size.Width - 1, this.Size.Height - 1);
+        this.OnResize(sender, e);
     }
 
     private void OnClose(object sender, FormClosingEventArgs e) {
@@ -195,7 +194,7 @@ internal partial class UiCanvasWindow : Form {
             parent.UpdateCanvasInfo(this.Size);
         }
 
-        this.RerenderAll();
+        this.Render();
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {

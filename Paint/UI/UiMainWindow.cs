@@ -14,8 +14,16 @@ internal partial class UiMainWindow : Form {
     private FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
     private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> Buttons { get; set; }
 
+    private class ToolStripRenderer : ToolStripProfessionalRenderer {
+        public ToolStripRenderer() : base() {
+            this.RoundedEdges = false;
+        }
+    }
+
     public UiMainWindow() {
         this.InitializeComponent();
+
+        this.ToolStrip.Renderer = new ToolStripRenderer();
 
         this.Buttons = new() {
             {FiguresEnum.Rectangle, new(this.RectangleButton, this.RectangleToolButton)},
@@ -132,6 +140,7 @@ internal partial class UiMainWindow : Form {
             BrushColor = this.BrushColor,
             TextFont = this.TextFont,
             FigureType = this.FigureType,
+            CanvasSize = this.CanvasSize
         };
 
         this.UpdateCanvasInfo(this.CanvasSize);
@@ -139,8 +148,10 @@ internal partial class UiMainWindow : Form {
         if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
             var CanvasWindow = new UiCanvasWindow {
                 MdiParent = this,
+                Bounds = this.CanvasPlaceholder.Bounds,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString(),
-                State = state
+                State = state,
+                Size = this.CanvasSize
             };
             CanvasWindow.Show();
         }

@@ -51,3 +51,6 @@ internal class HashableCanvas(Size size, string? name, List<HashableFigure> figu
         return canvas;
     }
 }
+
+// 1) Получаешь HashableCanvas через HashableCanvas.OpenFile()
+// 2) Получаешь из HashableCanvas.Figures List<IFigure>

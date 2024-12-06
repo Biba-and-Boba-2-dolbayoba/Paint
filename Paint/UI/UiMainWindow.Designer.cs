@@ -82,6 +82,7 @@ namespace Paint
             this.SelectionGroupSeparator = new ToolStripSeparator();
             this.SelectionButton = new ToolStripButton();
             this.FontDialog = new FontDialog();
+            this.CanvasPlaceholder = new Panel();
             this.MenuStrip.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.ToolStrip.SuspendLayout();
@@ -327,7 +328,8 @@ namespace Paint
             // ToolStrip
             // 
             this.ToolStrip.AutoSize = false;
-            this.ToolStrip.BackColor = Color.WhiteSmoke;
+            this.ToolStrip.BackColor = Color.White;
+            this.ToolStrip.BackgroundImageLayout = ImageLayout.None;
             this.ToolStrip.CanOverflow = false;
             this.ToolStrip.GripMargin = new Padding(0);
             this.ToolStrip.GripStyle = ToolStripGripStyle.Hidden;
@@ -337,7 +339,8 @@ namespace Paint
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Padding = new Padding(10, 0, 10, 0);
             this.ToolStrip.RenderMode = ToolStripRenderMode.Professional;
-            this.ToolStrip.Size = new Size(1264, 31);
+            this.ToolStrip.ShowItemToolTips = false;
+            this.ToolStrip.Size = new Size(1264, 32);
             this.ToolStrip.TabIndex = 5;
             // 
             // NewFileButton
@@ -348,7 +351,7 @@ namespace Paint
             this.NewFileButton.ImageTransparentColor = Color.Magenta;
             this.NewFileButton.Margin = new Padding(0, 2, 2, 2);
             this.NewFileButton.Name = "NewFileButton";
-            this.NewFileButton.Size = new Size(28, 27);
+            this.NewFileButton.Size = new Size(28, 28);
             this.NewFileButton.Text = "Новый";
             this.NewFileButton.Click += this.NewFileButtonClick;
             // 
@@ -360,7 +363,7 @@ namespace Paint
             this.SaveFileButton.ImageTransparentColor = Color.Magenta;
             this.SaveFileButton.Margin = new Padding(0, 2, 2, 2);
             this.SaveFileButton.Name = "SaveFileButton";
-            this.SaveFileButton.Size = new Size(28, 27);
+            this.SaveFileButton.Size = new Size(28, 28);
             this.SaveFileButton.Text = "Сохранить";
             this.SaveFileButton.Click += this.SaveFileButtonClick;
             // 
@@ -372,7 +375,7 @@ namespace Paint
             this.OpenFileButton.ImageTransparentColor = Color.Magenta;
             this.OpenFileButton.Margin = new Padding(0, 2, 2, 2);
             this.OpenFileButton.Name = "OpenFileButton";
-            this.OpenFileButton.Size = new Size(28, 27);
+            this.OpenFileButton.Size = new Size(28, 28);
             this.OpenFileButton.Text = "Открыть";
             this.OpenFileButton.Click += this.OpenFileButtonClick;
             // 
@@ -384,14 +387,14 @@ namespace Paint
             this.CanvasSizeButton.ImageTransparentColor = Color.Magenta;
             this.CanvasSizeButton.Margin = new Padding(0, 2, 2, 2);
             this.CanvasSizeButton.Name = "CanvasSizeButton";
-            this.CanvasSizeButton.Size = new Size(28, 27);
+            this.CanvasSizeButton.Size = new Size(28, 28);
             this.CanvasSizeButton.Text = "Размер холста";
             this.CanvasSizeButton.Click += this.CanvasSizeButtonClick;
             // 
             // BrushGroupSeparator
             // 
             this.BrushGroupSeparator.Name = "BrushGroupSeparator";
-            this.BrushGroupSeparator.Size = new Size(6, 31);
+            this.BrushGroupSeparator.Size = new Size(6, 32);
             // 
             // BrushDropDownButton
             // 
@@ -402,7 +405,7 @@ namespace Paint
             this.BrushDropDownButton.ImageTransparentColor = Color.Magenta;
             this.BrushDropDownButton.Margin = new Padding(0, 2, 2, 2);
             this.BrushDropDownButton.Name = "BrushDropDownButton";
-            this.BrushDropDownButton.Size = new Size(37, 27);
+            this.BrushDropDownButton.Size = new Size(37, 28);
             // 
             // BrushColorButton
             // 
@@ -427,7 +430,7 @@ namespace Paint
             this.FillingDropDownButton.ImageTransparentColor = Color.Magenta;
             this.FillingDropDownButton.Margin = new Padding(0, 2, 2, 2);
             this.FillingDropDownButton.Name = "FillingDropDownButton";
-            this.FillingDropDownButton.Size = new Size(37, 27);
+            this.FillingDropDownButton.Size = new Size(37, 28);
             // 
             // FillingButton
             // 
@@ -446,7 +449,7 @@ namespace Paint
             // FuguresGroupSeparator
             // 
             this.FuguresGroupSeparator.Name = "FuguresGroupSeparator";
-            this.FuguresGroupSeparator.Size = new Size(6, 31);
+            this.FuguresGroupSeparator.Size = new Size(6, 32);
             // 
             // RectangleButton
             // 
@@ -458,7 +461,7 @@ namespace Paint
             this.RectangleButton.ImageTransparentColor = Color.Magenta;
             this.RectangleButton.Margin = new Padding(0, 2, 2, 2);
             this.RectangleButton.Name = "RectangleButton";
-            this.RectangleButton.Size = new Size(28, 27);
+            this.RectangleButton.Size = new Size(28, 28);
             this.RectangleButton.Text = "Прямоугольник";
             this.RectangleButton.Click += this.RectangleButtonClick;
             // 
@@ -470,7 +473,7 @@ namespace Paint
             this.EllipseButton.ImageTransparentColor = Color.Magenta;
             this.EllipseButton.Margin = new Padding(0, 2, 2, 2);
             this.EllipseButton.Name = "EllipseButton";
-            this.EllipseButton.Size = new Size(28, 27);
+            this.EllipseButton.Size = new Size(28, 28);
             this.EllipseButton.Text = "Элипс";
             this.EllipseButton.Click += this.EllipseButtonClick;
             // 
@@ -482,7 +485,7 @@ namespace Paint
             this.StraightLineButton.ImageTransparentColor = Color.Magenta;
             this.StraightLineButton.Margin = new Padding(0, 2, 2, 2);
             this.StraightLineButton.Name = "StraightLineButton";
-            this.StraightLineButton.Size = new Size(28, 27);
+            this.StraightLineButton.Size = new Size(28, 28);
             this.StraightLineButton.Text = "Прямая линия";
             this.StraightLineButton.Click += this.StraightLineButtonClick;
             // 
@@ -494,14 +497,14 @@ namespace Paint
             this.CurveLineButton.ImageTransparentColor = Color.Magenta;
             this.CurveLineButton.Margin = new Padding(0, 2, 2, 2);
             this.CurveLineButton.Name = "CurveLineButton";
-            this.CurveLineButton.Size = new Size(28, 27);
+            this.CurveLineButton.Size = new Size(28, 28);
             this.CurveLineButton.Text = "Кривая линия";
             this.CurveLineButton.Click += this.CurveLineButtonClick;
             // 
             // TextGroupSeparator
             // 
             this.TextGroupSeparator.Name = "TextGroupSeparator";
-            this.TextGroupSeparator.Size = new Size(6, 31);
+            this.TextGroupSeparator.Size = new Size(6, 32);
             // 
             // TextButton
             // 
@@ -511,7 +514,7 @@ namespace Paint
             this.TextButton.ImageTransparentColor = Color.Magenta;
             this.TextButton.Margin = new Padding(0, 2, 2, 2);
             this.TextButton.Name = "TextButton";
-            this.TextButton.Size = new Size(28, 27);
+            this.TextButton.Size = new Size(28, 28);
             this.TextButton.Text = "Текст";
             this.TextButton.Click += this.TextButtonClick;
             // 
@@ -523,14 +526,14 @@ namespace Paint
             this.FontButton.ImageTransparentColor = Color.Magenta;
             this.FontButton.Margin = new Padding(0, 2, 2, 2);
             this.FontButton.Name = "FontButton";
-            this.FontButton.Size = new Size(28, 27);
+            this.FontButton.Size = new Size(28, 28);
             this.FontButton.Text = "Шрифт";
             this.FontButton.Click += this.FontButtonClick;
             // 
             // SelectionGroupSeparator
             // 
             this.SelectionGroupSeparator.Name = "SelectionGroupSeparator";
-            this.SelectionGroupSeparator.Size = new Size(6, 31);
+            this.SelectionGroupSeparator.Size = new Size(6, 32);
             // 
             // SelectionButton
             // 
@@ -540,9 +543,20 @@ namespace Paint
             this.SelectionButton.ImageTransparentColor = Color.Magenta;
             this.SelectionButton.Margin = new Padding(0, 2, 2, 2);
             this.SelectionButton.Name = "SelectionButton";
-            this.SelectionButton.Size = new Size(28, 27);
+            this.SelectionButton.Size = new Size(28, 28);
             this.SelectionButton.Text = "Выделение";
             this.SelectionButton.Click += this.SelectionButtonClick;
+            // 
+            // CanvasPlaceholder
+            // 
+            this.CanvasPlaceholder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            this.CanvasPlaceholder.AutoSize = true;
+            this.CanvasPlaceholder.BackColor = Color.Transparent;
+            this.CanvasPlaceholder.Location = new Point(0, 59);
+            this.CanvasPlaceholder.Name = "CanvasPlaceholder";
+            this.CanvasPlaceholder.Size = new Size(1264, 595);
+            this.CanvasPlaceholder.TabIndex = 7;
+            this.CanvasPlaceholder.Visible = false;
             // 
             // UiMainWindow
             // 
@@ -551,6 +565,7 @@ namespace Paint
             this.BackColor = Color.White;
             this.ClientSize = new Size(1264, 681);
             this.Controls.Add(this.ToolStrip);
+            this.Controls.Add(this.CanvasPlaceholder);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.MenuStrip);
             this.Icon = (Icon)resources.GetObject("$this.Icon");
@@ -624,5 +639,6 @@ namespace Paint
         private ToolStripDropDownButton FillingDropDownButton;
         private ToolStripMenuItem FillingButton;
         private ToolStripMenuItem FillingColorButton;
+        private Panel CanvasPlaceholder;
     }
 }

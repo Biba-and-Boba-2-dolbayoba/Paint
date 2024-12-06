@@ -35,9 +35,10 @@ namespace Paint
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.BackColor = Color.LightGray;
+            this.BackColor = Color.White;
             this.ClientSize = new Size(915, 637);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4);
             this.Name = "UiCanvasWindow";

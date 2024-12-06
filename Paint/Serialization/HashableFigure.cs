@@ -49,7 +49,7 @@ internal class HashableFigure {
         return figureJsonList;
     }
 
-    public void Deserialize() {
+    public static List<IFigure> Deserialize(List<HashableFigure> figures) {
         //Figure figure = new Rect {
         //    font = new Font(this.fontName, this.fontSize),
         //    line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),

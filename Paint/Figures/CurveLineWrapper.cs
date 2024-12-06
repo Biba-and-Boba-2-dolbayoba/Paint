@@ -12,12 +12,18 @@ internal class CurveLineWrapper : Movable, IFigure {
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
-        graphics.DrawCurve(pen, this.Points.ToArray());
+
+        if (this.Points.Count >= 3) {
+            graphics.DrawCurve(pen, this.Points.ToArray());
+        }
     }
 
     public void Hide(Graphics graphics) {
         var pen = new Pen(Color.White, this.PenSize);
-        graphics.DrawCurve(pen, this.Points.ToArray());
+
+        if (this.Points.Count >= 3) {
+            graphics.DrawCurve(pen, this.Points.ToArray());
+        }
     }
 
     public void DrawDash(Graphics graphics) {
@@ -25,7 +31,9 @@ internal class CurveLineWrapper : Movable, IFigure {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        graphics.DrawCurve(pen, this.Points.ToArray());
+        if (this.Points.Count >= 3) {
+            graphics.DrawCurve(pen, this.Points.ToArray());
+        }
     }
 
     public void DrawSelection(Graphics graphics) {
