@@ -10,6 +10,20 @@ internal class HashableFigure {
     public Point StartPoint { get; set; } = new(0, 0);
     public Point EndPoint { get; set; } = new(0, 0);
     public bool IsFilling { get; set; } = false;
+    public static Dictionary<FiguresEnum, WeakReference<IDrawable>> FigureTypes { get; set; } = [];
+    public HashableFigure() {
+        var rectangleWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(rectangleWrapper));
+        var ellipseWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(ellipseWrapper));
+        var curveLineWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(curveLineWrapper));
+        var straightLineleWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(straightLineleWrapper));
+        var textBoxWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(textBoxWrapper));
+    }
+    public FiguresEnum FigureType { get; set; }
 
     public string? Text { get; set; }
     public string? FontName { get; set; }
@@ -41,6 +55,7 @@ internal class HashableFigure {
                 StartPoint = figure.TopPoint,
                 EndPoint = figure.BotPoint,
                 IsFilling = figure.IsFilling,
+                FigureType = figure.FigureType
             };
 
             if (figure is TextBoxWrapper textBoxWrapper) {
@@ -67,18 +82,45 @@ internal class HashableFigure {
         return figureJsonList;
     }
 
-    //public static List<IFigure> Deserialize(List<HashableFigure> figures) {
-    //Figure figure = new Rect {
-    //    font = new Font(this.fontName, this.fontSize),
-    //    line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
-    //    back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
-    //    point1 = this.Point1,
-    //    point2 = this.Point2,
-    //    text = this.Text,
-    //    back_TF = this.BackTF,
-    //    mas_points = this.MasPoints.ToArray()
-    //};
+    public static List<IDrawable> Deserialize(List<HashableFigure> figures) {
+        var deserializedFigures = new List<IDrawable>();
+        IDrawable figureType;
 
-    //return figure;
-    //}
+        foreach (var figure in figures) {
+            IDrawable deserializedFigure;
+            //figureType = (IDrawable)FigureTypes[figure.FigureType].GetConstructors()[0].Invoke(null);
+            figureType = (IDrawable)FigureTypes[figure.FigureType];
+            if (figure.Points is not null ) {
+                deserializedFigure = new CurveLineWrapper {
+                    PenSize = figure.PenSize,
+                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
+                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
+                    TopPoint = figure.StartPoint,
+                    BotPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling,
+                    FigureType = figure.FigureType,
+                    Points = figure.Points
+                };            
+            }
+            if (figure.FontName is not null && figure.FontSize is not null && figure.Text is not null) {
+                deserializedFigure = new TextBoxWrapper {
+                    PenSize = figure.PenSize,
+                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
+                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
+                    TopPoint = figure.StartPoint,
+                    BotPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling,
+                    FigureType = figure.FigureType,
+                    Text = figure.Text,
+                    TextFont = new Font(figure.FontName, (float)figure.FontSize)
+                };
+            }
+
+            FigureTypes[FiguresEnum.Rectangle].TryGetTarget(out IDrawable? figure);
+
+            deserializedFigures.Add(deserializedFigure);
+        }
+
+        return figure;
+    }
 }
