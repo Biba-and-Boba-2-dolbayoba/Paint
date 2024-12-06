@@ -1,5 +1,6 @@
 ﻿using Paint.Interfaces;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace Paint.Serialization;
 
@@ -7,7 +8,14 @@ internal class HashableCanvas(Size size, List<HashableFigure> figures) {
     public Size CanvasSize { get; set; } = size;
     public List<HashableFigure> Figures { get; set; } = figures;
 
-    private static JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
+    private static JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions { 
+        WriteIndented = true, IncludeFields = true 
+    };
+    private static JsonTypeInfo<HashableFigure> Meta = JsonTypeInfo.CreateJsonTypeInfo<HashableFigure>(SerializerOptions);
+
+    public HashableCanvas() {
+        List<JsonPropertyInfo> properties = [];
+    }
 
     public static void SaveFile(Size size, List<IDrawable> figures) {
         try {
@@ -36,7 +44,8 @@ internal class HashableCanvas(Size size, List<HashableFigure> figures) {
 
         try {
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                string canvasData = File.ReadAllText(openFileDialog.FileName);
+                using var stream = File.OpenRead(openFileDialog.FileName);
+                JsonDocument canvasData = JsonDocument.Parse(stream);
                 canvas = JsonSerializer.Deserialize<HashableCanvas>(canvasData, SerializerOptions);
             }
         } catch (Exception ex) {
