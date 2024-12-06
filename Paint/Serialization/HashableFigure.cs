@@ -17,6 +17,15 @@ internal class HashableFigure {
 
     public List<Point>? Points { get; set; }
 
+    public static Dictionary<FiguresEnum, WeakReference<IDrawable>> FigureTypes { get; set; } = [];
+
+    public HashableFigure() {
+        var rectangleWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(rectangleWrapper));
+
+        
+    }
+
     public static List<HashableFigure> Serialize(List<IDrawable> figures) {
         List<HashableFigure> figureJsonList = [];
 
@@ -45,6 +54,14 @@ internal class HashableFigure {
             }
 
             figureJsonList.Add(figureJson);
+        }
+
+        IDrawable figureType = new RectangleWrapper();
+
+        FigureTypes[FiguresEnum.Rectangle].TryGetTarget(out IDrawable? figure);
+
+        if (figure is CurveLineWrapper curve) {
+            curve.Po
         }
 
         return figureJsonList;
