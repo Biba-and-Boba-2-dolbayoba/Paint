@@ -9,6 +9,15 @@ internal class HashableFigure {
     public Point StartPoint { get; set; } = new(0, 0);
     public Point EndPoint { get; set; } = new(0, 0);
     public bool IsFilling { get; set; } = false;
+    public Dictionary<FiguresEnum, Type> FigureClass { get; set; } = [];
+    public HashableFigure() {
+        FigureClass.Add(FiguresEnum.Rectangle, typeof(RectangleWrapper));
+        FigureClass.Add(FiguresEnum.Ellipse, typeof(EllipseWrapper));
+        FigureClass.Add(FiguresEnum.Ellipse, typeof(StraightLineWrapper));
+        FigureClass.Add(FiguresEnum.Ellipse, typeof(CurveLineWrapper));
+        FigureClass.Add(FiguresEnum.Ellipse, typeof(TextBoxWrapper));
+    }
+
 
     public string? Text { get; set; }
     public string? FontName { get; set; }
@@ -81,7 +90,7 @@ internal class HashableFigure {
                 };
             } else 
               {
-                deserializedFigure = new BaseFigure {
+                deserializedFigure = new  {
                     PenSize = figure.PenSize,
                     PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
                     BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
