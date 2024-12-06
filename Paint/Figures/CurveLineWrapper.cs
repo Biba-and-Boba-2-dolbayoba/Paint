@@ -1,12 +1,13 @@
-﻿namespace Paint.Figures;
+﻿using Paint.Interfaces;
 
-internal class CurveLineWrapper : Movable, IFigure {
+namespace Paint.Figures;
+
+internal class CurveLineWrapper : Movable, IDrawable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
 
     public List<Point> Points { get; set; } = [];
 
@@ -42,10 +43,10 @@ internal class CurveLineWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -63,7 +64,7 @@ internal class CurveLineWrapper : Movable, IFigure {
             );
 
             double sqrt = Math.Sqrt(
-                Math.Pow(end.Y - start.Y, 2) + Math.Pow(end.X - this.StartPoint.X, 2)
+                Math.Pow(end.Y - start.Y, 2) + Math.Pow(end.X - this.TopPoint.X, 2)
             );
 
             double distance = abs / sqrt;

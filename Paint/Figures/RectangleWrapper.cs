@@ -1,21 +1,22 @@
-﻿namespace Paint.Figures;
+﻿using Paint.Interfaces;
 
-internal class RectangleWrapper : Movable, IFigure {
+namespace Paint.Figures;
+
+internal class RectangleWrapper : Movable, IDrawable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         if (this.IsFilling) {
@@ -30,10 +31,10 @@ internal class RectangleWrapper : Movable, IFigure {
         var pen = new Pen(Color.White, this.PenSize);
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -45,10 +46,10 @@ internal class RectangleWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -60,10 +61,10 @@ internal class RectangleWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -71,10 +72,10 @@ internal class RectangleWrapper : Movable, IFigure {
 
     public bool ContainsPoint(Point point) {
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         return rectangle.Contains(point);

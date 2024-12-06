@@ -1,10 +1,10 @@
-﻿using Paint.Figures;
+﻿using Paint.Interfaces;
 
 namespace Paint.States;
 
 internal class SelectState : IState, ISelection {
-    public List<IFigure> Figures { get; set; } = [];
-    public List<IFigure> SelectedFigures { get; set; } = [];
+    public List<IDrawable> Figures { get; set; } = [];
+    public List<IDrawable> SelectedFigures { get; set; } = [];
 
     public bool IsMoving { get; set; } = false;
     public Size CanvasSize { get; set; } = new Size(800, 600);
@@ -16,7 +16,7 @@ internal class SelectState : IState, ISelection {
         if (e.Button == MouseButtons.Left) {
             var point = new Point(e.X, e.Y);
             bool isClickOnFigure = false;
-            foreach (IFigure figure in this.Figures) {
+            foreach (IDrawable figure in this.Figures) {
                 if (figure.ContainsPoint(point)) {
                     isClickOnFigure = true;
                     if (this.SelectedFigures.Contains(figure)) {
@@ -30,7 +30,7 @@ internal class SelectState : IState, ISelection {
             }
 
             if (!isClickOnFigure) {
-                foreach (IFigure figure in this.SelectedFigures) {
+                foreach (IDrawable figure in this.SelectedFigures) {
                     this.Figures.Add(figure);
                 }
 

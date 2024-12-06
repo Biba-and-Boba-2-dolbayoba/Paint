@@ -1,4 +1,5 @@
 ﻿using Paint.Figures;
+using Paint.Interfaces;
 
 namespace Paint.Serialization;
 
@@ -25,10 +26,10 @@ internal class HashableFigure {
 
     public List<Point>? Points { get; set; }
 
-    public static List<HashableFigure> Serialize(List<IFigure> figures) {
+    public static List<HashableFigure> Serialize(List<IDrawable> figures) {
         List<HashableFigure> figureJsonList = [];
 
-        foreach (IFigure figure in figures) {
+        foreach (IDrawable figure in figures) {
             var figureJson = new HashableFigure() {
                 PenSize = figure.PenSize,
                 PenColor = Convert.ToHexString(
@@ -37,8 +38,8 @@ internal class HashableFigure {
                 BrushColor = Convert.ToHexString(
                     [figure.BrushColor.A, figure.BrushColor.R, figure.BrushColor.G, figure.BrushColor.B]
                 ),
-                StartPoint = figure.StartPoint,
-                EndPoint = figure.EndPoint,
+                StartPoint = figure.TopPoint,
+                EndPoint = figure.BotPoint,
                 IsFilling = figure.IsFilling,
             };
 
@@ -103,6 +104,6 @@ internal class HashableFigure {
             deserializedFigures.Add(deserializedFigure);
         }
 
-        return deserializedFigures;
+        //return figure;
     }
 }
