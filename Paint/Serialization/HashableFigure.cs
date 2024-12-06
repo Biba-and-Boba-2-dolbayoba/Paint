@@ -10,15 +10,20 @@ internal class HashableFigure {
     public Point StartPoint { get; set; } = new(0, 0);
     public Point EndPoint { get; set; } = new(0, 0);
     public bool IsFilling { get; set; } = false;
-    public Dictionary<FiguresEnum, Type> FigureType { get; set; } = [];
+    public static Dictionary<FiguresEnum, WeakReference<IDrawable>> FigureTypes { get; set; } = [];
     public HashableFigure() {
-        FigureType.Add(FiguresEnum.Rectangle, typeof(RectangleWrapper));
-        FigureType.Add(FiguresEnum.Ellipse, typeof(EllipseWrapper));
-        FigureType.Add(FiguresEnum.Ellipse, typeof(StraightLineWrapper));
-        FigureType.Add(FiguresEnum.Ellipse, typeof(CurveLineWrapper));
-        FigureType.Add(FiguresEnum.Ellipse, typeof(TextBoxWrapper));
+        var rectangleWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(rectangleWrapper));
+        var ellipseWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(ellipseWrapper));
+        var curveLineWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(curveLineWrapper));
+        var straightLineleWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(straightLineleWrapper));
+        var textBoxWrapper = new RectangleWrapper();
+        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(textBoxWrapper));
     }
-
+    public FiguresEnum FigureType { get; set; }
 
     public string? Text { get; set; }
     public string? FontName { get; set; }
@@ -41,6 +46,7 @@ internal class HashableFigure {
                 StartPoint = figure.TopPoint,
                 EndPoint = figure.BotPoint,
                 IsFilling = figure.IsFilling,
+                FigureType = figure.FigureType
             };
 
             if (figure is TextBoxWrapper textBoxWrapper) {
@@ -59,53 +65,45 @@ internal class HashableFigure {
         return figureJsonList;
     }
 
-    public static List<IFigure> Deserialize(List<HashableFigure> figures) {
-        var deserializedFigures = new List<IFigure>();
-        IFigure figureType;
+    public static List<IDrawable> Deserialize(List<HashableFigure> figures) {
+        var deserializedFigures = new List<IDrawable>();
+        IDrawable figureType;
 
         foreach (var figure in figures) {
-            IFigure deserializedFigure;
-            figureType = FigureType[figure.FigureType];
-            
-            if (!string.IsNullOrEmpty(figure.Text)) 
-            {
-                deserializedFigure = new TextBoxWrapper {
-                    Text = figure.Text,
-                    TextFont = new Font(figure.FontName ?? "Arial", figure.FontSize ?? 12),
-                    PenSize = figure.PenSize,
-                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
-                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
-                    StartPoint = figure.StartPoint,
-                    EndPoint = figure.EndPoint,
-                    IsFilling = figure.IsFilling
-
-                };
-            } else if (figure.Points != null && figure.Points.Count > 0) 
-              {
+            IDrawable deserializedFigure;
+            //figureType = (IDrawable)FigureTypes[figure.FigureType].GetConstructors()[0].Invoke(null);
+            figureType = (IDrawable)FigureTypes[figure.FigureType];
+            if (figure.Points is not null ) {
                 deserializedFigure = new CurveLineWrapper {
-                    Points = figure.Points,
                     PenSize = figure.PenSize,
                     PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
                     BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
-                    StartPoint = figure.StartPoint,
-                    EndPoint = figure.EndPoint,
-                    IsFilling = figure.IsFilling
-                };
-            } else 
-              {
-                deserializedFigure = new  {
+                    TopPoint = figure.StartPoint,
+                    BotPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling,
+                    FigureType = figure.FigureType,
+                    Points = figure.Points
+                };            
+            }
+            if (figure.FontName is not null && figure.FontSize is not null && figure.Text is not null) {
+                deserializedFigure = new TextBoxWrapper {
                     PenSize = figure.PenSize,
                     PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
                     BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
-                    StartPoint = figure.StartPoint,
-                    EndPoint = figure.EndPoint,
-                    IsFilling = figure.IsFilling
+                    TopPoint = figure.StartPoint,
+                    BotPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling,
+                    FigureType = figure.FigureType,
+                    Text = figure.Text,
+                    TextFont = new Font(figure.FontName, (float)figure.FontSize)
                 };
             }
+
+            FigureTypes[FiguresEnum.Rectangle].TryGetTarget(out IDrawable? figure);
 
             deserializedFigures.Add(deserializedFigure);
         }
 
-        //return figure;
+        return figure;
     }
 }
