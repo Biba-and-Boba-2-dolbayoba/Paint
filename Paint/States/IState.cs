@@ -1,10 +1,10 @@
 ﻿namespace Paint.States;
 
-public interface ICanvasSizeDepended {
+internal interface ICanvasSizeDepended {
     public Size CanvasSize { get; set; }
 }
 
-public interface IState {
+internal interface IState {
     public void MouseUpHandler(object sender, MouseEventArgs e);
 
     public void MouseMoveHandler(object sender, MouseEventArgs e);

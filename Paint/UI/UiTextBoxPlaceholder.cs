@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace Paint.UI;
 
-public partial class UiTextBoxPlaceholder : TextBox {
+internal partial class UiTextBoxPlaceholder : TextBox {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public TextBoxWrapper? Wrapper { get; set; }
 

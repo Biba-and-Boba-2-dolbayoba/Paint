@@ -3,7 +3,7 @@ using Paint.UI;
 
 namespace Paint.States;
 
-public class DrawState : IState, IDrawing {
+internal class DrawState : IState, IDrawing {
     public bool IsDrawing { get; set; } = false;
 
     public Point StartPoint { get; set; }
@@ -56,7 +56,7 @@ public class DrawState : IState, IDrawing {
                 };
 
                 if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(null, wrapper);
+                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
 
@@ -210,7 +210,7 @@ public class DrawState : IState, IDrawing {
         if (this.FigureType == FiguresEnum.TextBox) {
             this.EndPoint = new Point(e.X, e.Y);
 
-            var wrapperWrapper = new TextBoxWrapper() {
+            var wrapper = new TextBoxWrapper() {
                 StartPoint = this.StartPoint,
                 EndPoint = this.EndPoint,
                 PenSize = this.PenSize,
@@ -220,19 +220,24 @@ public class DrawState : IState, IDrawing {
                 TextFont = this.TextFont
             };
 
-            var wrapper = new UiTextBoxPlaceholder() {
+            var placeholder = new UiTextBoxPlaceholder() {
                 Parent = this.ParentReference,
+                Size = new(this.EndPoint.X - this.StartPoint.X, this.EndPoint.Y - this.StartPoint.Y),
                 Font = this.TextFont,
                 Multiline = true,
                 ForeColor = this.PenColor,
                 Location = this.StartPoint,
                 Width = this.EndPoint.X - this.StartPoint.X,
                 Height = this.EndPoint.Y - this.StartPoint.Y,
-                Wrapper = wrapperWrapper,
+                Wrapper = wrapper,
                 GraphicsBuffer = this.GraphicsBuffer
             };
 
-            wrapper.Show();
+            placeholder.Show();
+
+            if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                this.Figures.Add(wrapper);
+            }
         }
 
         this.IsDrawing = false;

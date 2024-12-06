@@ -3,7 +3,7 @@
 namespace Paint;
 
 [Serializable()]
-public partial class UiCreateCanvas : Form {
+internal partial class UiCreateCanvas : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Size CanvasSize { get; private set; } = new Size(320, 240);
 

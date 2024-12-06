@@ -2,7 +2,7 @@
 
 namespace Paint.States;
 
-public class SelectState : IState, ISelection {
+internal class SelectState : IState, ISelection {
     public List<IFigure> Figures { get; set; } = [];
     public List<IFigure> SelectedFigures { get; set; } = [];
 
@@ -15,29 +15,29 @@ public class SelectState : IState, ISelection {
 
         if (e.Button == MouseButtons.Left) {
             var point = new Point(e.X, e.Y);
-            bool isPointUsed;
+            bool isClickOnFigure = false;
             foreach (IFigure figure in this.Figures) {
-                isPointUsed = false;
-                if (figure.ContainsPoint(point) && !isPointUsed) {
+                if (figure.ContainsPoint(point)) {
+                    isClickOnFigure = true;
                     if (this.SelectedFigures.Contains(figure)) {
                         _ = this.SelectedFigures.Remove(figure);
+                        continue;
                     } else {
                         this.SelectedFigures.Add(figure);
+                        continue;
                     }
-
-                    isPointUsed = true;
-                } else {
-                    this.SelectedFigures.Clear();
-                }
-
-                if (isPointUsed) {
-                    break;
                 }
             }
 
-            if (this.SelectedFigures.Count == 1 && !this.IsMoving) {
-                this.IsMoving = true;
+            if (!isClickOnFigure) {
+                foreach (IFigure figure in this.SelectedFigures) {
+                    this.Figures.Add(figure);
+                }
+
+                this.SelectedFigures.Clear();
             }
+
+            this.IsMoving = true;
         }
     }
 
@@ -54,8 +54,6 @@ public class SelectState : IState, ISelection {
     }
 
     public void MouseUpHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigures.Count == 1 && this.IsMoving) {
-            this.IsMoving = false;
-        }
+        this.IsMoving = false;
     }
 }

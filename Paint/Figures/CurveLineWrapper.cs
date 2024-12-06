@@ -1,10 +1,12 @@
 ﻿namespace Paint.Figures;
 
-public class CurveLineWrapper : Movable, IFigure {
+internal class CurveLineWrapper : Movable, IFigure {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
 
     public List<Point> Points { get; set; } = [];
 

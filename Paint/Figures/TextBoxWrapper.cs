@@ -1,10 +1,12 @@
 ﻿namespace Paint.Figures;
 
-public class TextBoxWrapper : Movable, IFigure {
+internal class TextBoxWrapper : Movable, IFigure {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
 
     public string Text { get; set; } = "";
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
@@ -51,8 +53,6 @@ public class TextBoxWrapper : Movable, IFigure {
         );
 
         graphics.DrawRectangle(pen, rectangle);
-
-        this.Hide(graphics);
     }
 
     public void DrawSelection(Graphics graphics) {

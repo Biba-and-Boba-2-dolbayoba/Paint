@@ -1,6 +1,6 @@
 ﻿namespace Paint.Figures;
 
-public enum FiguresEnum {
+internal enum FiguresEnum {
     Rectangle,
     Ellipse,
     Line,
@@ -8,11 +8,13 @@ public enum FiguresEnum {
     TextBox
 }
 
-public interface IFigure : IMovable {
+internal interface IFigure : IMovable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
 
     public void Draw(Graphics graphics);
 

@@ -2,7 +2,7 @@
 
 namespace Paint;
 
-public partial class UiBrushSize : Form {
+internal partial class UiBrushSize : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public Color PenColor { get; set; }
 

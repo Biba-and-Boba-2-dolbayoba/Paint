@@ -1,10 +1,12 @@
 ﻿namespace Paint.Figures;
 
-public class RectangleWrapper : Movable, IFigure {
+internal class RectangleWrapper : Movable, IFigure {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);

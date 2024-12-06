@@ -1,11 +1,12 @@
 ﻿using Paint.Figures;
 using Paint.States;
+using Paint.Serialization;
 using System.ComponentModel;
 
 namespace Paint;
 
 [Serializable()]
-public partial class UiCanvasWindow : Form {
+internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string? CanvasName { get; set; } = null;
 
@@ -15,9 +16,7 @@ public partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IFigure> Figures { get; set; } = [];
 
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public Tuple<IFigure?, IFigure?> DashFigures { get; set; } = new(null, null);
-
+    private Tuple<IFigure?, IFigure?> DashFigures { get; set; } = new(null, null);
     private List<IFigure> SelectedFigures { get; set; } = [];
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
@@ -108,6 +107,7 @@ public partial class UiCanvasWindow : Form {
         if (this.State is SelectState selection) {
             selection.MouseDownHandler(sender, e);
 
+            this.Figures = selection.Figures;
             this.SelectedFigures = selection.SelectedFigures;
         }
 
@@ -122,7 +122,7 @@ public partial class UiCanvasWindow : Form {
             return;
         }
 
-        RerenderAll();
+        this.RerenderAll();
     }
 
     private void OnMouseMove(object sender, MouseEventArgs e) {
@@ -148,7 +148,7 @@ public partial class UiCanvasWindow : Form {
             return;
         }
 
-        RerenderAll();
+        this.RerenderAll();
     }
 
     private void OnMouseUp(object sender, MouseEventArgs e) {
@@ -170,37 +170,25 @@ public partial class UiCanvasWindow : Form {
             return;
         }
 
-        RerenderAll();
+        this.RerenderAll();
     }
 
     private void OnLoad(object sender, EventArgs e) {
-        var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-        var backgroundColor = new SolidBrush(Color.White);
-        this.UpdateGraphicsBuffer(background);
-
-        if (this.GraphicsBuffer is not null) {
-            Graphics graphics = this.GraphicsBuffer.Graphics;
-            graphics.FillRectangle(backgroundColor, background);
-            this.DrawFigures(this.GraphicsBuffer);
-        }
+        this.Size = new Size(this.Size.Width + 1, this.Size.Height + 1);
+        this.Size = new Size(this.Size.Width - 1, this.Size.Height - 1);
     }
 
     private void OnClose(object sender, FormClosingEventArgs e) {
-        //if (this.Figures.Count > 0) {
-        //    DialogResult response = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
+        if (this.Figures.Count > 0) {
+            DialogResult response = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
 
-        //    if (response == DialogResult.Yes) {
-        //        UiMainWindow.SaveFile(this);
-        //    } else if (response == DialogResult.Cancel) {
-        //        e.Cancel = true;
-        //    }
-        //}
+            if (response == DialogResult.Yes) {
+                HashableCanvas.SaveFile(this.Size, this.Name, this.Figures);
+            } else if (response == DialogResult.Cancel) {
+                e.Cancel = true;
+            }
+        }
     }
-
-    //private void OnPaint(object sender, PaintEventArgs e) {
-    //    var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-    //    this.UpdateGraphicsBuffer(background);
-    //}
 
     private void OnResize(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent) {

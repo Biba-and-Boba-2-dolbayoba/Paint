@@ -2,7 +2,7 @@
 
 namespace Paint.States;
 
-public interface IDrawing : ICanvasSizeDepended {
+internal interface IDrawing : ICanvasSizeDepended {
     public bool IsDrawing { get; set; }
 
     public Point StartPoint { get; set; }
