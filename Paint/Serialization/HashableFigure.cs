@@ -10,13 +10,13 @@ internal class HashableFigure {
     public Point StartPoint { get; set; } = new(0, 0);
     public Point EndPoint { get; set; } = new(0, 0);
     public bool IsFilling { get; set; } = false;
-    public Dictionary<FiguresEnum, Type> FigureClass { get; set; } = [];
+    public Dictionary<FiguresEnum, Type> FigureType { get; set; } = [];
     public HashableFigure() {
-        FigureClass.Add(FiguresEnum.Rectangle, typeof(RectangleWrapper));
-        FigureClass.Add(FiguresEnum.Ellipse, typeof(EllipseWrapper));
-        FigureClass.Add(FiguresEnum.Ellipse, typeof(StraightLineWrapper));
-        FigureClass.Add(FiguresEnum.Ellipse, typeof(CurveLineWrapper));
-        FigureClass.Add(FiguresEnum.Ellipse, typeof(TextBoxWrapper));
+        FigureType.Add(FiguresEnum.Rectangle, typeof(RectangleWrapper));
+        FigureType.Add(FiguresEnum.Ellipse, typeof(EllipseWrapper));
+        FigureType.Add(FiguresEnum.Ellipse, typeof(StraightLineWrapper));
+        FigureType.Add(FiguresEnum.Ellipse, typeof(CurveLineWrapper));
+        FigureType.Add(FiguresEnum.Ellipse, typeof(TextBoxWrapper));
     }
 
 
@@ -61,10 +61,11 @@ internal class HashableFigure {
 
     public static List<IFigure> Deserialize(List<HashableFigure> figures) {
         var deserializedFigures = new List<IFigure>();
+        IFigure figureType;
 
         foreach (var figure in figures) {
             IFigure deserializedFigure;
-
+            figureType = FigureType[figure.FigureType];
             
             if (!string.IsNullOrEmpty(figure.Text)) 
             {
@@ -77,6 +78,7 @@ internal class HashableFigure {
                     StartPoint = figure.StartPoint,
                     EndPoint = figure.EndPoint,
                     IsFilling = figure.IsFilling
+
                 };
             } else if (figure.Points != null && figure.Points.Count > 0) 
               {
