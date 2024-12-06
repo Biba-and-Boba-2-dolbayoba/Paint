@@ -122,7 +122,6 @@ namespace Paint
             // 
             // SaveFileToolButton
             // 
-            this.SaveFileToolButton.Enabled = false;
             this.SaveFileToolButton.Name = "SaveFileToolButton";
             this.SaveFileToolButton.Size = new Size(180, 22);
             this.SaveFileToolButton.Text = "Сохранить";
@@ -130,7 +129,6 @@ namespace Paint
             // 
             // SaveFileAsToolButton
             // 
-            this.SaveFileAsToolButton.Enabled = false;
             this.SaveFileAsToolButton.Name = "SaveFileAsToolButton";
             this.SaveFileAsToolButton.Size = new Size(180, 22);
             this.SaveFileAsToolButton.Text = "Сохранить как...";
@@ -146,35 +144,35 @@ namespace Paint
             // BrushColorToolButton
             // 
             this.BrushColorToolButton.Name = "BrushColorToolButton";
-            this.BrushColorToolButton.Size = new Size(210, 22);
+            this.BrushColorToolButton.Size = new Size(211, 22);
             this.BrushColorToolButton.Text = "Изменить цвет кисти";
             this.BrushColorToolButton.Click += this.PenColorButtonClick;
             // 
             // BrushSizeToolButton
             // 
             this.BrushSizeToolButton.Name = "BrushSizeToolButton";
-            this.BrushSizeToolButton.Size = new Size(210, 22);
+            this.BrushSizeToolButton.Size = new Size(211, 22);
             this.BrushSizeToolButton.Text = "Изменить размер кисти";
             this.BrushSizeToolButton.Click += this.PenSizeButtonClick;
             // 
             // FillingColorToolButton
             // 
             this.FillingColorToolButton.Name = "FillingColorToolButton";
-            this.FillingColorToolButton.Size = new Size(210, 22);
+            this.FillingColorToolButton.Size = new Size(211, 22);
             this.FillingColorToolButton.Text = "Изменить цвет заливки";
             this.FillingColorToolButton.Click += this.BrushColorButtonClick;
             // 
             // CanvasSizeToolButton
             // 
             this.CanvasSizeToolButton.Name = "CanvasSizeToolButton";
-            this.CanvasSizeToolButton.Size = new Size(210, 22);
+            this.CanvasSizeToolButton.Size = new Size(211, 22);
             this.CanvasSizeToolButton.Text = "Изменить размер холста";
             this.CanvasSizeToolButton.Click += this.CanvasSizeButtonClick;
             // 
             // FontToolButton
             // 
             this.FontToolButton.Name = "FontToolButton";
-            this.FontToolButton.Size = new Size(210, 22);
+            this.FontToolButton.Size = new Size(211, 22);
             this.FontToolButton.Text = "Изменить шрифт";
             this.FontToolButton.Click += this.FontButtonClick;
             // 
