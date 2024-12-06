@@ -1,4 +1,4 @@
-﻿using Paint.Figures;
+﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
 using System.ComponentModel;
@@ -14,10 +14,10 @@ internal partial class UiCanvasWindow : Form {
     public IState State { get; set; } = new SelectState();
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public List<IFigure> Figures { get; set; } = [];
+    public List<IDrawable> Figures { get; set; } = [];
 
-    private Tuple<IFigure?, IFigure?> DashFigures { get; set; } = new(null, null);
-    private List<IFigure> SelectedFigures { get; set; } = [];
+    private Tuple<IDrawable?, IDrawable?> DashFigures { get; set; } = new(null, null);
+    private List<IDrawable> SelectedFigures { get; set; } = [];
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
     public UiCanvasWindow() {
@@ -52,7 +52,7 @@ internal partial class UiCanvasWindow : Form {
 
     private void DeleteSelectedFigures() {
         if (this.SelectedFigures.Count > 0) {
-            foreach (IFigure figure in this.SelectedFigures) {
+            foreach (IDrawable figure in this.SelectedFigures) {
                 _ = this.Figures.Remove(figure);
             }
 
@@ -67,14 +67,14 @@ internal partial class UiCanvasWindow : Form {
             this.DashFigures.Item1?.Hide(graphics);
             this.DashFigures.Item2?.DrawDash(graphics);
 
-            foreach (IFigure figure in this.Figures) {
+            foreach (IDrawable figure in this.Figures) {
                 figure.Draw(graphics);
             }
         }
 
         if (this.State is SelectState) {
             if (this.SelectedFigures.Count > 0) {
-                foreach (IFigure figure in this.Figures) {
+                foreach (IDrawable figure in this.Figures) {
                     if (this.SelectedFigures.Contains(figure)) {
                         figure.DrawSelection(graphics);
                     } else {

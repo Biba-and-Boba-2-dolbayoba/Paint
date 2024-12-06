@@ -1,4 +1,4 @@
-﻿using Paint.Figures;
+﻿using Paint.Interfaces;
 using System.Text.Json;
 
 namespace Paint.Serialization;
@@ -10,7 +10,7 @@ internal class HashableCanvas(Size size, string? name, List<HashableFigure> figu
 
     private static JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions { WriteIndented = true };
 
-    public static void SaveFile(Size size, string? name, List<IFigure> figures) {
+    public static void SaveFile(Size size, string? name, List<IDrawable> figures) {
         try {
             var canvasData = new HashableCanvas(size, name, HashableFigure.Serialize(figures));
             string json = JsonSerializer.Serialize(canvasData, SerializerOptions);

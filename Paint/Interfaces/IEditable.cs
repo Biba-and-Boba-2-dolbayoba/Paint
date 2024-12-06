@@ -1,4 +1,4 @@
-﻿namespace Paint.States;
+﻿namespace Paint.Interfaces;
 
 internal interface IEditable {
 

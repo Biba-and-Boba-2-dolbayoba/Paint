@@ -1,4 +1,6 @@
-﻿namespace Paint.States;
+﻿using Paint.Interfaces;
+
+namespace Paint.States;
 
 internal class EditState : IState {
     public void MouseDownHandler(object sender, MouseEventArgs e) {

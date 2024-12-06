@@ -1,4 +1,5 @@
 ﻿using Paint.Figures;
+using Paint.Interfaces;
 using Paint.UI;
 
 namespace Paint.States;
@@ -6,8 +7,8 @@ namespace Paint.States;
 internal class DrawState : IState, IDrawing {
     public bool IsDrawing { get; set; } = false;
 
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
+    public Point TopPoint { get; set; }
+    public Point BotPoint { get; set; }
     public List<Point> Points { get; set; } = [];
 
     public Size CanvasSize { get; set; }
@@ -21,8 +22,8 @@ internal class DrawState : IState, IDrawing {
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
 
     public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
-    public Tuple<IFigure?, IFigure?> DashFigures { get; set; } = new(null, null);
-    public List<IFigure> Figures { get; set; } = [];
+    public Tuple<IDrawable?, IDrawable?> DashFigures { get; set; } = new(null, null);
+    public List<IDrawable> Figures { get; set; } = [];
 
     public UiCanvasWindow? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
@@ -31,11 +32,11 @@ internal class DrawState : IState, IDrawing {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
             this.Points.Clear();
 
-            this.StartPoint = new Point(e.X, e.Y);
-            this.EndPoint = new Point(e.X, e.Y);
+            this.TopPoint = new Point(e.X, e.Y);
+            this.BotPoint = new Point(e.X, e.Y);
 
-            this.Points.Add(this.StartPoint);
-            this.Points.Add(this.EndPoint);
+            this.Points.Add(this.TopPoint);
+            this.Points.Add(this.BotPoint);
 
             this.IsDrawing = true;
         }
@@ -44,64 +45,64 @@ internal class DrawState : IState, IDrawing {
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
             if (this.FigureType == FiguresEnum.Rectangle) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new RectangleWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.Ellipse) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new EllipseWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.Line) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new StraightLineWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.CurveLine) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
-                this.Points.Add(this.EndPoint);
+                this.Points.Add(this.BotPoint);
 
                 var wrapper = new CurveLineWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     Points = this.Points,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
@@ -109,24 +110,24 @@ internal class DrawState : IState, IDrawing {
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.TextBox) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new TextBoxWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.DashFigures = new(this.DashFigures.Item2, wrapper);
                 }
             }
@@ -136,63 +137,63 @@ internal class DrawState : IState, IDrawing {
     public void MouseUpHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
             if (this.FigureType == FiguresEnum.Rectangle) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new RectangleWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.Ellipse) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new EllipseWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.Line) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new StraightLineWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
                     IsFilling = this.IsFilling
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.CurveLine) {
-                this.EndPoint = new Point(e.X, e.Y);
-                this.Points.Add(this.EndPoint);
+                this.BotPoint = new Point(e.X, e.Y);
+                this.Points.Add(this.BotPoint);
 
                 var wrapper = new CurveLineWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
@@ -200,17 +201,17 @@ internal class DrawState : IState, IDrawing {
                     Points = this.Points
                 };
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
             if (this.FigureType == FiguresEnum.TextBox) {
-                this.EndPoint = new Point(e.X, e.Y);
+                this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new TextBoxWrapper() {
-                    StartPoint = this.StartPoint,
-                    EndPoint = this.EndPoint,
+                    TopPoint = this.TopPoint,
+                    BotPoint = this.BotPoint,
                     PenSize = this.PenSize,
                     PenColor = this.PenColor,
                     BrushColor = this.BrushColor,
@@ -220,25 +221,25 @@ internal class DrawState : IState, IDrawing {
 
                 var placeholder = new UiTextBoxPlaceholder() {
                     Parent = this.ParentReference,
-                    Size = new(this.EndPoint.X - this.StartPoint.X, this.EndPoint.Y - this.StartPoint.Y),
+                    Size = new(this.BotPoint.X - this.TopPoint.X, this.BotPoint.Y - this.TopPoint.Y),
                     Font = this.TextFont,
                     Multiline = true,
                     ForeColor = this.PenColor,
-                    Location = this.StartPoint,
-                    Width = this.EndPoint.X - this.StartPoint.X,
-                    Height = this.EndPoint.Y - this.StartPoint.Y,
+                    Location = this.TopPoint,
+                    Width = this.BotPoint.X - this.TopPoint.X,
+                    Height = this.BotPoint.Y - this.TopPoint.Y,
                     Wrapper = wrapper,
                     GraphicsBuffer = this.GraphicsBuffer
                 };
 
                 placeholder.Show();
 
-                if (this.EndPoint.X < this.CanvasSize.Width && this.EndPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
-            DashFigures = new(null, null);
+            this.DashFigures = new(null, null);
             this.IsDrawing = false;
         }
     }

@@ -1,12 +1,13 @@
-﻿namespace Paint.Figures;
+﻿using Paint.Interfaces;
 
-internal class TextBoxWrapper : Movable, IFigure {
+namespace Paint.Figures;
+
+internal class TextBoxWrapper : Movable, IDrawable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.TextBox;
 
     public string Text { get; set; } = "";
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
@@ -15,10 +16,10 @@ internal class TextBoxWrapper : Movable, IFigure {
         var pen = new Pen(Color.Transparent, this.PenSize);
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         Brush brush = new SolidBrush(this.PenColor);
@@ -31,10 +32,10 @@ internal class TextBoxWrapper : Movable, IFigure {
         var pen = new Pen(Color.White, this.PenSize);
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -46,10 +47,10 @@ internal class TextBoxWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -61,10 +62,10 @@ internal class TextBoxWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -72,10 +73,10 @@ internal class TextBoxWrapper : Movable, IFigure {
 
     public bool ContainsPoint(Point point) {
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         return rectangle.Contains(point);

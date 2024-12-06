@@ -1,4 +1,5 @@
 ﻿using Paint.Figures;
+using Paint.Interfaces;
 
 namespace Paint.Serialization;
 
@@ -16,10 +17,10 @@ internal class HashableFigure {
 
     public List<Point>? Points { get; set; }
 
-    public static List<HashableFigure> Serialize(List<IFigure> figures) {
+    public static List<HashableFigure> Serialize(List<IDrawable> figures) {
         List<HashableFigure> figureJsonList = [];
 
-        foreach (IFigure figure in figures) {
+        foreach (IDrawable figure in figures) {
             var figureJson = new HashableFigure() {
                 PenSize = figure.PenSize,
                 PenColor = Convert.ToHexString(
@@ -28,8 +29,8 @@ internal class HashableFigure {
                 BrushColor = Convert.ToHexString(
                     [figure.BrushColor.A, figure.BrushColor.R, figure.BrushColor.G, figure.BrushColor.B]
                 ),
-                StartPoint = figure.StartPoint,
-                EndPoint = figure.EndPoint,
+                StartPoint = figure.TopPoint,
+                EndPoint = figure.BotPoint,
                 IsFilling = figure.IsFilling,
             };
 
@@ -49,18 +50,18 @@ internal class HashableFigure {
         return figureJsonList;
     }
 
-    public static List<IFigure> Deserialize(List<HashableFigure> figures) {
-        //Figure figure = new Rect {
-        //    font = new Font(this.fontName, this.fontSize),
-        //    line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
-        //    back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
-        //    point1 = this.Point1,
-        //    point2 = this.Point2,
-        //    text = this.Text,
-        //    back_TF = this.BackTF,
-        //    mas_points = this.MasPoints.ToArray()
-        //};
+    //public static List<IFigure> Deserialize(List<HashableFigure> figures) {
+    //Figure figure = new Rect {
+    //    font = new Font(this.fontName, this.fontSize),
+    //    line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
+    //    back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
+    //    point1 = this.Point1,
+    //    point2 = this.Point2,
+    //    text = this.Text,
+    //    back_TF = this.BackTF,
+    //    mas_points = this.MasPoints.ToArray()
+    //};
 
-        //return figure;
-    }
+    //return figure;
+    //}
 }

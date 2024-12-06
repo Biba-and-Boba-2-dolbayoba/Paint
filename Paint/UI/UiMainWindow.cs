@@ -1,4 +1,4 @@
-﻿using Paint.Figures;
+﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
 
@@ -34,7 +34,7 @@ internal partial class UiMainWindow : Form {
         };
     }
 
-    private bool IsWindowOpen() {
+    private bool IsCanvasOpen() {
         return (this.ActiveMdiChild as UiCanvasWindow) != null;
     }
 
@@ -45,7 +45,7 @@ internal partial class UiMainWindow : Form {
     public void UpdateCanvasInfo(Size canvasSize) {
         this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
 
-        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDepended state) {
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDepends state) {
             state.CanvasSize = canvasSize;
         }
     }
@@ -122,8 +122,8 @@ internal partial class UiMainWindow : Form {
     }
 
     private void FileToolButtonClick(object sender, EventArgs e) {
-        this.SaveFileToolButton.Enabled = this.IsWindowOpen();
-        this.SaveFileAsToolButton.Enabled = this.IsWindowOpen();
+        this.SaveFileToolButton.Enabled = this.IsCanvasOpen();
+        this.SaveFileAsToolButton.Enabled = this.IsCanvasOpen();
     }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
@@ -131,6 +131,7 @@ internal partial class UiMainWindow : Form {
         _ = sizeDialog.ShowDialog(this);
 
         this.CanvasSize = sizeDialog.CanvasSize;
+        this.CanvasPlaceholder.Size = this.CanvasSize;
 
         this.DrawingToolButtonClick(sender, e);
 
@@ -301,34 +302,24 @@ internal partial class UiMainWindow : Form {
     }
 
     private void DrawingToolButtonClick(object sender, EventArgs e) {
-        this.RectangleButton.Checked = false;
-        this.EllipseButton.Checked = false;
-        this.StraightLineButton.Checked = false;
-        this.CurveLineButton.Checked = false;
-        this.TextButton.Checked = false;
+        this.FigureType = FiguresEnum.Rectangle;
+        this.CheckFigureButton(this.FigureType);
 
         this.SelectionButton.Checked = false;
-
-        this.RectangleToolButton.Checked = false;
-        this.EllipseToolButton.Checked = false;
-        this.StraightLineToolButton.Checked = false;
-        this.CurveLineToolButton.Checked = false;
-        this.TextToolButton.Checked = false;
-
         this.SelectionToolButton.Checked = false;
         this.DrawingToolButton.Checked = true;
 
-        if (this.ActiveMdiChild is UiCanvasWindow children) {
+        if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new DrawState() {
                 PenColor = this.PenColor,
                 PenSize = this.PenSize,
                 BrushColor = this.BrushColor,
                 TextFont = this.TextFont,
                 FigureType = this.FigureType,
-                Figures = children.Figures,
+                Figures = child.Figures,
             };
 
-            children.State = state;
+            child.State = state;
         }
     }
 }

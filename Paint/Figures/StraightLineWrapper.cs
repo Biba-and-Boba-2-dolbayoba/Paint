@@ -1,21 +1,22 @@
-﻿namespace Paint.Figures;
+﻿using Paint.Interfaces;
 
-internal class StraightLineWrapper : Movable, IFigure {
+namespace Paint.Figures;
+
+internal class StraightLineWrapper : Movable, IDrawable {
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public Point StartPoint { get; set; }
-    public Point EndPoint { get; set; }
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.Line;
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
-        graphics.DrawLine(pen, this.StartPoint, this.EndPoint);
+        graphics.DrawLine(pen, this.TopPoint, this.BotPoint);
     }
 
     public void Hide(Graphics graphics) {
         var pen = new Pen(Color.White, this.PenSize);
-        graphics.DrawLine(pen, this.StartPoint, this.EndPoint);
+        graphics.DrawLine(pen, this.TopPoint, this.BotPoint);
     }
 
     public void DrawDash(Graphics graphics) {
@@ -23,7 +24,7 @@ internal class StraightLineWrapper : Movable, IFigure {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        graphics.DrawLine(pen, this.StartPoint, this.EndPoint);
+        graphics.DrawLine(pen, this.TopPoint, this.BotPoint);
     }
 
     public void DrawSelection(Graphics graphics) {
@@ -32,10 +33,10 @@ internal class StraightLineWrapper : Movable, IFigure {
         };
 
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.StartPoint.X, this.EndPoint.X),
-            Math.Min(this.StartPoint.Y, this.EndPoint.Y),
-            Math.Max(this.StartPoint.X, this.EndPoint.X),
-            Math.Max(this.StartPoint.Y, this.EndPoint.Y)
+            Math.Min(this.TopPoint.X, this.BotPoint.X),
+            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
+            Math.Max(this.TopPoint.X, this.BotPoint.X),
+            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -45,14 +46,14 @@ internal class StraightLineWrapper : Movable, IFigure {
         const int tolerance = 3;
 
         int abs = Math.Abs(
-            ((this.EndPoint.Y - this.StartPoint.Y) * point.X) -
-            ((this.EndPoint.X - this.StartPoint.X) * point.Y) +
-            (this.EndPoint.X * this.StartPoint.Y) -
-            (this.EndPoint.Y * this.StartPoint.X)
+            ((this.BotPoint.Y - this.TopPoint.Y) * point.X) -
+            ((this.BotPoint.X - this.TopPoint.X) * point.Y) +
+            (this.BotPoint.X * this.TopPoint.Y) -
+            (this.BotPoint.Y * this.TopPoint.X)
         );
 
         double sqrt = Math.Sqrt(
-            Math.Pow(this.EndPoint.Y - this.StartPoint.Y, 2) + Math.Pow(this.EndPoint.X - this.StartPoint.X, 2)
+            Math.Pow(this.BotPoint.Y - this.TopPoint.Y, 2) + Math.Pow(this.BotPoint.X - this.TopPoint.X, 2)
         );
 
         double distance = abs / sqrt;
