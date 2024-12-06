@@ -3,11 +3,12 @@
 namespace Paint.Figures;
 
 internal class RectangleWrapper : Movable, IDrawable {
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
+
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);

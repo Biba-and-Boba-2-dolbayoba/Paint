@@ -1,6 +1,7 @@
 ﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
+using System.Windows.Forms;
 
 namespace Paint;
 
@@ -11,7 +12,6 @@ internal partial class UiMainWindow : Form {
     private bool IsFilling { get; set; } = false;
     private Color BrushColor { get; set; } = Color.White;
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
-    private FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
     private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> Buttons { get; set; }
 
     private class ToolStripRenderer : ToolStripProfessionalRenderer {
@@ -28,14 +28,10 @@ internal partial class UiMainWindow : Form {
         this.Buttons = new() {
             {FiguresEnum.Rectangle, new(this.RectangleButton, this.RectangleToolButton)},
             {FiguresEnum.Ellipse, new(this.EllipseButton, this.EllipseToolButton)},
-            {FiguresEnum.Line, new(this.StraightLineButton, this.StraightLineToolButton)},
+            {FiguresEnum.StraightLine, new(this.StraightLineButton, this.StraightLineToolButton)},
             {FiguresEnum.CurveLine, new(this.CurveLineButton, this.CurveLineToolButton)},
             {FiguresEnum.TextBox, new(this.TextButton, this.TextToolButton)},
         };
-    }
-
-    private bool IsCanvasOpen() {
-        return (this.ActiveMdiChild as UiCanvasWindow) != null;
     }
 
     public void UpdatePointerInfo(Point point) {
@@ -113,17 +109,9 @@ internal partial class UiMainWindow : Form {
     }
 
     private void OnLoad(object sender, EventArgs e) {
-        this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-        this.UpdateStyles();
-
         this.UpdateFontInfo(this.TextFont);
         this.UpdatePenInfo(this.PenColor, this.PenSize);
         this.UpdateBrushInfo(this.BrushColor);
-    }
-
-    private void FileToolButtonClick(object sender, EventArgs e) {
-        this.SaveFileToolButton.Enabled = this.IsCanvasOpen();
-        this.SaveFileAsToolButton.Enabled = this.IsCanvasOpen();
     }
 
     private void NewFileButtonClick(object sender, EventArgs e) {
@@ -136,42 +124,73 @@ internal partial class UiMainWindow : Form {
         this.DrawingToolButtonClick(sender, e);
 
         var state = new DrawState() {
+            CanvasSize = this.CanvasSize,
             PenColor = this.PenColor,
             PenSize = this.PenSize,
             BrushColor = this.BrushColor,
             TextFont = this.TextFont,
-            FigureType = this.FigureType,
-            CanvasSize = this.CanvasSize
+            FigureType = FiguresEnum.Rectangle,
         };
 
         this.UpdateCanvasInfo(this.CanvasSize);
 
         if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
-            var CanvasWindow = new UiCanvasWindow {
+            var canvasWindow = new UiCanvasWindow {
                 MdiParent = this,
                 Bounds = this.CanvasPlaceholder.Bounds,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString(),
                 State = state,
                 Size = this.CanvasSize
             };
-            CanvasWindow.Show();
+
+            canvasWindow.Show();
         }
     }
 
     private void SaveFileButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            HashableCanvas.SaveFile(activeForm.Size, activeForm.Name, activeForm.Figures);
+            HashableCanvas.SaveFile(activeForm.Size, activeForm.Figures);
         }
     }
 
     private void SaveFileAsButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            HashableCanvas.SaveFile(activeForm.Size, null, activeForm.Figures);
+            HashableCanvas.SaveFile(activeForm.Size, activeForm.Figures);
         }
     }
 
     private void OpenFileButtonClick(object sender, EventArgs e) {
-        _ = HashableCanvas.OpenFile();
+        HashableCanvas? canvas = HashableCanvas.OpenFile();
+
+        if (canvas is null) return;
+
+        this.CanvasSize = canvas.CanvasSize;
+        this.CanvasPlaceholder.Size = this.CanvasSize;
+
+        this.DrawingToolButtonClick(sender, e);
+
+        var state = new DrawState() {
+            CanvasSize = this.CanvasSize,
+            PenColor = this.PenColor,
+            PenSize = this.PenSize,
+            BrushColor = this.BrushColor,
+            TextFont = this.TextFont,
+            FigureType = FiguresEnum.Rectangle,
+        };
+
+        this.UpdateCanvasInfo(this.CanvasSize);
+
+        if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
+            var canvasWindow = new UiCanvasWindow {
+                MdiParent = this,
+                Bounds = this.CanvasPlaceholder.Bounds,
+                Text = "Рисунок " + this.MdiChildren.Length.ToString(),
+                State = state,
+                Size = this.CanvasSize
+            };
+
+            canvasWindow.Show();
+        }
     }
 
     private void CanvasSizeButtonClick(object sender, EventArgs e) {
@@ -229,8 +248,7 @@ internal partial class UiMainWindow : Form {
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Rectangle;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.Rectangle);
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.FigureType = FiguresEnum.Rectangle;
@@ -238,8 +256,7 @@ internal partial class UiMainWindow : Form {
     }
 
     private void EllipseButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Ellipse;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.Ellipse);
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.FigureType = FiguresEnum.Ellipse;
@@ -247,17 +264,15 @@ internal partial class UiMainWindow : Form {
     }
 
     private void StraightLineButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Line;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.StraightLine);
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
-            state.FigureType = FiguresEnum.Line;
+            state.FigureType = FiguresEnum.StraightLine;
         }
     }
 
     private void CurveLineButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.CurveLine;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.CurveLine);
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.FigureType = FiguresEnum.CurveLine;
@@ -265,8 +280,7 @@ internal partial class UiMainWindow : Form {
     }
 
     private void TextButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.TextBox;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.TextBox);
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.FigureType = FiguresEnum.TextBox;
@@ -302,8 +316,7 @@ internal partial class UiMainWindow : Form {
     }
 
     private void DrawingToolButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Rectangle;
-        this.CheckFigureButton(this.FigureType);
+        this.CheckFigureButton(FiguresEnum.Rectangle);
 
         this.SelectionButton.Checked = false;
         this.SelectionToolButton.Checked = false;
@@ -315,7 +328,7 @@ internal partial class UiMainWindow : Form {
                 PenSize = this.PenSize,
                 BrushColor = this.BrushColor,
                 TextFont = this.TextFont,
-                FigureType = this.FigureType,
+                FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
             };
 

@@ -3,21 +3,20 @@ using System.Text.Json;
 
 namespace Paint.Serialization;
 
-internal class HashableCanvas(Size size, string? name, List<HashableFigure> figures) {
+internal class HashableCanvas(Size size, List<HashableFigure> figures) {
     public Size CanvasSize { get; set; } = size;
-    public string? CanvasName { get; set; } = name;
     public List<HashableFigure> Figures { get; set; } = figures;
 
-    private static JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions { WriteIndented = true };
+    private static JsonSerializerOptions SerializerOptions { get; set; } = new JsonSerializerOptions { WriteIndented = true, IncludeFields = true };
 
-    public static void SaveFile(Size size, string? name, List<IDrawable> figures) {
+    public static void SaveFile(Size size, List<IDrawable> figures) {
         try {
-            var canvasData = new HashableCanvas(size, name, HashableFigure.Serialize(figures));
-            string json = JsonSerializer.Serialize(canvasData, SerializerOptions);
-
             using var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                var canvasData = new HashableCanvas(size, HashableFigure.Serialize(figures));
+                string json = JsonSerializer.Serialize(canvasData, SerializerOptions);
+
                 File.WriteAllText(saveFileDialog.FileName, json);
                 _ = MessageBox.Show("Файл сохранен!");
             }
@@ -29,7 +28,7 @@ internal class HashableCanvas(Size size, string? name, List<HashableFigure> figu
     public static HashableCanvas? OpenFile() {
         var openFileDialog = new OpenFileDialog {
             InitialDirectory = Environment.CurrentDirectory,
-            Filter = "Графический редактор (*.png)|*.png|All files(*.*)|*.*",
+            Filter = "JSON-документ (*.json)|*.json|All files(*.*)|*.*",
             FilterIndex = 1
         };
 
@@ -39,10 +38,6 @@ internal class HashableCanvas(Size size, string? name, List<HashableFigure> figu
             if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 string canvasData = File.ReadAllText(openFileDialog.FileName);
                 canvas = JsonSerializer.Deserialize<HashableCanvas>(canvasData, SerializerOptions);
-
-                if (canvas is not null) {
-                    canvas.CanvasName = canvas.CanvasName is null ? openFileDialog.FileName : canvas.CanvasName;
-                }
             }
         } catch (Exception ex) {
             _ = MessageBox.Show("Error opening file: " + ex.Message);
@@ -51,6 +46,3 @@ internal class HashableCanvas(Size size, string? name, List<HashableFigure> figu
         return canvas;
     }
 }
-
-// 1) Получаешь HashableCanvas через HashableCanvas.OpenFile()
-// 2) Получаешь из HashableCanvas.Figures List<IFigure>

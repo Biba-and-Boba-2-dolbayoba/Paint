@@ -2,12 +2,13 @@
 
 namespace Paint.Figures;
 
-internal class CurveLineWrapper : Movable, IDrawable {
+internal class CurveLineWrapper : Movable, IDrawable, IPointsDepends {
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
+
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
 
     public List<Point> Points { get; set; } = [];
 

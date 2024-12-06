@@ -5,7 +5,7 @@ internal static class Program {
     /// Главная точка входа для приложения.
     /// </summary>
     [STAThread]
-    private static void Main() {  
+    private static void Main() {
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         Application.Run(new UiMainWindow());

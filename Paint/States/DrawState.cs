@@ -78,7 +78,7 @@ internal class DrawState : IState, IDrawing {
                 }
             }
 
-            if (this.FigureType == FiguresEnum.Line) {
+            if (this.FigureType == FiguresEnum.StraightLine) {
                 this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new StraightLineWrapper() {
@@ -170,7 +170,7 @@ internal class DrawState : IState, IDrawing {
                 }
             }
 
-            if (this.FigureType == FiguresEnum.Line) {
+            if (this.FigureType == FiguresEnum.StraightLine) {
                 this.BotPoint = new Point(e.X, e.Y);
 
                 var wrapper = new StraightLineWrapper() {

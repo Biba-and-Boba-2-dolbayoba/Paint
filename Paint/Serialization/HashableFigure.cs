@@ -28,10 +28,10 @@ internal class HashableFigure {
         var textBoxWrapper = new TextBoxWrapper();
 
         FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(rectangleWrapper));
-        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(ellipseWrapper));
-        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(straightLineWrapper));
-        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(curveLineWrapper));
-        FigureTypes.Add(FiguresEnum.Rectangle, new WeakReference<IDrawable>(textBoxWrapper));
+        FigureTypes.Add(FiguresEnum.Ellipse, new WeakReference<IDrawable>(ellipseWrapper));
+        FigureTypes.Add(FiguresEnum.StraightLine, new WeakReference<IDrawable>(straightLineWrapper));
+        FigureTypes.Add(FiguresEnum.CurveLine, new WeakReference<IDrawable>(curveLineWrapper));
+        FigureTypes.Add(FiguresEnum.TextBox, new WeakReference<IDrawable>(textBoxWrapper));
     }
 
     public static List<HashableFigure> Serialize(List<IDrawable> figures) {
@@ -71,8 +71,8 @@ internal class HashableFigure {
     public static List<IDrawable> Deserialize(List<HashableFigure> figures) {
         var deserializedFigures = new List<IDrawable>();
 
-        foreach (var figure in figures) {
-            FigureTypes[FiguresEnum.Rectangle].TryGetTarget(out IDrawable? figureWrapper);
+        foreach (HashableFigure figure in figures) {
+            _ = FigureTypes[FiguresEnum.Rectangle].TryGetTarget(out IDrawable? figureWrapper);
 
             if (figureWrapper is CurveLineWrapper) {
                 IDrawable deserializedFigure = new CurveLineWrapper {
@@ -118,8 +118,6 @@ internal class HashableFigure {
 
                 deserializedFigures.Add(deserializedFigure);
             }
-
-            
         }
 
         return deserializedFigures;

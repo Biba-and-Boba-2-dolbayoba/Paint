@@ -3,11 +3,12 @@
 namespace Paint.Figures;
 
 internal class StraightLineWrapper : Movable, IDrawable {
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.StraightLine;
+
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.Line;
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);

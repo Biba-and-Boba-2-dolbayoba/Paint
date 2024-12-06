@@ -3,11 +3,12 @@
 namespace Paint.Figures;
 
 internal class TextBoxWrapper : Movable, IDrawable {
+    public FiguresEnum FigureType { get; set; } = FiguresEnum.TextBox;
+
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.TextBox;
 
     public string Text { get; set; } = "";
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);

@@ -105,19 +105,18 @@ namespace Paint
             this.FileToolButton.Name = "FileToolButton";
             this.FileToolButton.Size = new Size(48, 24);
             this.FileToolButton.Text = "Файл";
-            this.FileToolButton.Click += this.FileToolButtonClick;
             // 
             // NewFileToolButton
             // 
             this.NewFileToolButton.Name = "NewFileToolButton";
-            this.NewFileToolButton.Size = new Size(162, 22);
+            this.NewFileToolButton.Size = new Size(180, 22);
             this.NewFileToolButton.Text = "Новый";
             this.NewFileToolButton.Click += this.NewFileButtonClick;
             // 
             // OpenFileToolButton
             // 
             this.OpenFileToolButton.Name = "OpenFileToolButton";
-            this.OpenFileToolButton.Size = new Size(162, 22);
+            this.OpenFileToolButton.Size = new Size(180, 22);
             this.OpenFileToolButton.Text = "Открыть";
             this.OpenFileToolButton.Click += this.OpenFileButtonClick;
             // 
@@ -125,7 +124,7 @@ namespace Paint
             // 
             this.SaveFileToolButton.Enabled = false;
             this.SaveFileToolButton.Name = "SaveFileToolButton";
-            this.SaveFileToolButton.Size = new Size(162, 22);
+            this.SaveFileToolButton.Size = new Size(180, 22);
             this.SaveFileToolButton.Text = "Сохранить";
             this.SaveFileToolButton.Click += this.SaveFileButtonClick;
             // 
@@ -133,7 +132,7 @@ namespace Paint
             // 
             this.SaveFileAsToolButton.Enabled = false;
             this.SaveFileAsToolButton.Name = "SaveFileAsToolButton";
-            this.SaveFileAsToolButton.Size = new Size(162, 22);
+            this.SaveFileAsToolButton.Size = new Size(180, 22);
             this.SaveFileAsToolButton.Text = "Сохранить как...";
             this.SaveFileAsToolButton.Click += this.SaveFileAsButtonClick;
             // 
