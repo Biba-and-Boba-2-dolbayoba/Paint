@@ -50,17 +50,50 @@ internal class HashableFigure {
     }
 
     public static List<IFigure> Deserialize(List<HashableFigure> figures) {
-        //Figure figure = new Rect {
-        //    font = new Font(this.fontName, this.fontSize),
-        //    line_color = Color.FromArgb(Convert.ToInt32(this.LineColor)),
-        //    back_color = Color.FromArgb(Convert.ToInt32(this.BackColor)),
-        //    point1 = this.Point1,
-        //    point2 = this.Point2,
-        //    text = this.Text,
-        //    back_TF = this.BackTF,
-        //    mas_points = this.MasPoints.ToArray()
-        //};
+        var deserializedFigures = new List<IFigure>();
 
-        //return figure;
+        foreach (var figure in figures) {
+            IFigure deserializedFigure;
+
+            
+            if (!string.IsNullOrEmpty(figure.Text)) 
+            {
+                deserializedFigure = new TextBoxWrapper {
+                    Text = figure.Text,
+                    TextFont = new Font(figure.FontName ?? "Arial", figure.FontSize ?? 12),
+                    PenSize = figure.PenSize,
+                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
+                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
+                    StartPoint = figure.StartPoint,
+                    EndPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling
+                };
+            } else if (figure.Points != null && figure.Points.Count > 0) 
+              {
+                deserializedFigure = new CurveLineWrapper {
+                    Points = figure.Points,
+                    PenSize = figure.PenSize,
+                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
+                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
+                    StartPoint = figure.StartPoint,
+                    EndPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling
+                };
+            } else 
+              {
+                deserializedFigure = new BaseFigure {
+                    PenSize = figure.PenSize,
+                    PenColor = Color.FromArgb(Convert.ToInt32(figure.PenColor)),
+                    BrushColor = Color.FromArgb(Convert.ToInt32(figure.BrushColor)),
+                    StartPoint = figure.StartPoint,
+                    EndPoint = figure.EndPoint,
+                    IsFilling = figure.IsFilling
+                };
+            }
+
+            deserializedFigures.Add(deserializedFigure);
+        }
+
+        return deserializedFigures;
     }
 }
