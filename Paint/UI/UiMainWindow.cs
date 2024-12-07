@@ -12,7 +12,8 @@ internal partial class UiMainWindow : Form {
     private bool IsFilling { get; set; } = false;
     private Color BrushColor { get; set; } = Color.White;
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
-    private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> Buttons { get; set; }
+    private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> FigureButtons { get; set; }
+    private Dictionary<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> StateButtons { get; set; }
 
     private class ToolStripRenderer : ToolStripProfessionalRenderer {
         public ToolStripRenderer() : base() {
@@ -25,13 +26,20 @@ internal partial class UiMainWindow : Form {
 
         this.ToolStrip.Renderer = new ToolStripRenderer();
 
-        this.Buttons = new() {
+        this.FigureButtons = new() {
             {FiguresEnum.Rectangle, new(this.RectangleButton, this.RectangleToolButton)},
             {FiguresEnum.Ellipse, new(this.EllipseButton, this.EllipseToolButton)},
             {FiguresEnum.StraightLine, new(this.StraightLineButton, this.StraightLineToolButton)},
             {FiguresEnum.CurveLine, new(this.CurveLineButton, this.CurveLineToolButton)},
             {FiguresEnum.TextBox, new(this.TextButton, this.TextToolButton)},
         };
+
+        this.StateButtons = new() {
+            {StatesEnum.DrawState, new(this.DrawingButton, this.DrawingToolButton)},
+            {StatesEnum.SelectState, new(this.SelectionButton, this.SelectionToolButton)},
+            {StatesEnum.EditState, new(this.EditButton, this.EditToolButton)},
+        };
+        
     }
 
     public void UpdatePointerInfo(Point point) {
@@ -95,8 +103,16 @@ internal partial class UiMainWindow : Form {
         }
     }
 
-    private void CheckFigureButton(FiguresEnum figureType) {
-        foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.Buttons) {
+    private void CheckFigureButton(FiguresEnum? figureType) {
+
+        if (figureType is null) {
+            foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
+                buttons.Value.Item1.Checked = false;
+                buttons.Value.Item2.Checked = false;
+            }
+
+        }
+        foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
             if (buttons.Key == figureType) {
                 buttons.Value.Item1.Checked = true;
                 buttons.Value.Item2.Checked = true;
@@ -108,6 +124,20 @@ internal partial class UiMainWindow : Form {
         }
     }
 
+    private void CheskStateButton(StatesEnum stateType) {
+        foreach (KeyValuePair<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.StateButtons) {
+            if (buttons.Key == stateType) {
+                buttons.Value.Item1.Checked = true;
+                buttons.Value.Item2.Checked = true;
+                continue;
+            }
+            buttons.Value.Item1.Checked = false;
+            buttons.Value.Item2.Checked = false;
+
+           
+        }
+
+    }
     private void OnLoad(object sender, EventArgs e) {
         this.UpdateFontInfo(this.TextFont);
         this.UpdatePenInfo(this.PenColor, this.PenSize);
@@ -121,7 +151,7 @@ internal partial class UiMainWindow : Form {
         this.CanvasSize = sizeDialog.CanvasSize;
         this.CanvasPlaceholder.Size = this.CanvasSize;
 
-        this.DrawingToolButtonClick(sender, e);
+        this.DrawingButtonClick(sender, e);
 
         var state = new DrawState() {
             CanvasSize = this.CanvasSize,
@@ -170,7 +200,7 @@ internal partial class UiMainWindow : Form {
         this.UpdateCanvasInfo(new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2));
         this.CanvasPlaceholder.Size = this.CanvasSize;
 
-        this.DrawingToolButtonClick(sender, e);
+        this.DrawingButtonClick(sender, e);
 
         var state = new DrawState() {
             CanvasSize = this.CanvasSize,
@@ -290,22 +320,9 @@ internal partial class UiMainWindow : Form {
     }
 
     private void SelectionButtonClick(object sender, EventArgs e) {
-        this.RectangleButton.Checked = false;
-        this.EllipseButton.Checked = false;
-        this.StraightLineButton.Checked = false;
-        this.CurveLineButton.Checked = false;
-        this.TextButton.Checked = false;
 
-        this.SelectionButton.Checked = true;
-
-        this.RectangleToolButton.Checked = false;
-        this.EllipseToolButton.Checked = false;
-        this.StraightLineToolButton.Checked = false;
-        this.CurveLineToolButton.Checked = false;
-        this.TextToolButton.Checked = false;
-
-        this.SelectionToolButton.Checked = true;
-        this.DrawingToolButton.Checked = false;
+        this.CheckFigureButton(null);
+        this.CheskStateButton(StatesEnum.SelectState);
 
         if (this.ActiveMdiChild is UiCanvasWindow children) {
             var state = new SelectState() {
@@ -317,12 +334,11 @@ internal partial class UiMainWindow : Form {
         }
     }
 
-    private void DrawingToolButtonClick(object sender, EventArgs e) {
-        this.CheckFigureButton(FiguresEnum.Rectangle);
+    private void DrawingButtonClick(object sender, EventArgs e) {
 
-        this.SelectionButton.Checked = false;
-        this.SelectionToolButton.Checked = false;
-        this.DrawingToolButton.Checked = true;
+        this.CheckFigureButton(FiguresEnum.Rectangle);
+        this.CheskStateButton(StatesEnum.DrawState);
+       
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new DrawState() {
@@ -336,5 +352,10 @@ internal partial class UiMainWindow : Form {
 
             child.State = state;
         }
+    }
+
+ 
+    private void EditButtonClick(object sender, EventArgs e) {
+
     }
 }

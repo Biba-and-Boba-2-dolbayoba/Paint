@@ -14,32 +14,32 @@ internal class SelectState : IState, ISelection {
         this.DragStartPoint = new Point(e.X, e.Y);
 
         if (e.Button == MouseButtons.Left) {
-            //var point = new Point(e.X, e.Y);
-            //bool isClickOnFigure = false;
-            //foreach (IDrawable figure in this.Figures) {
-            //    if (figure.ContainsPoint(point)) {
-            //        isClickOnFigure = true;
-            //        if (this.SelectedFigures.Contains(figure)) {
-            //            _ = this.SelectedFigures.Remove(figure);
-            //            continue;
-            //        } else {
-            //            this.SelectedFigures.Add(figure);
-            //            continue;
-            //        }
-            //    }
-            //}
-
-            //if (!isClickOnFigure) {
-            //    foreach (IDrawable figure in this.SelectedFigures) {
-            //        this.Figures.Add(figure);
-            //    }
-
-            //    this.SelectedFigures.Clear();
-            //}
             var point = new Point(e.X, e.Y);
+            bool isClickOnFigure = false;
             foreach (IDrawable figure in this.Figures) {
-                
+                if (figure.ContainsPoint(point)) {
+                    isClickOnFigure = true;
+                    if (this.SelectedFigures.Contains(figure)) {
+                        _ = this.SelectedFigures.Remove(figure);
+                        continue;
+                    } else {
+                        this.SelectedFigures.Add(figure);
+                        continue;
+                    }
+                }
             }
+
+            if (!isClickOnFigure) {
+                foreach (IDrawable figure in this.SelectedFigures) {
+                    this.Figures.Add(figure);
+                }
+
+                this.SelectedFigures.Clear();
+            }
+            //var point = new Point(e.X, e.Y);
+            //foreach (IDrawable figure in this.Figures) {
+
+            //}
 
             this.IsMoving = true;
         }
