@@ -183,9 +183,11 @@ namespace Paint
             this.Controls.Add(this.WidthTextBox);
             this.Controls.Add(this.HeightTextBox);
             this.Controls.Add(this.ManualSelectionCheckBox);
+            this.FormBorderStyle = FormBorderStyle.None;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
             this.Name = "UiCreateCanvas";
+            this.StartPosition = FormStartPosition.CenterParent;
             this.Text = "Выбор размера окна";
             this.CreateCanvasGroupBox.ResumeLayout(false);
             this.CreateCanvasGroupBox.PerformLayout();
