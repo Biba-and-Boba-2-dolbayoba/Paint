@@ -11,7 +11,7 @@ internal partial class UiCanvasWindow : Form {
     public string? CanvasName { get; set; } = null;
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public IState State { get; set; } = new SelectState();
+    public IState State { get; set; } = new DrawState();
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IDrawable> Figures { get; set; } = [];
@@ -137,7 +137,7 @@ internal partial class UiCanvasWindow : Form {
             this.Figures = selection.Figures;
         }
 
-        if (this.State is DrawState drawing) {
+        if (this.State is DrawState drawing && drawing.IsDrawing) {
             drawing.MouseMoveHandler(sender, e);
 
             this.Figures = drawing.Figures;
@@ -174,7 +174,9 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnLoad(object sender, EventArgs e) {
-        this.OnResize(sender, e);
+        if (this.Figures.Count > 0) {
+            this.State.Figures = this.Figures;
+        }
     }
 
     private void OnClose(object sender, FormClosingEventArgs e) {
@@ -201,5 +203,9 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is SelectState && e.KeyData == Keys.Delete) {
             this.DeleteSelectedFigures();
         }
+    }
+
+    private void OnPaint(object sender, PaintEventArgs e) {
+        this.Render();
     }
 }

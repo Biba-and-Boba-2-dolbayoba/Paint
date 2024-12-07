@@ -1,6 +1,6 @@
-﻿namespace Serializer.Interfaces;
-using System.Drawing;
+﻿using System.Drawing;
 
+namespace Serializer.Interfaces;
 internal enum FiguresEnum {
     Rectangle,
     Ellipse,

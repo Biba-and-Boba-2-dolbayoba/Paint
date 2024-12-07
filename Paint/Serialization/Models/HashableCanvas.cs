@@ -4,8 +4,8 @@ namespace Paint.Serialization.Models;
 
 internal class HashableCanvas {
     [JsonProperty("canvas_size")]
-    public Tuple<int, int> CanvasSize { get; set; } = new(0, 0);
+    public required Tuple<int, int> CanvasSize { get; set; }
 
     [JsonProperty("figures")]
-    public List<HashableFigure> Figures { get; set; } = [];
+    public required List<HashableFigure> Figures { get; set; }
 }

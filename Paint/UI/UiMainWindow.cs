@@ -167,6 +167,7 @@ internal partial class UiMainWindow : Form {
         }
 
         this.CanvasSize = new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2);
+        this.UpdateCanvasInfo(new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2));
         this.CanvasPlaceholder.Size = this.CanvasSize;
 
         this.DrawingToolButtonClick(sender, e);
@@ -180,15 +181,14 @@ internal partial class UiMainWindow : Form {
             FigureType = FiguresEnum.Rectangle,
         };
 
-        this.UpdateCanvasInfo(this.CanvasSize);
-
         if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
             var canvasWindow = new UiCanvasWindow {
                 MdiParent = this,
                 Bounds = this.CanvasPlaceholder.Bounds,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString(),
                 State = state,
-                Size = this.CanvasSize
+                Size = this.CanvasSize,
+                Figures = JsonReader.ToDrawable(canvas.Figures),
             };
 
             canvasWindow.Show();
