@@ -6,35 +6,35 @@ namespace Serializer.Serialization.Models;
 
 internal class HashableFigure {
     [JsonProperty("pen_size")]
-    public int PenSize { get; set; } = 2;
+    public required int PenSize { get; set; }
 
     [JsonProperty("pen_color")]
-    public string PenColor { get; set; } = "";
+    public required string PenColor { get; set; }
 
     [JsonProperty("brush_color")]
-    public string BrushColor { get; set; } = "";
+    public required string BrushColor { get; set; }
 
     [JsonProperty("top_point")]
-    public Tuple<int, int> TopPoint = new(0, 0);
+    public required Tuple<int, int> TopPoint { get; set; }
 
     [JsonProperty("bot_point")]
-    public Tuple<int, int> BotPoint = new(0, 0);
+    public required Tuple<int, int> BotPoint { get; set; }
 
     [JsonProperty("is_filling")]
-    public bool IsFilling { get; set; } = false;
+    public required bool IsFilling { get; set; }
 
     [JsonProperty("type")]
-    public FiguresEnum FigureType { get; set; }
+    public required FiguresEnum FigureType { get; set; }
 
     [JsonProperty("text")]
-    public string Text { get; set; } = "";
+    public required string Text { get; set; }
 
     [JsonProperty("font_name")]
-    public string FontName { get; set; } = "";
+    public required string FontName { get; set; }
 
     [JsonProperty("font_size")]
-    public float FontSize { get; set; } = 0;
+    public required float FontSize { get; set; }
 
     [JsonProperty("points")]
-    public List<Point> Points { get; set; } = [];
+    public required List<Point> Points { get; set; }
 }

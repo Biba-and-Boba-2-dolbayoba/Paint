@@ -1,6 +1,6 @@
-﻿namespace Serializer.Interfaces;
-using System.Drawing;
+﻿using System.Drawing;
 
+namespace Serializer.Interfaces;
 internal interface IDrawing : IDrawDepends, ICanvasSizeDepends, ITopBottomDepends, ITextDepends {
     public bool IsDrawing { get; set; }
 
