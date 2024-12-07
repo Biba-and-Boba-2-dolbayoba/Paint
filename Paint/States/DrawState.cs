@@ -1,6 +1,6 @@
 ﻿using Paint.Figures;
 using Paint.Interfaces;
-using Paint.UI;
+using Paint.Serialization.Models;
 
 namespace Paint.States;
 
@@ -9,7 +9,9 @@ internal class DrawState : IState, IDrawing {
 
     public Point TopPoint { get; set; }
     public Point BotPoint { get; set; }
+
     public List<Point> Points { get; set; } = [];
+    private int Counter { get; set; } = 0;
 
     public Size CanvasSize { get; set; }
 
@@ -22,11 +24,19 @@ internal class DrawState : IState, IDrawing {
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
 
     public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
-    public Tuple<IDrawable?, IDrawable?> DashFigures { get; set; } = new(null, null);
+    public IDrawable? DashFigure { get; set; } = null;
     public List<IDrawable> Figures { get; set; } = [];
 
     public UiCanvasWindow? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
+
+    private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
+        { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
+        { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
+        { FiguresEnum.StraightLine, typeof(StraightLineWrapper) },
+        { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
+        { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
+    };
 
     public void MouseDownHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
@@ -36,7 +46,6 @@ internal class DrawState : IState, IDrawing {
             this.BotPoint = new Point(e.X, e.Y);
 
             this.Points.Add(this.TopPoint);
-            this.Points.Add(this.BotPoint);
 
             this.IsDrawing = true;
         }
@@ -44,202 +53,72 @@ internal class DrawState : IState, IDrawing {
 
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
-            if (this.FigureType == FiguresEnum.Rectangle) {
-                this.BotPoint = new Point(e.X, e.Y);
+            this.BotPoint = new Point(e.X, e.Y);
 
-                var wrapper = new RectangleWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
+            var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
 
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
+            if (wrapper is not null) {
+                wrapper.PenSize = this.PenSize;
+                wrapper.PenColor = this.PenColor;
+                wrapper.BrushColor = this.BrushColor;
+                wrapper.TopPoint = this.TopPoint;
+                wrapper.BotPoint = this.BotPoint;
+                wrapper.IsFilling = this.IsFilling;
+                wrapper.FigureType = this.FigureType;
+
+                if (wrapper is CurveLineWrapper curveLineWrapper) {
+                    if (this.Counter % 4 == 0) {
+                        this.Points.Add(this.BotPoint);
+                    } else {
+                        ++this.Counter;
+                    }
+
+                    curveLineWrapper.Points = this.Points;
+                }
+
+                if (wrapper is TextBoxWrapper textBoxWrapper) {
+                    textBoxWrapper.Text = this.Text;
+                    textBoxWrapper.TextFont = this.TextFont;
                 }
             }
 
-            if (this.FigureType == FiguresEnum.Ellipse) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new EllipseWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.StraightLine) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new StraightLineWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.CurveLine) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                this.Points.Add(this.BotPoint);
-
-                var wrapper = new CurveLineWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    Points = this.Points,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.TextBox) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new TextBoxWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.DashFigures = new(this.DashFigures.Item2, wrapper);
-                }
+            if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
+                this.DashFigure = wrapper;
             }
         }
     }
 
     public void MouseUpHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
-            if (this.FigureType == FiguresEnum.Rectangle) {
-                this.BotPoint = new Point(e.X, e.Y);
+            this.BotPoint = new Point(e.X, e.Y);
 
-                var wrapper = new RectangleWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
+            var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
+
+            if (wrapper is not null) {
+                wrapper.PenSize = this.PenSize;
+                wrapper.PenColor = this.PenColor;
+                wrapper.BrushColor = this.BrushColor;
+                wrapper.TopPoint = this.TopPoint;
+                wrapper.BotPoint = this.BotPoint;
+                wrapper.IsFilling = this.IsFilling;
+                wrapper.FigureType = this.FigureType;
+
+                if (wrapper is CurveLineWrapper curveLineWrapper) {
+                    this.Points.Add(this.BotPoint);
+                    curveLineWrapper.Points = this.Points;
+                }
+
+                if (wrapper is TextBoxWrapper textBoxWrapper) {
+                    textBoxWrapper.Text = this.Text;
+                    textBoxWrapper.TextFont = this.TextFont;
+                }
 
                 if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
                     this.Figures.Add(wrapper);
                 }
             }
 
-            if (this.FigureType == FiguresEnum.Ellipse) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new EllipseWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.Figures.Add(wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.StraightLine) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new StraightLineWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.Figures.Add(wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.CurveLine) {
-                this.BotPoint = new Point(e.X, e.Y);
-                this.Points.Add(this.BotPoint);
-
-                var wrapper = new CurveLineWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling,
-                    Points = this.Points
-                };
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.Figures.Add(wrapper);
-                }
-            }
-
-            if (this.FigureType == FiguresEnum.TextBox) {
-                this.BotPoint = new Point(e.X, e.Y);
-
-                var wrapper = new TextBoxWrapper() {
-                    TopPoint = this.TopPoint,
-                    BotPoint = this.BotPoint,
-                    PenSize = this.PenSize,
-                    PenColor = this.PenColor,
-                    BrushColor = this.BrushColor,
-                    IsFilling = this.IsFilling,
-                    TextFont = this.TextFont
-                };
-
-                var placeholder = new UiTextBoxPlaceholder() {
-                    Parent = this.ParentReference,
-                    Size = new(this.BotPoint.X - this.TopPoint.X, this.BotPoint.Y - this.TopPoint.Y),
-                    Font = this.TextFont,
-                    Multiline = true,
-                    ForeColor = this.PenColor,
-                    Location = this.TopPoint,
-                    Width = this.BotPoint.X - this.TopPoint.X,
-                    Height = this.BotPoint.Y - this.TopPoint.Y,
-                    Wrapper = wrapper,
-                    GraphicsBuffer = this.GraphicsBuffer
-                };
-
-                placeholder.Show();
-
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
-                    this.Figures.Add(wrapper);
-                }
-            }
-
-            this.DashFigures = new(null, null);
+            this.DashFigure = null;
             this.IsDrawing = false;
         }
     }

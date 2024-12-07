@@ -16,7 +16,7 @@ internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IDrawable> Figures { get; set; } = [];
 
-    private Tuple<IDrawable?, IDrawable?> DashFigures { get; set; } = new(null, null);
+    private IDrawable? DashFigure { get; set; } = null;
     private List<IDrawable> SelectedFigures { get; set; } = [];
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
@@ -56,8 +56,8 @@ internal partial class UiCanvasWindow : Form {
         Graphics graphics = graphicsBuffer.Graphics;
 
         if (this.State is DrawState) {
-            this.DashFigures.Item1?.Hide(graphics);
-            this.DashFigures.Item2?.DrawDash(graphics);
+            //this.DashFigures.Item1?.Hide(graphics);
+            this.DashFigure?.DrawDash(graphics);
 
             foreach (IDrawable figure in this.Figures) {
                 figure.Draw(graphics);
@@ -98,7 +98,7 @@ internal partial class UiCanvasWindow : Form {
             drawing.MouseDownHandler(sender, e);
 
             this.Figures = drawing.Figures;
-            this.DashFigures = drawing.DashFigures;
+            this.DashFigure = drawing.DashFigure;
         }
 
         if (this.State is SelectState selection) {
@@ -124,7 +124,7 @@ internal partial class UiCanvasWindow : Form {
             drawing.MouseMoveHandler(sender, e);
 
             this.Figures = drawing.Figures;
-            this.DashFigures = drawing.DashFigures;
+            this.DashFigure = drawing.DashFigure;
         }
 
         if (this.State is SelectState selection) {
@@ -146,7 +146,7 @@ internal partial class UiCanvasWindow : Form {
             drawing.MouseUpHandler(sender, e);
 
             this.Figures = drawing.Figures;
-            this.DashFigures = drawing.DashFigures;
+            this.DashFigure = drawing.DashFigure;
         }
 
         if (this.State is SelectState selection) {
