@@ -182,7 +182,7 @@ internal partial class UiCanvasWindow : Form {
             DialogResult response = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
 
             if (response == DialogResult.Yes) {
-                HashableCanvas.SaveFile(this.Size, this.Figures);
+                JsonReader.Save(this.Size, this.Figures);
             } else if (response == DialogResult.Cancel) {
                 e.Cancel = true;
             }

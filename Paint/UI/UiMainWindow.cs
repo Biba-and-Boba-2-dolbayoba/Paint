@@ -1,7 +1,7 @@
 ﻿using Paint.Interfaces;
 using Paint.Serialization;
+using Paint.Serialization.Models;
 using Paint.States;
-using System.Windows.Forms;
 
 namespace Paint;
 
@@ -149,22 +149,24 @@ internal partial class UiMainWindow : Form {
 
     private void SaveFileButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            HashableCanvas.SaveFile(activeForm.Size, activeForm.Figures);
+            JsonReader.Save(activeForm.Size, activeForm.Figures);
         }
     }
 
     private void SaveFileAsButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            HashableCanvas.SaveFile(activeForm.Size, activeForm.Figures);
+            JsonReader.Save(activeForm.Size, activeForm.Figures);
         }
     }
 
     private void OpenFileButtonClick(object sender, EventArgs e) {
-        HashableCanvas? canvas = HashableCanvas.OpenFile();
+        HashableCanvas? canvas = JsonReader.Open();
 
-        if (canvas is null) return;
+        if (canvas is null) {
+            return;
+        }
 
-        this.CanvasSize = canvas.CanvasSize;
+        this.CanvasSize = new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2);
         this.CanvasPlaceholder.Size = this.CanvasSize;
 
         this.DrawingToolButtonClick(sender, e);
