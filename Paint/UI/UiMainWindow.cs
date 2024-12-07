@@ -41,7 +41,7 @@ internal partial class UiMainWindow : Form {
     public void UpdateCanvasInfo(Size canvasSize) {
         this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
 
-        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDepends state) {
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDependence state) {
             state.CanvasSize = canvasSize;
         }
     }

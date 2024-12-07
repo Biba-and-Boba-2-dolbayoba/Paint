@@ -23,14 +23,14 @@ internal partial class UiCanvasWindow : Form {
     public UiCanvasWindow() {
         this.InitializeComponent();
         this.SetDoubleBuffering(true);
+    }
 
-        var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-        var backgroundColor = new SolidBrush(Color.White);
+    private void SetDoubleBuffering(bool isEnable) {
+        this.SetStyle(
+            ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, isEnable
+        );
 
-        if (this.GraphicsBuffer is not null) {
-            Graphics graphics = this.GraphicsBuffer.Graphics;
-            graphics.FillRectangle(backgroundColor, background);
-        }
+        this.UpdateStyles();
     }
 
     private void UpdateGraphicsBuffer(Rectangle bufferArea) {
@@ -40,14 +40,6 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is DrawState state) {
             state.GraphicsBuffer = this.GraphicsBuffer;
         }
-    }
-
-    private void SetDoubleBuffering(bool isEnable) {
-        this.SetStyle(
-            ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, isEnable
-        );
-
-        this.UpdateStyles();
     }
 
     private void DeleteSelectedFigures() {
@@ -73,13 +65,11 @@ internal partial class UiCanvasWindow : Form {
         }
 
         if (this.State is SelectState) {
-            if (this.SelectedFigures.Count > 0) {
-                foreach (IDrawable figure in this.Figures) {
-                    if (this.SelectedFigures.Contains(figure)) {
-                        figure.DrawSelection(graphics);
-                    } else {
-                        figure.Draw(graphics);
-                    }
+            foreach (IDrawable figure in this.Figures) {
+                if (this.SelectedFigures.Contains(figure)) {
+                    figure.DrawSelection(graphics);
+                } else {
+                    figure.Draw(graphics);
                 }
             }
         }
@@ -104,18 +94,18 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnMouseDown(object sender, MouseEventArgs e) {
-        if (this.State is SelectState selection) {
-            selection.MouseDownHandler(sender, e);
-
-            this.Figures = selection.Figures;
-            this.SelectedFigures = selection.SelectedFigures;
-        }
-
         if (this.State is DrawState drawing) {
             drawing.MouseDownHandler(sender, e);
 
             this.Figures = drawing.Figures;
             this.DashFigures = drawing.DashFigures;
+        }
+
+        if (this.State is SelectState selection) {
+            selection.MouseDownHandler(sender, e);
+
+            this.Figures = selection.Figures;
+            this.SelectedFigures = selection.SelectedFigures;
         }
 
         if (this.State is EditState) {
@@ -130,18 +120,18 @@ internal partial class UiCanvasWindow : Form {
             parent.UpdatePointerInfo(new Point(e.X, e.Y));
         }
 
-        if (this.State is SelectState selection) {
-            selection.MouseMoveHandler(sender, e);
-
-            this.SelectedFigures = selection.SelectedFigures;
-            this.Figures = selection.Figures;
-        }
-
         if (this.State is DrawState drawing && drawing.IsDrawing) {
             drawing.MouseMoveHandler(sender, e);
 
             this.Figures = drawing.Figures;
             this.DashFigures = drawing.DashFigures;
+        }
+
+        if (this.State is SelectState selection) {
+            selection.MouseMoveHandler(sender, e);
+
+            this.SelectedFigures = selection.SelectedFigures;
+            this.Figures = selection.Figures;
         }
 
         if (this.State is EditState) {
@@ -152,18 +142,18 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnMouseUp(object sender, MouseEventArgs e) {
-        if (this.State is SelectState selection) {
-            selection.MouseUpHandler(sender, e);
-
-            this.Figures = selection.Figures;
-            this.SelectedFigures = selection.SelectedFigures;
-        }
-
         if (this.State is DrawState drawing) {
             drawing.MouseUpHandler(sender, e);
 
             this.Figures = drawing.Figures;
             this.DashFigures = drawing.DashFigures;
+        }
+
+        if (this.State is SelectState selection) {
+            selection.MouseUpHandler(sender, e);
+
+            this.Figures = selection.Figures;
+            this.SelectedFigures = selection.SelectedFigures;
         }
 
         if (this.State is EditState) {
@@ -176,6 +166,7 @@ internal partial class UiCanvasWindow : Form {
     private void OnLoad(object sender, EventArgs e) {
         if (this.Figures.Count > 0) {
             this.State.Figures = this.Figures;
+            this.Render();
         }
     }
 
