@@ -6,6 +6,19 @@ internal class Movable : IMovable {
     public Point TopPoint { get; set; }
     public Point BotPoint { get; set; }
 
+    public void ValidateTopPoint() {
+        var topPoint = new Point(
+            Math.Min(this.TopPoint.X, this.BotPoint.X), Math.Min(this.TopPoint.Y, this.BotPoint.Y)
+        );
+
+        var botPoint = new Point(
+            Math.Max(this.TopPoint.X, this.BotPoint.X), Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+        );
+
+        this.TopPoint = topPoint;
+        this.BotPoint = botPoint;
+    }
+
     public bool CanMove(int dx, int dy, Size canvasSize) {
         return
             this.TopPoint.X + dx >= 0 && this.BotPoint.X + dx <= canvasSize.Width &&

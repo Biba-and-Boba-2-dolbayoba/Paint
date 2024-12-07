@@ -1,6 +1,5 @@
 ﻿using Paint.Figures;
 using Paint.Interfaces;
-using Paint.Serialization.Models;
 
 namespace Paint.States;
 
@@ -40,8 +39,6 @@ internal class DrawState : IState, IDrawing {
 
     public void MouseDownHandler(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
-            this.Points.Clear();
-
             this.TopPoint = new Point(e.X, e.Y);
             this.BotPoint = new Point(e.X, e.Y);
 
@@ -73,7 +70,7 @@ internal class DrawState : IState, IDrawing {
                         ++this.Counter;
                     }
 
-                    curveLineWrapper.Points = this.Points;
+                    curveLineWrapper.Points = new List<Point>(this.Points);
                 }
 
                 if (wrapper is TextBoxWrapper textBoxWrapper) {
@@ -105,7 +102,8 @@ internal class DrawState : IState, IDrawing {
 
                 if (wrapper is CurveLineWrapper curveLineWrapper) {
                     this.Points.Add(this.BotPoint);
-                    curveLineWrapper.Points = this.Points;
+                    curveLineWrapper.Points = new List<Point>(this.Points);
+                    this.Points.Clear();
                 }
 
                 if (wrapper is TextBoxWrapper textBoxWrapper) {

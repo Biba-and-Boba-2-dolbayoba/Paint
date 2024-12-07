@@ -13,11 +13,10 @@ internal class RectangleWrapper : Movable, IDrawable {
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         if (this.IsFilling) {
@@ -31,11 +30,10 @@ internal class RectangleWrapper : Movable, IDrawable {
     public void Hide(Graphics graphics) {
         var pen = new Pen(Color.White, this.PenSize);
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -46,11 +44,10 @@ internal class RectangleWrapper : Movable, IDrawable {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         graphics.DrawRectangle(pen, rectangle);
@@ -61,22 +58,20 @@ internal class RectangleWrapper : Movable, IDrawable {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         graphics.DrawRectangle(pen, rectangle);
     }
 
     public bool ContainsPoint(Point point) {
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         return rectangle.Contains(point);

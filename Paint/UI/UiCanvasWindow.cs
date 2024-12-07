@@ -8,16 +8,15 @@ namespace Paint;
 [Serializable()]
 internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public string? CanvasName { get; set; } = null;
-
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public IState State { get; set; } = new DrawState();
+    public required IState State { get; set; }
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IDrawable> Figures { get; set; } = [];
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public List<IDrawable> SelectedFigures { get; set; } = [];
+
     private IDrawable? DashFigure { get; set; } = null;
-    private List<IDrawable> SelectedFigures { get; set; } = [];
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
     public UiCanvasWindow() {
@@ -43,20 +42,17 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void DeleteSelectedFigures() {
-        if (this.SelectedFigures.Count > 0) {
-            foreach (IDrawable figure in this.SelectedFigures) {
-                _ = this.Figures.Remove(figure);
-            }
-
-            this.SelectedFigures.Clear();
+        foreach (IDrawable figure in this.SelectedFigures) {
+            _ = this.Figures.Remove(figure);
         }
+
+        this.SelectedFigures.Clear();
     }
 
     private void DrawFigures(BufferedGraphics graphicsBuffer) {
         Graphics graphics = graphicsBuffer.Graphics;
 
         if (this.State is DrawState) {
-            //this.DashFigures.Item1?.Hide(graphics);
             this.DashFigure?.DrawDash(graphics);
 
             foreach (IDrawable figure in this.Figures) {
@@ -81,7 +77,7 @@ internal partial class UiCanvasWindow : Form {
         graphicsBuffer.Render();
     }
 
-    private void Render() {
+    public void Render() {
         var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
         var backgroundColor = new SolidBrush(Color.White);
         this.UpdateGraphicsBuffer(background);
@@ -193,10 +189,7 @@ internal partial class UiCanvasWindow : Form {
     private void OnKeyDown(object sender, KeyEventArgs e) {
         if (this.State is SelectState && e.KeyData == Keys.Delete) {
             this.DeleteSelectedFigures();
+            this.Render();
         }
-    }
-
-    private void OnPaint(object sender, PaintEventArgs e) {
-        this.Render();
     }
 }

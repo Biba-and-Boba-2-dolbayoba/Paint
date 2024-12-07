@@ -45,7 +45,6 @@ namespace Paint
             this.Text = "Canvas";
             this.FormClosing += this.OnClose;
             this.Load += this.OnLoad;
-            this.Paint += this.OnPaint;
             this.KeyDown += this.OnKeyDown;
             this.MouseDown += this.OnMouseDown;
             this.MouseMove += this.OnMouseMove;

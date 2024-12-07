@@ -29,7 +29,11 @@ internal class StraightLineWrapper : Movable, IDrawable {
     }
 
     public void DrawSelection(Graphics graphics) {
-        var pen = new Pen(Color.Blue, this.PenSize) {
+        var bluePen = new Pen(Color.Blue, this.PenSize) {
+            DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
+        };
+
+        var blackPen = new Pen(Color.Black, this.PenSize) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
@@ -40,11 +44,12 @@ internal class StraightLineWrapper : Movable, IDrawable {
             Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
-        graphics.DrawRectangle(pen, rectangle);
+        graphics.DrawRectangle(blackPen, rectangle);
+        graphics.DrawLine(bluePen, this.TopPoint, this.BotPoint);
     }
 
     public bool ContainsPoint(Point point) {
-        const int tolerance = 3;
+        const int tolerance = 10;
 
         int abs = Math.Abs(
             ((this.BotPoint.Y - this.TopPoint.Y) * point.X) -

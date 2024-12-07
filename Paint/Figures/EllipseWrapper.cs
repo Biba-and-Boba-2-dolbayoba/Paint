@@ -13,11 +13,10 @@ internal class EllipseWrapper : Movable, IDrawable {
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         if (this.IsFilling) {
@@ -31,11 +30,10 @@ internal class EllipseWrapper : Movable, IDrawable {
     public void Hide(Graphics graphics) {
         var pen = new Pen(Color.White, this.PenSize);
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         graphics.DrawEllipse(pen, rectangle);
@@ -46,37 +44,39 @@ internal class EllipseWrapper : Movable, IDrawable {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         graphics.DrawEllipse(pen, rectangle);
     }
 
     public void DrawSelection(Graphics graphics) {
-        var pen = new Pen(Color.Blue, this.PenSize) {
+        var bluePen = new Pen(Color.Blue, this.PenSize) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
-        );
+        var blackPen = new Pen(Color.Black, this.PenSize) {
+            DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
+        };
 
-        graphics.DrawRectangle(pen, rectangle);
+        this.ValidateTopPoint();
+
+        var rectangle = Rectangle.FromLTRB(
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
+        ); ;
+
+        graphics.DrawRectangle(blackPen, rectangle);
+        graphics.DrawEllipse(bluePen, rectangle);
     }
 
     public bool ContainsPoint(Point point) {
+        this.ValidateTopPoint();
+
         var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
         double radiusX = rectangle.Width / 2.0;

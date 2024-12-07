@@ -39,7 +39,7 @@ internal partial class UiMainWindow : Form {
             {StatesEnum.SelectState, new(this.SelectionButton, this.SelectionToolButton)},
             {StatesEnum.EditState, new(this.EditButton, this.EditToolButton)},
         };
-        
+
     }
 
     public void UpdatePointerInfo(Point point) {
@@ -104,14 +104,13 @@ internal partial class UiMainWindow : Form {
     }
 
     private void CheckFigureButton(FiguresEnum? figureType) {
-
         if (figureType is null) {
             foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
                 buttons.Value.Item1.Checked = false;
                 buttons.Value.Item2.Checked = false;
             }
-
         }
+
         foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
             if (buttons.Key == figureType) {
                 buttons.Value.Item1.Checked = true;
@@ -125,32 +124,30 @@ internal partial class UiMainWindow : Form {
     }
 
     private void CheskStateButton(StatesEnum stateType) {
-
         if (stateType != StatesEnum.DrawState) {
             foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
                 buttons.Value.Item1.Enabled = false;
                 buttons.Value.Item2.Enabled = false;
             }
-
         } else {
             foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
                 buttons.Value.Item1.Enabled = true;
                 buttons.Value.Item2.Enabled = true;
             }
         }
+
         foreach (KeyValuePair<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.StateButtons) {
             if (buttons.Key == stateType) {
                 buttons.Value.Item1.Checked = true;
                 buttons.Value.Item2.Checked = true;
                 continue;
             }
+
             buttons.Value.Item1.Checked = false;
             buttons.Value.Item2.Checked = false;
-
-           
         }
-
     }
+
     private void OnLoad(object sender, EventArgs e) {
         this.UpdateFontInfo(this.TextFont);
         this.UpdatePenInfo(this.PenColor, this.PenSize);
@@ -332,26 +329,9 @@ internal partial class UiMainWindow : Form {
         }
     }
 
-    private void SelectionButtonClick(object sender, EventArgs e) {
-
-        this.CheckFigureButton(null);
-        this.CheskStateButton(StatesEnum.SelectState);
-
-        if (this.ActiveMdiChild is UiCanvasWindow children) {
-            var state = new SelectState() {
-                Figures = children.Figures,
-                CanvasSize = this.CanvasSize
-            };
-
-            children.State = state;
-        }
-    }
-
     private void DrawingButtonClick(object sender, EventArgs e) {
-
         this.CheckFigureButton(FiguresEnum.Rectangle);
         this.CheskStateButton(StatesEnum.DrawState);
-       
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new DrawState() {
@@ -361,13 +341,29 @@ internal partial class UiMainWindow : Form {
                 TextFont = this.TextFont,
                 FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
+                CanvasSize = child.Size,
             };
-
+            child.SelectedFigures.Clear();
             child.State = state;
+            child.Render();
         }
     }
 
- 
+    private void SelectionButtonClick(object sender, EventArgs e) {
+        this.CheckFigureButton(null);
+        this.CheskStateButton(StatesEnum.SelectState);
+
+        if (this.ActiveMdiChild is UiCanvasWindow child) {
+            var state = new SelectState() {
+                Figures = child.Figures,
+                CanvasSize = this.CanvasSize,
+            };
+
+            child.State = state;
+            child.Render();
+        }
+    }
+
     private void EditButtonClick(object sender, EventArgs e) {
 
     }

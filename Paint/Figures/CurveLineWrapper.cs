@@ -43,18 +43,13 @@ internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
-        );
-
-        graphics.DrawRectangle(pen, rectangle);
+        if (this.Points.Count >= 3) {
+            graphics.DrawCurve(pen, this.Points.ToArray());
+        }
     }
 
     public bool ContainsPoint(Point point) {
-        const int tolerance = 3;
+        const int tolerance = 10;
 
         for (int i = 0 ; i < this.Points.Count - 1 ; i++) {
             Point start = this.Points.ElementAt(i);
