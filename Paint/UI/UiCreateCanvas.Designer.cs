@@ -92,9 +92,11 @@ namespace Paint
             this.ManualSelectionCheckBox.TabIndex = 5;
             this.ManualSelectionCheckBox.Text = "Ручной выбор размера окна:";
             this.ManualSelectionCheckBox.UseVisualStyleBackColor = true;
+            this.ManualSelectionCheckBox.CheckedChanged += this.ManualSelectionCheckBoxCheckedChanged;
             // 
             // HeightTextBox
             // 
+            this.HeightTextBox.Enabled = false;
             this.HeightTextBox.Location = new Point(248, 135);
             this.HeightTextBox.Margin = new Padding(4, 3, 4, 3);
             this.HeightTextBox.Name = "HeightTextBox";
@@ -104,6 +106,7 @@ namespace Paint
             // 
             // WidthTextBox
             // 
+            this.WidthTextBox.Enabled = false;
             this.WidthTextBox.Location = new Point(372, 135);
             this.WidthTextBox.Margin = new Padding(4, 3, 4, 3);
             this.WidthTextBox.Name = "WidthTextBox";
