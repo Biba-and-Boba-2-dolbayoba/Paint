@@ -5,6 +5,6 @@ IDrawDependence, ICanvasSizeDependence,
 ITopBottomDependence, ITextDependence,
 IPointsDependence, IFigureTypeDependence, IFiguresDependence {
     public bool IsDrawing { get; set; }
-    public Tuple<IDrawable?, IDrawable?> DashFigures { get; set; }
+    public IDrawable? DashFigure { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
 }
