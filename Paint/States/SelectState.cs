@@ -15,31 +15,25 @@ internal class SelectState : IState, ISelection {
 
         if (e.Button == MouseButtons.Left) {
             var point = new Point(e.X, e.Y);
-            bool isClickOnFigure = false;
+            bool isContains = false;
+
             foreach (IDrawable figure in this.Figures) {
                 if (figure.ContainsPoint(point)) {
-                    isClickOnFigure = true;
+                    isContains = true;
+
                     if (this.SelectedFigures.Contains(figure)) {
                         _ = this.SelectedFigures.Remove(figure);
-                        continue;
+                        break;
                     } else {
                         this.SelectedFigures.Add(figure);
-                        continue;
+                        break;
                     }
                 }
             }
 
-            if (!isClickOnFigure) {
-                foreach (IDrawable figure in this.SelectedFigures) {
-                    this.Figures.Add(figure);
-                }
-
+            if (!isContains) {
                 this.SelectedFigures.Clear();
             }
-            //var point = new Point(e.X, e.Y);
-            //foreach (IDrawable figure in this.Figures) {
-
-            //}
 
             this.IsMoving = true;
         }
