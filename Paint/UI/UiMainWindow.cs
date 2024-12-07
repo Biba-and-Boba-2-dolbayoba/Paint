@@ -125,6 +125,19 @@ internal partial class UiMainWindow : Form {
     }
 
     private void CheskStateButton(StatesEnum stateType) {
+
+        if (stateType != StatesEnum.DrawState) {
+            foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
+                buttons.Value.Item1.Enabled = false;
+                buttons.Value.Item2.Enabled = false;
+            }
+
+        } else {
+            foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.FigureButtons) {
+                buttons.Value.Item1.Enabled = true;
+                buttons.Value.Item2.Enabled = true;
+            }
+        }
         foreach (KeyValuePair<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> buttons in this.StateButtons) {
             if (buttons.Key == stateType) {
                 buttons.Value.Item1.Checked = true;
