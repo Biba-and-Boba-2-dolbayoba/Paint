@@ -42,8 +42,6 @@ internal class DrawState : IState, IDrawing {
             this.TopPoint = new Point(e.X, e.Y);
             this.BotPoint = new Point(e.X, e.Y);
 
-            this.Points.Add(this.TopPoint);
-
             this.IsDrawing = true;
         }
     }
