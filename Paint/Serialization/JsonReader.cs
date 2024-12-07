@@ -66,11 +66,11 @@ internal static class JsonReader {
         }
     }
 
-    public static HashableCanvas? Open() {
-        string json = File.ReadAllText(path);
+    //public static HashableCanvas? Open() {
+    //    string json = File.ReadAllText(path);
 
-        HashableCanvas? canvas = JsonConvert.DeserializeObject<HashableCanvas?>(json);
+    //    HashableCanvas? canvas = JsonConvert.DeserializeObject<HashableCanvas?>(json);
 
-        return canvas;
-    }
+    //    return canvas;
+    //}
 }
