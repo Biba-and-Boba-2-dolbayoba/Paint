@@ -57,7 +57,7 @@ internal static class JsonReader {
         List<IDrawable> figures = [];
 
         foreach (HashableFigure hashableFigure in hashableFigures) {
-            IDrawable? wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[hashableFigure.FigureType]);
+            var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[hashableFigure.FigureType]);
 
             if (wrapper is null) {
                 continue;

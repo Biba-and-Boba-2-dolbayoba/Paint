@@ -2,7 +2,7 @@
 
 namespace Paint.Figures;
 
-internal class CurveLineWrapper : Movable, IDrawable, IPointsDepends {
+internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence {
     public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
 
     public int PenSize { get; set; }

@@ -1,7 +1,6 @@
 ﻿namespace Paint.Interfaces;
 
-internal interface ISelection : ICanvasSizeDepends {
-    public List<IDrawable> Figures { get; set; }
+internal interface ISelection : ICanvasSizeDependence, IFiguresDependence {
     public List<IDrawable> SelectedFigures { get; set; }
 
     public bool IsMoving { get; set; }
