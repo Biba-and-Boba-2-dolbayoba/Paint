@@ -54,11 +54,13 @@ internal partial class UiCreateCanvas : Form {
         this.SizeAverageButton.Enabled = !isChecked;
         this.SizeBigButton.Enabled = !isChecked;
 
-        
+
         if (isChecked) {
             this.SizeSmallButton.Checked = false;
             this.SizeAverageButton.Checked = false;
             this.SizeBigButton.Checked = false;
         }
     }
+
+   
 }
