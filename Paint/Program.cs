@@ -1,4 +1,8 @@
-﻿namespace Paint;
+﻿using Newtonsoft.Json;
+using Paint.Serialization.Models;
+using System.IO;
+
+namespace Paint;
 
 internal static class Program {
     /// <summary>
