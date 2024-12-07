@@ -13,7 +13,7 @@ internal class RectangleWrapper : Movable, IDrawable {
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
 
-        this.ValidateTopPoint();
+        this.ValidateEdgePoint();
 
         var rectangle = Rectangle.FromLTRB(
             this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
@@ -27,24 +27,12 @@ internal class RectangleWrapper : Movable, IDrawable {
         graphics.DrawRectangle(pen, rectangle);
     }
 
-    public void Hide(Graphics graphics) {
-        var pen = new Pen(Color.White, this.PenSize);
-
-        this.ValidateTopPoint();
-
-        var rectangle = Rectangle.FromLTRB(
-            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
-        );
-
-        graphics.DrawRectangle(pen, rectangle);
-    }
-
     public void DrawDash(Graphics graphics) {
         var pen = new Pen(Color.Black, this.PenSize) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        this.ValidateTopPoint();
+        this.ValidateEdgePoint();
 
         var rectangle = Rectangle.FromLTRB(
             this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
@@ -58,7 +46,7 @@ internal class RectangleWrapper : Movable, IDrawable {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
-        this.ValidateTopPoint();
+        this.ValidateEdgePoint();
 
         var rectangle = Rectangle.FromLTRB(
             this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
@@ -68,7 +56,7 @@ internal class RectangleWrapper : Movable, IDrawable {
     }
 
     public bool ContainsPoint(Point point) {
-        this.ValidateTopPoint();
+        this.ValidateEdgePoint();
 
         var rectangle = Rectangle.FromLTRB(
             this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y

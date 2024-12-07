@@ -48,10 +48,6 @@ internal partial class UiMainWindow : Form {
 
     public void UpdateCanvasInfo(Size canvasSize) {
         this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
-
-        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is ICanvasSizeDependence state) {
-            state.CanvasSize = canvasSize;
-        }
     }
 
     private void UpdateFontInfo(Font font) {
@@ -356,7 +352,7 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new SelectState() {
                 Figures = child.Figures,
-                CanvasSize = this.CanvasSize,
+                CanvasSize = child.Size,
             };
 
             child.State = state;

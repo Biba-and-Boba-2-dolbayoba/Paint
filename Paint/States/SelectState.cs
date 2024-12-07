@@ -7,7 +7,7 @@ internal class SelectState : IState, ISelection {
     public List<IDrawable> SelectedFigures { get; set; } = [];
 
     public bool IsMoving { get; set; } = false;
-    public Size CanvasSize { get; set; } = new Size(800, 600);
+    public Size CanvasSize { get; set; }
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
     public void MouseDownHandler(object sender, MouseEventArgs e) {
@@ -43,15 +43,19 @@ internal class SelectState : IState, ISelection {
     }
 
     public void MouseMoveHandler(object sender, MouseEventArgs e) {
-        if (this.SelectedFigures.Count == 1 && this.IsMoving) {
+        if (this.IsMoving) {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
-            if (this.SelectedFigures[0].FigureType != FiguresEnum.StraightLine) {
-                this.SelectedFigures[0].ValidateTopPoint();
+
+            foreach (IDrawable figure in this.SelectedFigures) {
+                figure.ValidateEdgePoint();
+                if (!figure.CanMove(dx, dy, this.CanvasSize)) {
+                    return;
+                }
             }
 
-            if (this.SelectedFigures[0].CanMove(dx, dy, this.CanvasSize)) {
-                this.SelectedFigures[0].Move(dx, dy);
+            foreach (IDrawable figure in this.SelectedFigures) {
+                figure.Move(dx, dy);
                 this.DragStartPoint = new Point(e.X, e.Y);
             }
         }

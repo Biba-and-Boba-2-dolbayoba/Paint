@@ -2,7 +2,7 @@
 
 namespace Paint.Figures;
 
-internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence {
+internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence, IToleranceDependence {
     public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
 
     public int PenSize { get; set; }
@@ -12,16 +12,44 @@ internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence {
 
     public List<Point> Points { get; set; } = [];
 
-    public void Draw(Graphics graphics) {
-        var pen = new Pen(this.PenColor, this.PenSize);
+    public int Tolerance { get; set; } = 10;
 
-        if (this.Points.Count >= 3) {
-            graphics.DrawCurve(pen, this.Points.ToArray());
+    public override void ValidateEdgePoint() {
+        foreach (Point point in this.Points) {
+            if (point.X < this.TopPoint.X) {
+                this.TopPoint = new Point(point.X, this.TopPoint.Y);
+            }
+
+            if (point.Y < this.TopPoint.Y) {
+                this.TopPoint = new Point(this.TopPoint.X, point.Y);
+            }
+
+            if (point.X > this.BotPoint.X) {
+                this.BotPoint = new Point(point.X, this.BotPoint.Y);
+            }
+
+            if (point.Y > this.BotPoint.Y) {
+                this.BotPoint = new Point(this.BotPoint.X, point.Y);
+            }
         }
     }
 
-    public void Hide(Graphics graphics) {
-        var pen = new Pen(Color.White, this.PenSize);
+    public override void Move(int dx, int dy) {
+        base.Move(dx, dy);    
+
+        List<Point> points = [];
+
+        foreach (Point point in this.Points) {
+            points.Add(new Point(point.X + dx, point.Y + dy));
+        }
+
+        this.Points = new List<Point>(points);
+    }
+
+    public void Draw(Graphics graphics) {
+        var pen = new Pen(this.PenColor, this.PenSize);
+
+        this.ValidateEdgePoint();
 
         if (this.Points.Count >= 3) {
             graphics.DrawCurve(pen, this.Points.ToArray());
@@ -33,39 +61,42 @@ internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
+        this.ValidateEdgePoint();
+
         if (this.Points.Count >= 3) {
             graphics.DrawCurve(pen, this.Points.ToArray());
         }
     }
 
     public void DrawSelection(Graphics graphics) {
-        var pen = new Pen(Color.Blue, this.PenSize) {
+        var bluePen = new Pen(Color.Blue, this.PenSize) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
         };
 
+        var blackPen = new Pen(Color.Black, this.PenSize) {
+            DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
+        };
+
+        this.ValidateEdgePoint();
+
+        var rectangle = Rectangle.FromLTRB(
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
+        );
+
+        graphics.DrawRectangle(blackPen, rectangle);
+
         if (this.Points.Count >= 3) {
-            graphics.DrawCurve(pen, this.Points.ToArray());
+            graphics.DrawCurve(bluePen, this.Points.ToArray());
         }
     }
 
     public bool ContainsPoint(Point point) {
-        const int tolerance = 10;
-
-        for (int i = 0 ; i < this.Points.Count - 1 ; i++) {
-            Point start = this.Points.ElementAt(i);
-            Point end = this.Points.ElementAt(i + 1);
-
-            int abs = Math.Abs(
-                ((end.Y - start.Y) * point.X) - ((end.X - start.X) * point.Y) + (end.X * start.Y) - (end.Y * start.X)
+        foreach (Point _point in this.Points) {
+            double distance = Math.Sqrt(
+                Math.Pow(_point.X - point.X, 2) + Math.Pow(_point.Y - point.Y, 2)
             );
 
-            double sqrt = Math.Sqrt(
-                Math.Pow(end.Y - start.Y, 2) + Math.Pow(end.X - this.TopPoint.X, 2)
-            );
-
-            double distance = abs / sqrt;
-
-            if (distance <= tolerance) {
+            if (distance <= this.Tolerance) {
                 return true;
             }
         }
