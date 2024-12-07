@@ -46,6 +46,7 @@ namespace Paint
             // SizeSmallButton
             // 
             this.SizeSmallButton.AutoSize = true;
+            this.SizeSmallButton.Checked = true;
             this.SizeSmallButton.Location = new Point(10, 22);
             this.SizeSmallButton.Margin = new Padding(4, 3, 4, 3);
             this.SizeSmallButton.Name = "SizeSmallButton";
@@ -64,7 +65,6 @@ namespace Paint
             this.SizeAverageButton.Name = "SizeAverageButton";
             this.SizeAverageButton.Size = new Size(67, 19);
             this.SizeAverageButton.TabIndex = 1;
-            this.SizeAverageButton.TabStop = true;
             this.SizeAverageButton.Text = "640x480";
             this.SizeAverageButton.UseVisualStyleBackColor = true;
             this.SizeAverageButton.CheckedChanged += this.SizeAverageButtonCheckedChanged;
@@ -77,7 +77,6 @@ namespace Paint
             this.SizeBigButton.Name = "SizeBigButton";
             this.SizeBigButton.Size = new Size(67, 19);
             this.SizeBigButton.TabIndex = 2;
-            this.SizeBigButton.TabStop = true;
             this.SizeBigButton.Text = "800x600";
             this.SizeBigButton.UseVisualStyleBackColor = true;
             this.SizeBigButton.CheckedChanged += this.SizeBigButtonCheckedChanged;
@@ -168,7 +167,7 @@ namespace Paint
             this.CreateCanvasGroupBox.TabStop = false;
             this.CreateCanvasGroupBox.Text = "Стандартные значения окон:";
             // 
-            // UxCreateCanvas
+            // UiCreateCanvas
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
@@ -183,7 +182,7 @@ namespace Paint
             this.Controls.Add(this.ManualSelectionCheckBox);
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
-            this.Name = "UxCreateCanvas";
+            this.Name = "UiCreateCanvas";
             this.Text = "Выбор размера окна";
             this.CreateCanvasGroupBox.ResumeLayout(false);
             this.CreateCanvasGroupBox.PerformLayout();
