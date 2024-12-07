@@ -183,6 +183,10 @@ internal partial class UiCanvasWindow : Form {
             parent.UpdateCanvasInfo(this.Size);
         }
 
+        if (this.State is not null) {
+            this.State.CanvasSize = this.Size;
+        }
+
         this.Render();
     }
 

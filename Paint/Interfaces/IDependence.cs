@@ -36,3 +36,12 @@ internal interface ITopBottomDependence : IDependence {
     public Point TopPoint { get; set; }
     public Point BotPoint { get; set; }
 }
+
+internal interface IToleranceDependence : IDependence {
+    public int Tolerance { get; set; }
+}
+
+internal interface IStartEndDependence : IDependence {
+    public Point StartPoint { get; set; }
+    public Point EndPoint { get; set; }
+}

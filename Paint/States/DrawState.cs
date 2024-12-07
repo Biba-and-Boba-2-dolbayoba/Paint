@@ -61,6 +61,11 @@ internal class DrawState : IState, IDrawing {
                 wrapper.IsFilling = this.IsFilling;
                 wrapper.FigureType = this.FigureType;
 
+                if (wrapper is StraightLineWrapper straightLineWrapper) {
+                    straightLineWrapper.StartPoint = new Point(this.TopPoint.X, this.TopPoint.Y);
+                    straightLineWrapper.EndPoint = new Point(this.BotPoint.X, this.BotPoint.Y);
+                }
+
                 if (wrapper is CurveLineWrapper curveLineWrapper) {
                     if (this.Counter % 4 == 0) {
                         this.Points.Add(this.BotPoint);
@@ -97,6 +102,11 @@ internal class DrawState : IState, IDrawing {
                 wrapper.BotPoint = this.BotPoint;
                 wrapper.IsFilling = this.IsFilling;
                 wrapper.FigureType = this.FigureType;
+
+                if (wrapper is StraightLineWrapper straightLineWrapper) {
+                    straightLineWrapper.StartPoint = new Point(this.TopPoint.X, this.TopPoint.Y);
+                    straightLineWrapper.EndPoint = new Point(this.BotPoint.X, this.BotPoint.Y);
+                }
 
                 if (wrapper is CurveLineWrapper curveLineWrapper) {
                     this.Points.Add(this.BotPoint);

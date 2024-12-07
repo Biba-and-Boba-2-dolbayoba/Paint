@@ -29,19 +29,6 @@ internal class TextBoxWrapper : Movable, IDrawable {
         graphics.DrawString(this.Text, this.TextFont, brush, rectangle);
     }
 
-    public void Hide(Graphics graphics) {
-        var pen = new Pen(Color.White, this.PenSize);
-
-        var rectangle = Rectangle.FromLTRB(
-            Math.Min(this.TopPoint.X, this.BotPoint.X),
-            Math.Min(this.TopPoint.Y, this.BotPoint.Y),
-            Math.Max(this.TopPoint.X, this.BotPoint.X),
-            Math.Max(this.TopPoint.Y, this.BotPoint.Y)
-        );
-
-        graphics.DrawRectangle(pen, rectangle);
-    }
-
     public void DrawDash(Graphics graphics) {
         var pen = new Pen(Color.Black, this.PenSize) {
             DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
