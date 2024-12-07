@@ -13,9 +13,9 @@ internal class HashableCanvas(Size size, List<HashableFigure> figures) {
     };
     private static JsonTypeInfo<HashableFigure> Meta = JsonTypeInfo.CreateJsonTypeInfo<HashableFigure>(SerializerOptions);
 
-    public HashableCanvas() {
-        List<JsonPropertyInfo> properties = [];
-    }
+    //public HashableCanvas() {
+    //    List<JsonPropertyInfo> properties = [];
+    //}
 
     public static void SaveFile(Size size, List<IDrawable> figures) {
         try {
