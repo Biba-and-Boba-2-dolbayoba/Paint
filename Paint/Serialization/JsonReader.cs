@@ -136,6 +136,6 @@ internal static class JsonReader {
             _ = MessageBox.Show("Error opening file: " + ex.Message);
         }
 
-    //    return canvas;
-    //}
+        return canvas;
+    }
 }
