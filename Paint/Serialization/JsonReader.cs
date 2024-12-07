@@ -6,52 +6,13 @@ using Paint.Serialization.Models;
 namespace Paint.Serialization;
 
 internal static class JsonReader {
-    private static RectangleWrapper rectangleWrapper = new();
-    private static EllipseWrapper ellipseWrapper = new();
-    private static StraightLineWrapper straightLineWrapper = new();
-    private static CurveLineWrapper curveLineWrapper = new();
-    private static TextBoxWrapper textBoxWrapper = new();
-    private static Dictionary<FiguresEnum, WeakReference<IDrawable>> FigureTypes { get; set; } = new() {
-        { FiguresEnum.Rectangle, new WeakReference<IDrawable>(rectangleWrapper) },
-        { FiguresEnum.Ellipse, new WeakReference<IDrawable>(ellipseWrapper) },
-        { FiguresEnum.StraightLine, new WeakReference<IDrawable>(straightLineWrapper) },
-        { FiguresEnum.CurveLine, new WeakReference<IDrawable>(curveLineWrapper) },
-        { FiguresEnum.TextBox, new WeakReference<IDrawable>(textBoxWrapper) },
+    private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
+        { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
+        { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
+        { FiguresEnum.StraightLine, typeof(StraightLineWrapper) },
+        { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
+        { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
-
-    public static List<IDrawable> ToDrawable(List<HashableFigure> hashableFigures) {
-        List<IDrawable> figures = [];
-
-        foreach (HashableFigure hashableFigure in hashableFigures) {
-            _ = FigureTypes[hashableFigure.FigureType].TryGetTarget(out IDrawable? figureType);
-            IDrawable? figure = figureType;
-
-            if (figure is null) {
-                continue;
-            }
-
-            figure.PenSize = hashableFigure.PenSize;
-            figure.PenColor = Color.FromArgb(Convert.ToInt32(hashableFigure.PenColor, 16));
-            figure.BrushColor = Color.FromArgb(Convert.ToInt32(hashableFigure.BrushColor, 16));
-            figure.TopPoint = new Point(hashableFigure.TopPoint.Item1, hashableFigure.TopPoint.Item2);
-            figure.BotPoint = new Point(hashableFigure.BotPoint.Item1, hashableFigure.BotPoint.Item2);
-            figure.IsFilling = hashableFigure.IsFilling;
-            figure.FigureType = hashableFigure.FigureType;
-
-            if (figure is TextBoxWrapper textBoxWrapper) {
-                textBoxWrapper.Text = hashableFigure.Text;
-                textBoxWrapper.TextFont = new(hashableFigure.Text, hashableFigure.FontSize);
-            }
-
-            if (figure is CurveLineWrapper curveLineWrapper) {
-                curveLineWrapper.Points = hashableFigure.Points;
-            }
-
-            figures.Add(figure);
-        }
-
-        return figures;
-    }
 
     private static List<HashableFigure> ToHashableFigures(List<IDrawable> figures) {
         List<HashableFigure> hashableFigures = [];
@@ -76,20 +37,53 @@ internal static class JsonReader {
                 Points = []
             };
 
-            if (figure is TextBoxWrapper textBoxWrapper) {
-                hashableFigure.Text = textBoxWrapper.Text;
-                hashableFigure.FontName = textBoxWrapper.TextFont.Name;
-                hashableFigure.FontSize = textBoxWrapper.TextFont.Size;
+            if (figure is TextBoxWrapper _textBoxWrapper) {
+                hashableFigure.Text = _textBoxWrapper.Text;
+                hashableFigure.FontName = _textBoxWrapper.TextFont.Name;
+                hashableFigure.FontSize = _textBoxWrapper.TextFont.Size;
             }
 
-            if (figure is CurveLineWrapper curveLineWrapper) {
-                hashableFigure.Points = curveLineWrapper.Points;
+            if (figure is CurveLineWrapper _curveLineWrapper) {
+                hashableFigure.Points = _curveLineWrapper.Points;
             }
 
             hashableFigures.Add(hashableFigure);
         }
 
         return hashableFigures;
+    }
+
+    public static List<IDrawable> ToDrawable(List<HashableFigure> hashableFigures) {
+        List<IDrawable> figures = [];
+
+        foreach (HashableFigure hashableFigure in hashableFigures) {
+            IDrawable? wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[hashableFigure.FigureType]);
+
+            if (wrapper is null) {
+                continue;
+            }
+
+            wrapper.PenSize = hashableFigure.PenSize;
+            wrapper.PenColor = Color.FromArgb(Convert.ToInt32(hashableFigure.PenColor, 16));
+            wrapper.BrushColor = Color.FromArgb(Convert.ToInt32(hashableFigure.BrushColor, 16));
+            wrapper.TopPoint = new Point(hashableFigure.TopPoint.Item1, hashableFigure.TopPoint.Item2);
+            wrapper.BotPoint = new Point(hashableFigure.BotPoint.Item1, hashableFigure.BotPoint.Item2);
+            wrapper.IsFilling = hashableFigure.IsFilling;
+            wrapper.FigureType = hashableFigure.FigureType;
+
+            if (wrapper is TextBoxWrapper textBoxWrapper) {
+                textBoxWrapper.Text = hashableFigure.Text;
+                textBoxWrapper.TextFont = new(hashableFigure.Text, hashableFigure.FontSize);
+            }
+
+            if (wrapper is CurveLineWrapper curveLineWrapper) {
+                curveLineWrapper.Points = hashableFigure.Points;
+            }
+
+            figures.Add(wrapper);
+        }
+
+        return figures;
     }
 
     public static void Save(Size size, List<IDrawable> figures) {
