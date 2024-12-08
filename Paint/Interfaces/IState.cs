@@ -1,5 +1,6 @@
-﻿namespace Paint.Interfaces;
+﻿using System.Windows.Forms;
 
+namespace Paint.Interfaces;
 internal enum StatesEnum {
     DrawState,
     SelectState,

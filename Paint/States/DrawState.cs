@@ -1,5 +1,9 @@
 ﻿using Paint.Figures;
 using Paint.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Paint.States;
 

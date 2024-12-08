@@ -1,5 +1,6 @@
-﻿namespace Paint.Interfaces;
+﻿using System.Drawing;
 
+namespace Paint.Interfaces;
 internal interface IDrawing :
 IDrawDependence, ICanvasSizeDependence,
 ITopBottomDependence, ITextDependence,

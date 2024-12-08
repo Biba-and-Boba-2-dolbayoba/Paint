@@ -1,4 +1,6 @@
 ﻿using Paint.Interfaces;
+using System;
+using System.Drawing;
 
 namespace Paint.Figures;
 
