@@ -190,8 +190,18 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
-        if (this.State is SelectState && e.KeyData == Keys.Delete) {
-            this.DeleteSelectedFigures();
+        if (this.State is SelectState) {
+            if (e.KeyData == Keys.Delete) {
+                this.DeleteSelectedFigures();
+            }
+
+            if (e.Control == true && e.KeyData == Keys.C) {
+            }
+        }
+
+        if (this.State is DrawState) {
+            if (e.Control == true && e.KeyData == Keys.V) {
+            }
         }
     }
 }
