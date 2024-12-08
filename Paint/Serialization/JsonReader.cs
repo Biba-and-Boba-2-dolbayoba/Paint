@@ -14,7 +14,7 @@ internal static class JsonReader {
         { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
 
-    private static List<HashableFigure> ToHashableFigures(List<IDrawable> figures) {
+    public static List<HashableFigure> ToHashableFigures(List<IDrawable> figures) {
         List<HashableFigure> hashableFigures = [];
         HashableFigure hashableFigure;
 
@@ -144,4 +144,34 @@ internal static class JsonReader {
 
         return canvas;
     }
+    public static string ToBufferString(List<IDrawable> figures) {
+       
+        var hashableFigures = ToHashableFigures(figures);
+
+       
+        var listOfHashableFigures = new ListOfHashableFigures {
+            Figures = hashableFigures
+        };
+
+        
+        string json = JsonConvert.SerializeObject(listOfHashableFigures);
+
+        return json;
+    }
+
+    public static List<IDrawable> ToFigureList(string json) {
+        
+        var listOfHashableFigures = JsonConvert.DeserializeObject<ListOfHashableFigures>(json);
+
+        if (listOfHashableFigures == null || listOfHashableFigures.Figures.Count == 0) {
+            return new List<IDrawable>();
+        }
+
+        
+        return ToDrawable(listOfHashableFigures.Figures);
+    }
+
+
+
 }
+
