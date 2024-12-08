@@ -9,7 +9,7 @@ internal enum FiguresEnum {
     TextBox
 }
 
-internal interface IDrawable : IFigureTypeDependence, IMovable, IDrawDependence {
+internal interface IDrawable : IFigureType, IMovable, IDrawTools {
     public void Draw(Graphics graphics);
     public void DrawDash(Graphics graphics);
     public void DrawSelection(Graphics graphics);

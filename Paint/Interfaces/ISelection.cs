@@ -2,7 +2,7 @@
 using System.Drawing;
 
 namespace Paint.Interfaces;
-internal interface ISelection : ICanvasSizeDependence, IFiguresDependence {
+internal interface ISelection : ICanvasSize, IFigures {
     public List<IDrawable> SelectedFigures { get; set; }
 
     public bool IsMoving { get; set; }

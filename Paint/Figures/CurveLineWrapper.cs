@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Paint.Figures;
 
-internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence, IToleranceDependence {
+internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
     public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
 
     public int PenSize { get; set; }

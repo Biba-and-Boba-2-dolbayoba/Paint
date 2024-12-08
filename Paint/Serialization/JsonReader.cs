@@ -149,34 +149,25 @@ internal static class JsonReader {
 
         return canvas;
     }
-    public static string ToBufferString(List<IDrawable> figures) {
-       
-        var hashableFigures = ToHashableFigures(figures);
 
-       
+    public static string ToBufferString(List<IDrawable> figures) {
+
+        List<HashableFigure> hashableFigures = ToHashableFigures(figures);
+
         var listOfHashableFigures = new ListOfHashableFigures {
             Figures = hashableFigures
         };
 
-        
         string json = JsonConvert.SerializeObject(listOfHashableFigures);
 
         return json;
     }
 
     public static List<IDrawable> ToFigureList(string json) {
-        
-        var listOfHashableFigures = JsonConvert.DeserializeObject<ListOfHashableFigures>(json);
 
-        if (listOfHashableFigures == null || listOfHashableFigures.Figures.Count == 0) {
-            return new List<IDrawable>();
-        }
+        ListOfHashableFigures? listOfHashableFigures = JsonConvert.DeserializeObject<ListOfHashableFigures>(json);
 
-        
-        return ToDrawable(listOfHashableFigures.Figures);
+        return listOfHashableFigures == null || listOfHashableFigures.Figures.Count == 0 ? ([]) : ToDrawable(listOfHashableFigures?.Figures);
     }
-
-
-
 }
 

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Paint.Figures;
 
-internal class StraightLineWrapper : Movable, IDrawable, IStartEndDependence, IToleranceDependence {
+internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, ITolerance {
     public FiguresEnum FigureType { get; set; } = FiguresEnum.StraightLine;
 
     public int PenSize { get; set; }

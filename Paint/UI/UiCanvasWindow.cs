@@ -1,6 +1,4 @@
-﻿
-using Paint.Figures;
-using Paint.Interfaces;
+﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
 using System;
@@ -8,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-
 
 namespace Paint;
 
@@ -197,102 +194,67 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
-        
+
         if (this.State is SelectState) {
             if (e.KeyData == Keys.Delete) {
                 this.DeleteSelectedFigures();
             }
 
             if (e.Control && e.KeyCode == Keys.C) {
-                CopySelectedFiguresToClipboard();
+                this.CopySelectedFiguresToClipboard();
             }
         }
 
-        if (this.State is DrawState) { 
+        if (this.State is DrawState) {
             if (e.Control && e.KeyCode == Keys.V) {
-            PasteFiguresFromClipboard();
-             }
+                this.PasteFiguresFromClipboard();
+            }
         }
     }
 
     private void CopySelectedFiguresToClipboard() {
         if (this.SelectedFigures.Count == 0) {
-            MessageBox.Show("Нет выделенных фигур для копирования.");
             return;
         }
 
-        
         string json = JsonReader.ToBufferString(this.SelectedFigures);
 
-       
         Clipboard.SetText(json);
-        //MessageBox.Show("Фигуры успешно скопированы в буфер обмена.");
     }
 
     private void PasteFiguresFromClipboard() {
         if (!Clipboard.ContainsText()) {
-            MessageBox.Show("Буфер обмена пуст или содержит неподдерживаемый формат.");
             return;
         }
 
-        
         string json = Clipboard.GetText();
-
         try {
-            
-            var figures = JsonReader.ToFigureList(json);
+            List<IDrawable> figures = JsonReader.ToFigureList(json);
 
             if (figures.Count == 0) {
-                MessageBox.Show("Буфер обмена не содержит корректные фигуры.");
                 return;
             }
 
-            
-            var mousePosition = this.PointToClient(Cursor.Position);
-
-            
+            Point mousePosition = this.PointToClient(Cursor.Position);
             OffsetFiguresToMousePosition(figures, mousePosition);
-
-            
             this.Figures.AddRange(figures);
-              
-        } catch (Exception ex) {
-            MessageBox.Show($"Ошибка при вставке фигур: {ex.Message}");
+
+        } catch (Exception) {
+            return;
         }
     }
 
-    private void OffsetFiguresToMousePosition(List<IDrawable> figures, Point mousePosition) {
-        if (figures.Count == 0) return;
+    private static void OffsetFiguresToMousePosition(List<IDrawable> figures, Point mousePosition) {
+        if (figures.Count == 0) {
+            return;
+        }
 
-        
-        var firstFigure = figures.First();
-        var offsetX = mousePosition.X - firstFigure.TopPoint.X;
-        var offsetY = mousePosition.Y - firstFigure.TopPoint.Y;
+        IDrawable firstFigure = figures[0];
+        int offsetX = mousePosition.X - firstFigure.TopPoint.X;
+        int offsetY = mousePosition.Y - firstFigure.TopPoint.Y;
 
-        foreach (var figure in figures) {
-
-            //figure.TopPoint = new Point(figure.TopPoint.X + offsetX, figure.TopPoint.Y + offsetY);
-            //figure.BotPoint = new Point(figure.BotPoint.X + offsetX, figure.BotPoint.Y + offsetY);
-
-            //if (figure is IStartEndDependence straightLine) {
-            //    straightLine.StartPoint = new Point(straightLine.StartPoint.X + offsetX, straightLine.StartPoint.Y + offsetY);
-            //    straightLine.EndPoint = new Point(straightLine.EndPoint.X + offsetX, straightLine.EndPoint.Y + offsetY);
-
-            //}
-            //if (figure is CurveLineWrapper curveLine) {
-            //    curveLine.ValidateEdgePoint();
-            //    curve
-
-            //}
+        foreach (IDrawable figure in figures) {
             figure.Move(offsetX, offsetY);
-
-
         }
     }
-
-
-
-
-
-
 }
