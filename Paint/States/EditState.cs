@@ -6,15 +6,15 @@ internal class EditState : IState {
     public List<IDrawable> Figures { get; set; } = [];
     public Size CanvasSize { get; set; }
 
-    public void MouseDownHandler(object sender, MouseEventArgs e) {
+    public void MouseDownHandler(MouseEventArgs e) {
         throw new NotImplementedException();
     }
 
-    public void MouseMoveHandler(object sender, MouseEventArgs e) {
+    public void MouseMoveHandler(MouseEventArgs e) {
         throw new NotImplementedException();
     }
 
-    public void MouseUpHandler(object sender, MouseEventArgs e) {
+    public void MouseUpHandler(MouseEventArgs e) {
         throw new NotImplementedException();
     }
 }

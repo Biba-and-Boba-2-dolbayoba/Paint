@@ -37,7 +37,7 @@ internal class DrawState : IState, IDrawing {
         { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
 
-    public void MouseDownHandler(object sender, MouseEventArgs e) {
+    public void MouseDownHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
             this.TopPoint = new Point(e.X, e.Y);
             this.BotPoint = new Point(e.X, e.Y);
@@ -46,7 +46,7 @@ internal class DrawState : IState, IDrawing {
         }
     }
 
-    public void MouseMoveHandler(object sender, MouseEventArgs e) {
+    public void MouseMoveHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
             this.BotPoint = new Point(e.X, e.Y);
 
@@ -88,7 +88,7 @@ internal class DrawState : IState, IDrawing {
         }
     }
 
-    public void MouseUpHandler(object sender, MouseEventArgs e) {
+    public void MouseUpHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
             this.BotPoint = new Point(e.X, e.Y);
 

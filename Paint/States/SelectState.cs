@@ -10,7 +10,7 @@ internal class SelectState : IState, ISelection {
     public Size CanvasSize { get; set; }
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
-    public void MouseDownHandler(object sender, MouseEventArgs e) {
+    public void MouseDownHandler(MouseEventArgs e) {
         this.DragStartPoint = new Point(e.X, e.Y);
         var point = new Point(e.X, e.Y);
         if (e.Button == MouseButtons.Left) {
@@ -42,7 +42,7 @@ internal class SelectState : IState, ISelection {
         }
     }
 
-    public void MouseMoveHandler(object sender, MouseEventArgs e) {
+    public void MouseMoveHandler(MouseEventArgs e) {
         if (this.IsMoving) {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
@@ -61,7 +61,7 @@ internal class SelectState : IState, ISelection {
         }
     }
 
-    public void MouseUpHandler(object sender, MouseEventArgs e) {
+    public void MouseUpHandler(MouseEventArgs e) {
         this.IsMoving = false;
     }
 }

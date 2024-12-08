@@ -1,5 +1,5 @@
 ﻿namespace Paint.States;
 
-internal class StateFactory {
-
+internal class StateFactory<T> {
+    
 }
