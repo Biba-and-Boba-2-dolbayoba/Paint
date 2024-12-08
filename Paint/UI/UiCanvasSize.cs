@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace Paint;
 
 internal partial class UiCanvasSize : Form {
-    private Size CanvasSize { get; set; }
+    private Size CanvasSize  { get; set; } = new Size(320, 240);
     private UiMainWindow MainWindow { get; set; }
 
     public UiCanvasSize(UiMainWindow mainWindow) {
