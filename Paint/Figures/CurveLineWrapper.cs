@@ -35,7 +35,7 @@ internal class CurveLineWrapper : Movable, IDrawable, IPointsDependence, ITolera
     }
 
     public override void Move(int dx, int dy) {
-        base.Move(dx, dy);    
+        base.Move(dx, dy);
 
         List<Point> points = [];
 

@@ -25,6 +25,12 @@ internal class HashableFigure {
     [JsonProperty("type")]
     public required FiguresEnum FigureType { get; set; }
 
+    [JsonProperty("top_point")]
+    public required Tuple<int, int> StartPoint { get; set; }
+
+    [JsonProperty("bot_point")]
+    public required Tuple<int, int> EndPoint { get; set; }
+
     [JsonProperty("text")]
     public required string Text { get; set; }
 

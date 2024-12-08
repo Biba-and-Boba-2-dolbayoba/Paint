@@ -31,20 +31,27 @@ internal static class JsonReader {
                 BotPoint = new Tuple<int, int>(figure.BotPoint.X, figure.BotPoint.Y),
                 IsFilling = figure.IsFilling,
                 FigureType = figure.FigureType,
+                StartPoint = new Tuple<int, int>(figure.TopPoint.X, figure.TopPoint.Y),
+                EndPoint = new Tuple<int, int>(figure.BotPoint.X, figure.BotPoint.Y),
                 Text = "",
                 FontName = "",
                 FontSize = 0,
                 Points = []
             };
 
-            if (figure is TextBoxWrapper _textBoxWrapper) {
-                hashableFigure.Text = _textBoxWrapper.Text;
-                hashableFigure.FontName = _textBoxWrapper.TextFont.Name;
-                hashableFigure.FontSize = _textBoxWrapper.TextFont.Size;
+            if (figure is StraightLineWrapper straighLineWrapper) {
+                hashableFigure.StartPoint = new Tuple<int, int>(straighLineWrapper.StartPoint.X, straighLineWrapper.StartPoint.Y);
+                hashableFigure.EndPoint = new Tuple<int, int>(straighLineWrapper.EndPoint.X, straighLineWrapper.EndPoint.Y);
             }
 
-            if (figure is CurveLineWrapper _curveLineWrapper) {
-                hashableFigure.Points = _curveLineWrapper.Points;
+            if (figure is TextBoxWrapper textBoxWrapper) {
+                hashableFigure.Text = textBoxWrapper.Text;
+                hashableFigure.FontName = textBoxWrapper.TextFont.Name;
+                hashableFigure.FontSize = textBoxWrapper.TextFont.Size;
+            }
+
+            if (figure is CurveLineWrapper curveLineWrapper) {
+                hashableFigure.Points = curveLineWrapper.Points;
             }
 
             hashableFigures.Add(hashableFigure);
@@ -70,6 +77,11 @@ internal static class JsonReader {
             wrapper.BotPoint = new Point(hashableFigure.BotPoint.Item1, hashableFigure.BotPoint.Item2);
             wrapper.IsFilling = hashableFigure.IsFilling;
             wrapper.FigureType = hashableFigure.FigureType;
+
+            if (wrapper is StraightLineWrapper straighLineWrapper) {
+                straighLineWrapper.StartPoint = new Point(hashableFigure.StartPoint.Item1, hashableFigure.StartPoint.Item2);
+                straighLineWrapper.EndPoint = new Point(hashableFigure.EndPoint.Item1, hashableFigure.EndPoint.Item2);
+            }
 
             if (wrapper is TextBoxWrapper textBoxWrapper) {
                 textBoxWrapper.Text = hashableFigure.Text;

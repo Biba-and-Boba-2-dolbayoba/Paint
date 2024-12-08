@@ -59,7 +59,7 @@ internal class StraightLineWrapper : Movable, IDrawable, IStartEndDependence, IT
     }
 
     public bool ContainsPoint(Point point) {
-        int coefficientA = (this.EndPoint.Y - this.StartPoint.Y);
+        int coefficientA = this.EndPoint.Y - this.StartPoint.Y;
         int coefficientB = -(this.EndPoint.X - this.StartPoint.X);
         int coefficientC = (this.EndPoint.X * this.StartPoint.Y) - (this.EndPoint.Y * this.StartPoint.X);
 
