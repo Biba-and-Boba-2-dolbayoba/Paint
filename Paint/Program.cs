@@ -1,4 +1,7 @@
-﻿namespace Paint;
+﻿using System;
+using System.Windows.Forms;
+
+namespace Paint;
 
 internal static class Program {
     /// <summary>

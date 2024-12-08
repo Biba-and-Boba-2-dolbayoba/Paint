@@ -3,7 +3,11 @@ using Paint.Figures;
 using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 
 
 namespace Paint;
@@ -159,7 +163,7 @@ internal partial class UiCanvasWindow : Form {
 
     private void OnLoad(object sender, EventArgs e) {
         var timer = new System.Timers.Timer() {
-            Interval = 0.0001,
+            Interval = 0.00001,
         };
 
         timer.Elapsed += this.OnRender;

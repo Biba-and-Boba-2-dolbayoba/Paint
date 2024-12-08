@@ -1,4 +1,8 @@
-﻿namespace Paint;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Paint;
 
 internal partial class UiCanvasSize : Form {
     private Size CanvasSize { get; set; }

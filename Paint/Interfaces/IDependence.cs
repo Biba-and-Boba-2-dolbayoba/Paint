@@ -1,5 +1,7 @@
-﻿namespace Paint.Interfaces;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
+namespace Paint.Interfaces;
 internal interface IDependence {
 
 }
