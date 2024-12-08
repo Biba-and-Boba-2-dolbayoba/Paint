@@ -151,23 +151,23 @@ internal static class JsonReader {
     }
 
     public static string ToBufferString(List<IDrawable> figures) {
-
         List<HashableFigure> hashableFigures = ToHashableFigures(figures);
 
         var listOfHashableFigures = new ListOfHashableFigures {
             Figures = hashableFigures
         };
-
         string json = JsonConvert.SerializeObject(listOfHashableFigures);
 
         return json;
     }
 
     public static List<IDrawable> ToFigureList(string json) {
-
         ListOfHashableFigures? listOfHashableFigures = JsonConvert.DeserializeObject<ListOfHashableFigures>(json);
 
-        return listOfHashableFigures == null || listOfHashableFigures.Figures.Count == 0 ? ([]) : ToDrawable(listOfHashableFigures?.Figures);
+        if (listOfHashableFigures is null) {
+            return [];
+        }
+
+        return ToDrawable(listOfHashableFigures.Figures);
     }
 }
-

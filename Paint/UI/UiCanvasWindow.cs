@@ -20,6 +20,7 @@ internal partial class UiCanvasWindow : Form {
     public List<IDrawable> SelectedFigures { get; set; } = [];
 
     private IDrawable? DashFigure { get; set; } = null;
+    private bool IsAbleToUpdate { get; set; } = false;
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
     public UiCanvasWindow() {
@@ -51,7 +52,53 @@ internal partial class UiCanvasWindow : Form {
 
         this.SelectedFigures.Clear();
     }
+    
+    private void CopySelectedFiguresToClipboard() {
+        if (this.SelectedFigures.Count == 0) {
+            return;
+        }
 
+        string json = JsonReader.ToBufferString(this.SelectedFigures);
+
+        Clipboard.SetText(json);
+    }
+
+    private void PasteFiguresFromClipboard() {
+        if (!Clipboard.ContainsText()) {
+            return;
+        }
+
+        string json = Clipboard.GetText();
+        try {
+            List<IDrawable> figures = JsonReader.ToFigureList(json);
+
+            if (figures.Count == 0) {
+                return;
+            }
+
+            Point mousePosition = this.PointToClient(Cursor.Position);
+            OffsetFiguresToMousePosition(figures, mousePosition);
+            this.Figures.AddRange(figures);
+
+        } catch (Exception) {
+            return;
+        }
+    }
+
+    private static void OffsetFiguresToMousePosition(List<IDrawable> figures, Point mousePosition) {
+        if (figures.Count == 0) {
+            return;
+        }
+
+        IDrawable firstFigure = figures[0];
+        int offsetX = mousePosition.X - firstFigure.TopPoint.X;
+        int offsetY = mousePosition.Y - firstFigure.TopPoint.Y;
+
+        foreach (IDrawable figure in figures) {
+            figure.Move(offsetX, offsetY);
+        }
+    }
+    
     private void DrawFigures(BufferedGraphics graphicsBuffer) {
         Graphics graphics = graphicsBuffer.Graphics;
 
@@ -88,10 +135,23 @@ internal partial class UiCanvasWindow : Form {
         }
 
         if (this.GraphicsBuffer is not null) {
+            IsAbleToUpdate = false;
             Graphics graphics = this.GraphicsBuffer.Graphics;
             graphics.Clear(Color.White);
             this.DrawFigures(this.GraphicsBuffer);
+            IsAbleToUpdate = true;
         }
+    }
+
+    private void OnLoad(object sender, EventArgs e) {
+        var timer = new System.Timers.Timer() {
+            Interval = 0.00001,
+        };
+
+        timer.Elapsed += this.OnRender;
+        timer.Start();
+        timer.AutoReset = true;
+        timer.Enabled = true;
     }
 
     private void OnMouseDown(object sender, MouseEventArgs e) {
@@ -158,17 +218,6 @@ internal partial class UiCanvasWindow : Form {
         }
     }
 
-    private void OnLoad(object sender, EventArgs e) {
-        var timer = new System.Timers.Timer() {
-            Interval = 0.00001,
-        };
-
-        timer.Elapsed += this.OnRender;
-        timer.Start();
-        timer.AutoReset = true;
-        timer.Enabled = true;
-    }
-
     private void OnClose(object sender, FormClosingEventArgs e) {
         if (this.Figures.Count > 0) {
             DialogResult response = MessageBox.Show("Вы хотите сохранить изменения в документе?", "Attention", MessageBoxButtons.YesNoCancel);
@@ -190,7 +239,9 @@ internal partial class UiCanvasWindow : Form {
             this.State.CanvasSize = this.Size;
         }
 
-        this.GraphicsBuffer = null;
+        if (IsAbleToUpdate) {
+            this.GraphicsBuffer = null;
+        }
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
@@ -203,58 +254,20 @@ internal partial class UiCanvasWindow : Form {
             if (e.Control && e.KeyCode == Keys.C) {
                 this.CopySelectedFiguresToClipboard();
             }
+
+            if (e.Control && e.KeyCode == Keys.X) {
+                this.CopySelectedFiguresToClipboard();
+                foreach (IDrawable figure in this.SelectedFigures) {
+                    this.Figures.Remove(figure);
+                }
+                this.SelectedFigures.Clear();
+            }
         }
 
         if (this.State is DrawState) {
             if (e.Control && e.KeyCode == Keys.V) {
                 this.PasteFiguresFromClipboard();
             }
-        }
-    }
-
-    private void CopySelectedFiguresToClipboard() {
-        if (this.SelectedFigures.Count == 0) {
-            return;
-        }
-
-        string json = JsonReader.ToBufferString(this.SelectedFigures);
-
-        Clipboard.SetText(json);
-    }
-
-    private void PasteFiguresFromClipboard() {
-        if (!Clipboard.ContainsText()) {
-            return;
-        }
-
-        string json = Clipboard.GetText();
-        try {
-            List<IDrawable> figures = JsonReader.ToFigureList(json);
-
-            if (figures.Count == 0) {
-                return;
-            }
-
-            Point mousePosition = this.PointToClient(Cursor.Position);
-            OffsetFiguresToMousePosition(figures, mousePosition);
-            this.Figures.AddRange(figures);
-
-        } catch (Exception) {
-            return;
-        }
-    }
-
-    private static void OffsetFiguresToMousePosition(List<IDrawable> figures, Point mousePosition) {
-        if (figures.Count == 0) {
-            return;
-        }
-
-        IDrawable firstFigure = figures[0];
-        int offsetX = mousePosition.X - firstFigure.TopPoint.X;
-        int offsetY = mousePosition.Y - firstFigure.TopPoint.Y;
-
-        foreach (IDrawable figure in figures) {
-            figure.Move(offsetX, offsetY);
         }
     }
 }
