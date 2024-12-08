@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UiBrushSize
+    partial class UiPenSize
     {
         /// <summary>
         /// Required designer variable.
@@ -28,11 +28,11 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiBrushSize));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiPenSize));
             this.OkButton = new Button();
             this.DeclineButton = new Button();
-            this.BrushSizeNumericForm = new NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)this.BrushSizeNumericForm).BeginInit();
+            this.PenSizeNumericForm = new NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)this.PenSizeNumericForm).BeginInit();
             this.SuspendLayout();
             // 
             // OkButton
@@ -57,30 +57,36 @@ namespace Paint
             this.DeclineButton.UseVisualStyleBackColor = true;
             this.DeclineButton.Click += this.DeclineButtonClick;
             // 
-            // BrushSizeNumericForm
+            // PenSizeNumericForm
             // 
-            this.BrushSizeNumericForm.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            this.BrushSizeNumericForm.Location = new Point(47, 21);
-            this.BrushSizeNumericForm.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
-            this.BrushSizeNumericForm.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            this.BrushSizeNumericForm.Name = "BrushSizeNumericForm";
-            this.BrushSizeNumericForm.Size = new Size(233, 29);
-            this.BrushSizeNumericForm.TabIndex = 3;
-            this.BrushSizeNumericForm.Value = new decimal(new int[] { 12, 0, 0, 0 });
+            this.PenSizeNumericForm.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            this.PenSizeNumericForm.Location = new Point(47, 21);
+            this.PenSizeNumericForm.Maximum = new decimal(new int[] { 64, 0, 0, 0 });
+            this.PenSizeNumericForm.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.PenSizeNumericForm.Name = "PenSizeNumericForm";
+            this.PenSizeNumericForm.Size = new Size(233, 29);
+            this.PenSizeNumericForm.TabIndex = 3;
+            this.PenSizeNumericForm.Value = new decimal(new int[] { 12, 0, 0, 0 });
             // 
-            // UxBrushSize
+            // UiPenSize
             // 
+            this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
+            this.CancelButton = this.DeclineButton;
             this.ClientSize = new Size(331, 117);
-            this.Controls.Add(this.BrushSizeNumericForm);
+            this.Controls.Add(this.PenSizeNumericForm);
             this.Controls.Add(this.DeclineButton);
             this.Controls.Add(this.OkButton);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = FormBorderStyle.None;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
-            this.Name = "UxBrushSize";
+            this.Name = "UiPenSize";
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.CenterParent;
             this.Text = "Изменение размера кисти";
-            ((System.ComponentModel.ISupportInitialize)this.BrushSizeNumericForm).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.PenSizeNumericForm).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -88,6 +94,6 @@ namespace Paint
 
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.Button DeclineButton;
-        private NumericUpDown BrushSizeNumericForm;
+        private NumericUpDown PenSizeNumericForm;
     }
 }

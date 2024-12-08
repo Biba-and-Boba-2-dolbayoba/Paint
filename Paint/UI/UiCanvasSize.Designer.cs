@@ -1,7 +1,7 @@
 ﻿
 namespace Paint
 {
-    partial class UiCreateCanvas
+    partial class UiCanvasSize
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCreateCanvas));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCanvasSize));
             this.SizeSmallButton = new RadioButton();
             this.SizeAverageButton = new RadioButton();
             this.SizeBigButton = new RadioButton();
@@ -50,7 +50,7 @@ namespace Paint
             this.SizeSmallButton.Location = new Point(10, 22);
             this.SizeSmallButton.Margin = new Padding(4, 3, 4, 3);
             this.SizeSmallButton.Name = "SizeSmallButton";
-            this.SizeSmallButton.Size = new Size(67, 19);
+            this.SizeSmallButton.Size = new Size(66, 19);
             this.SizeSmallButton.TabIndex = 0;
             this.SizeSmallButton.TabStop = true;
             this.SizeSmallButton.Text = "320x240";
@@ -63,7 +63,7 @@ namespace Paint
             this.SizeAverageButton.Location = new Point(173, 22);
             this.SizeAverageButton.Margin = new Padding(4, 3, 4, 3);
             this.SizeAverageButton.Name = "SizeAverageButton";
-            this.SizeAverageButton.Size = new Size(67, 19);
+            this.SizeAverageButton.Size = new Size(66, 19);
             this.SizeAverageButton.TabIndex = 1;
             this.SizeAverageButton.Text = "640x480";
             this.SizeAverageButton.UseVisualStyleBackColor = true;
@@ -75,7 +75,7 @@ namespace Paint
             this.SizeBigButton.Location = new Point(332, 22);
             this.SizeBigButton.Margin = new Padding(4, 3, 4, 3);
             this.SizeBigButton.Name = "SizeBigButton";
-            this.SizeBigButton.Size = new Size(67, 19);
+            this.SizeBigButton.Size = new Size(66, 19);
             this.SizeBigButton.TabIndex = 2;
             this.SizeBigButton.Text = "800x600";
             this.SizeBigButton.UseVisualStyleBackColor = true;
@@ -154,7 +154,7 @@ namespace Paint
             this.DeclineButton.TabIndex = 11;
             this.DeclineButton.Text = "Cancel";
             this.DeclineButton.UseVisualStyleBackColor = true;
-            this.DeclineButton.Click += this.CancelButtonClick;
+            this.DeclineButton.Click += this.DeclineButtonClick;
             // 
             // CreateCanvasGroupBox
             // 
@@ -170,10 +170,12 @@ namespace Paint
             this.CreateCanvasGroupBox.TabStop = false;
             this.CreateCanvasGroupBox.Text = "Стандартные значения окон:";
             // 
-            // UiCreateCanvas
+            // UiCanvasSize
             // 
+            this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new SizeF(7F, 15F);
             this.AutoScaleMode = AutoScaleMode.Font;
+            this.CancelButton = this.DeclineButton;
             this.ClientSize = new Size(550, 232);
             this.Controls.Add(this.CreateCanvasGroupBox);
             this.Controls.Add(this.DeclineButton);
@@ -183,10 +185,12 @@ namespace Paint
             this.Controls.Add(this.WidthTextBox);
             this.Controls.Add(this.HeightTextBox);
             this.Controls.Add(this.ManualSelectionCheckBox);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = FormBorderStyle.None;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4, 3, 4, 3);
-            this.Name = "UiCreateCanvas";
+            this.Name = "UiCanvasSize";
+            this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.CenterParent;
             this.Text = "Выбор размера окна";
             this.CreateCanvasGroupBox.ResumeLayout(false);

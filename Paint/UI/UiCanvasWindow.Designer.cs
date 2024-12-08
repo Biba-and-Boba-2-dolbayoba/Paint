@@ -42,6 +42,8 @@ namespace Paint
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.Margin = new Padding(4);
             this.Name = "UiCanvasWindow";
+            this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.CenterParent;
             this.Text = "Canvas";
             this.FormClosing += this.OnClose;
             this.Load += this.OnLoad;

@@ -34,12 +34,10 @@ namespace Paint
             this.NewFileToolButton = new ToolStripMenuItem();
             this.OpenFileToolButton = new ToolStripMenuItem();
             this.SaveFileToolButton = new ToolStripMenuItem();
-            this.SaveFileAsToolButton = new ToolStripMenuItem();
             this.SettingsToolButton = new ToolStripMenuItem();
+            this.PenColorToolButton = new ToolStripMenuItem();
+            this.PenSizeToolButton = new ToolStripMenuItem();
             this.BrushColorToolButton = new ToolStripMenuItem();
-            this.BrushSizeToolButton = new ToolStripMenuItem();
-            this.FillingColorToolButton = new ToolStripMenuItem();
-            this.CanvasSizeToolButton = new ToolStripMenuItem();
             this.FontToolButton = new ToolStripMenuItem();
             this.FigureToolButton = new ToolStripMenuItem();
             this.RectangleToolButton = new ToolStripMenuItem();
@@ -57,20 +55,19 @@ namespace Paint
             this.PointerInfo = new ToolStripStatusLabel();
             this.CanvasInfo = new ToolStripStatusLabel();
             this.FontInfo = new ToolStripStatusLabel();
+            this.PenInfo = new ToolStripStatusLabel();
             this.BrushInfo = new ToolStripStatusLabel();
-            this.FillingInfo = new ToolStripStatusLabel();
             this.ToolStrip = new ToolStrip();
             this.NewFileButton = new ToolStripButton();
             this.SaveFileButton = new ToolStripButton();
             this.OpenFileButton = new ToolStripButton();
-            this.CanvasSizeButton = new ToolStripButton();
             this.BrushGroupSeparator = new ToolStripSeparator();
-            this.BrushDropDownButton = new ToolStripDropDownButton();
-            this.BrushColorButton = new ToolStripMenuItem();
-            this.BrushSizeButton = new ToolStripMenuItem();
+            this.PenDropDownButton = new ToolStripDropDownButton();
+            this.PenColorButton = new ToolStripMenuItem();
+            this.PenSizeButton = new ToolStripMenuItem();
             this.FillingDropDownButton = new ToolStripDropDownButton();
             this.FillingButton = new ToolStripMenuItem();
-            this.FillingColorButton = new ToolStripMenuItem();
+            this.BrushColorButton = new ToolStripMenuItem();
             this.FuguresGroupSeparator = new ToolStripSeparator();
             this.RectangleButton = new ToolStripButton();
             this.EllipseButton = new ToolStripButton();
@@ -84,7 +81,6 @@ namespace Paint
             this.SelectionButton = new ToolStripButton();
             this.EditButton = new ToolStripButton();
             this.FontDialog = new FontDialog();
-            this.CanvasPlaceholder = new Panel();
             this.MenuStrip.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.ToolStrip.SuspendLayout();
@@ -103,7 +99,7 @@ namespace Paint
             // 
             // FileToolButton
             // 
-            this.FileToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.NewFileToolButton, this.OpenFileToolButton, this.SaveFileToolButton, this.SaveFileAsToolButton });
+            this.FileToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.NewFileToolButton, this.OpenFileToolButton, this.SaveFileToolButton });
             this.FileToolButton.Name = "FileToolButton";
             this.FileToolButton.Size = new Size(48, 24);
             this.FileToolButton.Text = "Файл";
@@ -111,70 +107,56 @@ namespace Paint
             // NewFileToolButton
             // 
             this.NewFileToolButton.Name = "NewFileToolButton";
-            this.NewFileToolButton.Size = new Size(163, 22);
+            this.NewFileToolButton.Size = new Size(132, 22);
             this.NewFileToolButton.Text = "Новый";
-            this.NewFileToolButton.Click += this.NewFileButtonClick;
+            this.NewFileToolButton.Click += this.NewCanvasButtonClick;
             // 
             // OpenFileToolButton
             // 
             this.OpenFileToolButton.Name = "OpenFileToolButton";
-            this.OpenFileToolButton.Size = new Size(163, 22);
+            this.OpenFileToolButton.Size = new Size(132, 22);
             this.OpenFileToolButton.Text = "Открыть";
-            this.OpenFileToolButton.Click += this.OpenFileButtonClick;
+            this.OpenFileToolButton.Click += this.OpenCanvasButtonClick;
             // 
             // SaveFileToolButton
             // 
             this.SaveFileToolButton.Name = "SaveFileToolButton";
-            this.SaveFileToolButton.Size = new Size(163, 22);
+            this.SaveFileToolButton.Size = new Size(132, 22);
             this.SaveFileToolButton.Text = "Сохранить";
-            this.SaveFileToolButton.Click += this.SaveFileButtonClick;
-            // 
-            // SaveFileAsToolButton
-            // 
-            this.SaveFileAsToolButton.Name = "SaveFileAsToolButton";
-            this.SaveFileAsToolButton.Size = new Size(163, 22);
-            this.SaveFileAsToolButton.Text = "Сохранить как...";
-            this.SaveFileAsToolButton.Click += this.SaveFileAsButtonClick;
+            this.SaveFileToolButton.Click += this.SaveCanvasButtonClick;
             // 
             // SettingsToolButton
             // 
-            this.SettingsToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.BrushColorToolButton, this.BrushSizeToolButton, this.FillingColorToolButton, this.CanvasSizeToolButton, this.FontToolButton });
+            this.SettingsToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.PenColorToolButton, this.PenSizeToolButton, this.BrushColorToolButton, this.FontToolButton });
             this.SettingsToolButton.Name = "SettingsToolButton";
             this.SettingsToolButton.Size = new Size(83, 24);
             this.SettingsToolButton.Text = "Параметры";
             // 
+            // PenColorToolButton
+            // 
+            this.PenColorToolButton.Name = "PenColorToolButton";
+            this.PenColorToolButton.Size = new Size(205, 22);
+            this.PenColorToolButton.Text = "Изменить цвет кисти";
+            this.PenColorToolButton.Click += this.PenColorButtonClick;
+            // 
+            // PenSizeToolButton
+            // 
+            this.PenSizeToolButton.Name = "PenSizeToolButton";
+            this.PenSizeToolButton.Size = new Size(205, 22);
+            this.PenSizeToolButton.Text = "Изменить размер кисти";
+            this.PenSizeToolButton.Click += this.PenSizeButtonClick;
+            // 
             // BrushColorToolButton
             // 
             this.BrushColorToolButton.Name = "BrushColorToolButton";
-            this.BrushColorToolButton.Size = new Size(211, 22);
-            this.BrushColorToolButton.Text = "Изменить цвет кисти";
-            this.BrushColorToolButton.Click += this.PenColorButtonClick;
-            // 
-            // BrushSizeToolButton
-            // 
-            this.BrushSizeToolButton.Name = "BrushSizeToolButton";
-            this.BrushSizeToolButton.Size = new Size(211, 22);
-            this.BrushSizeToolButton.Text = "Изменить размер кисти";
-            this.BrushSizeToolButton.Click += this.PenSizeButtonClick;
-            // 
-            // FillingColorToolButton
-            // 
-            this.FillingColorToolButton.Name = "FillingColorToolButton";
-            this.FillingColorToolButton.Size = new Size(211, 22);
-            this.FillingColorToolButton.Text = "Изменить цвет заливки";
-            this.FillingColorToolButton.Click += this.BrushColorButtonClick;
-            // 
-            // CanvasSizeToolButton
-            // 
-            this.CanvasSizeToolButton.Name = "CanvasSizeToolButton";
-            this.CanvasSizeToolButton.Size = new Size(211, 22);
-            this.CanvasSizeToolButton.Text = "Изменить размер холста";
-            this.CanvasSizeToolButton.Click += this.CanvasSizeButtonClick;
+            this.BrushColorToolButton.Size = new Size(205, 22);
+            this.BrushColorToolButton.Text = "Изменить цвет заливки";
+            this.BrushColorToolButton.Click += this.BrushColorButtonClick;
             // 
             // FontToolButton
             // 
             this.FontToolButton.Name = "FontToolButton";
-            this.FontToolButton.Size = new Size(211, 22);
+            this.FontToolButton.Size = new Size(205, 22);
             this.FontToolButton.Text = "Изменить шрифт";
             this.FontToolButton.Click += this.FontButtonClick;
             // 
@@ -244,28 +226,28 @@ namespace Paint
             // DrawingToolButton
             // 
             this.DrawingToolButton.Name = "DrawingToolButton";
-            this.DrawingToolButton.Size = new Size(180, 22);
+            this.DrawingToolButton.Size = new Size(163, 22);
             this.DrawingToolButton.Text = "Рисование";
             this.DrawingToolButton.Click += this.DrawingButtonClick;
             // 
             // SelectionToolButton
             // 
             this.SelectionToolButton.Name = "SelectionToolButton";
-            this.SelectionToolButton.Size = new Size(180, 22);
+            this.SelectionToolButton.Size = new Size(163, 22);
             this.SelectionToolButton.Text = "Выделение";
             this.SelectionToolButton.Click += this.SelectionButtonClick;
             // 
             // EditToolButton
             // 
             this.EditToolButton.Name = "EditToolButton";
-            this.EditToolButton.Size = new Size(180, 22);
+            this.EditToolButton.Size = new Size(163, 22);
             this.EditToolButton.Text = "Редактирование";
             // 
             // StatusStrip
             // 
             this.StatusStrip.BackColor = Color.WhiteSmoke;
             this.StatusStrip.GripMargin = new Padding(0, 0, 0, 2);
-            this.StatusStrip.Items.AddRange(new ToolStripItem[] { this.PointerInfo, this.CanvasInfo, this.FontInfo, this.BrushInfo, this.FillingInfo });
+            this.StatusStrip.Items.AddRange(new ToolStripItem[] { this.PointerInfo, this.CanvasInfo, this.FontInfo, this.PenInfo, this.BrushInfo });
             this.StatusStrip.Location = new Point(0, 657);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new Padding(1, 0, 16, 0);
@@ -304,6 +286,16 @@ namespace Paint
             this.FontInfo.Size = new Size(200, 24);
             this.FontInfo.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // PenInfo
+            // 
+            this.PenInfo.AutoSize = false;
+            this.PenInfo.Image = (Image)resources.GetObject("PenInfo.Image");
+            this.PenInfo.ImageAlign = ContentAlignment.MiddleLeft;
+            this.PenInfo.Margin = new Padding(0, 0, 5, 0);
+            this.PenInfo.Name = "PenInfo";
+            this.PenInfo.Size = new Size(160, 24);
+            this.PenInfo.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // BrushInfo
             // 
             this.BrushInfo.AutoSize = false;
@@ -314,16 +306,6 @@ namespace Paint
             this.BrushInfo.Size = new Size(160, 24);
             this.BrushInfo.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // FillingInfo
-            // 
-            this.FillingInfo.AutoSize = false;
-            this.FillingInfo.Image = (Image)resources.GetObject("FillingInfo.Image");
-            this.FillingInfo.ImageAlign = ContentAlignment.MiddleLeft;
-            this.FillingInfo.Margin = new Padding(0, 0, 5, 0);
-            this.FillingInfo.Name = "FillingInfo";
-            this.FillingInfo.Size = new Size(160, 24);
-            this.FillingInfo.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // ToolStrip
             // 
             this.ToolStrip.AutoSize = false;
@@ -333,7 +315,7 @@ namespace Paint
             this.ToolStrip.GripMargin = new Padding(0);
             this.ToolStrip.GripStyle = ToolStripGripStyle.Hidden;
             this.ToolStrip.ImageScalingSize = new Size(24, 24);
-            this.ToolStrip.Items.AddRange(new ToolStripItem[] { this.NewFileButton, this.SaveFileButton, this.OpenFileButton, this.CanvasSizeButton, this.BrushGroupSeparator, this.BrushDropDownButton, this.FillingDropDownButton, this.FuguresGroupSeparator, this.RectangleButton, this.EllipseButton, this.StraightLineButton, this.CurveLineButton, this.TextGroupSeparator, this.TextButton, this.FontButton, this.SelectionGroupSeparator, this.DrawingButton, this.SelectionButton, this.EditButton });
+            this.ToolStrip.Items.AddRange(new ToolStripItem[] { this.NewFileButton, this.SaveFileButton, this.OpenFileButton, this.BrushGroupSeparator, this.PenDropDownButton, this.FillingDropDownButton, this.FuguresGroupSeparator, this.RectangleButton, this.EllipseButton, this.StraightLineButton, this.CurveLineButton, this.TextGroupSeparator, this.TextButton, this.FontButton, this.SelectionGroupSeparator, this.DrawingButton, this.SelectionButton, this.EditButton });
             this.ToolStrip.Location = new Point(0, 24);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Padding = new Padding(10, 0, 10, 0);
@@ -352,7 +334,7 @@ namespace Paint
             this.NewFileButton.Name = "NewFileButton";
             this.NewFileButton.Size = new Size(28, 28);
             this.NewFileButton.Text = "Новый";
-            this.NewFileButton.Click += this.NewFileButtonClick;
+            this.NewFileButton.Click += this.NewCanvasButtonClick;
             // 
             // SaveFileButton
             // 
@@ -364,7 +346,7 @@ namespace Paint
             this.SaveFileButton.Name = "SaveFileButton";
             this.SaveFileButton.Size = new Size(28, 28);
             this.SaveFileButton.Text = "Сохранить";
-            this.SaveFileButton.Click += this.SaveFileButtonClick;
+            this.SaveFileButton.Click += this.SaveCanvasButtonClick;
             // 
             // OpenFileButton
             // 
@@ -376,55 +358,43 @@ namespace Paint
             this.OpenFileButton.Name = "OpenFileButton";
             this.OpenFileButton.Size = new Size(28, 28);
             this.OpenFileButton.Text = "Открыть";
-            this.OpenFileButton.Click += this.OpenFileButtonClick;
-            // 
-            // CanvasSizeButton
-            // 
-            this.CanvasSizeButton.AutoToolTip = false;
-            this.CanvasSizeButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.CanvasSizeButton.Image = (Image)resources.GetObject("CanvasSizeButton.Image");
-            this.CanvasSizeButton.ImageTransparentColor = Color.Magenta;
-            this.CanvasSizeButton.Margin = new Padding(0, 2, 2, 2);
-            this.CanvasSizeButton.Name = "CanvasSizeButton";
-            this.CanvasSizeButton.Size = new Size(28, 28);
-            this.CanvasSizeButton.Text = "Размер холста";
-            this.CanvasSizeButton.Click += this.CanvasSizeButtonClick;
+            this.OpenFileButton.Click += this.OpenCanvasButtonClick;
             // 
             // BrushGroupSeparator
             // 
             this.BrushGroupSeparator.Name = "BrushGroupSeparator";
             this.BrushGroupSeparator.Size = new Size(6, 32);
             // 
-            // BrushDropDownButton
+            // PenDropDownButton
             // 
-            this.BrushDropDownButton.AutoToolTip = false;
-            this.BrushDropDownButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.BrushDropDownButton.DropDownItems.AddRange(new ToolStripItem[] { this.BrushColorButton, this.BrushSizeButton });
-            this.BrushDropDownButton.Image = (Image)resources.GetObject("BrushDropDownButton.Image");
-            this.BrushDropDownButton.ImageTransparentColor = Color.Magenta;
-            this.BrushDropDownButton.Margin = new Padding(0, 2, 2, 2);
-            this.BrushDropDownButton.Name = "BrushDropDownButton";
-            this.BrushDropDownButton.Size = new Size(37, 28);
+            this.PenDropDownButton.AutoToolTip = false;
+            this.PenDropDownButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this.PenDropDownButton.DropDownItems.AddRange(new ToolStripItem[] { this.PenColorButton, this.PenSizeButton });
+            this.PenDropDownButton.Image = (Image)resources.GetObject("PenDropDownButton.Image");
+            this.PenDropDownButton.ImageTransparentColor = Color.Magenta;
+            this.PenDropDownButton.Margin = new Padding(0, 2, 2, 2);
+            this.PenDropDownButton.Name = "PenDropDownButton";
+            this.PenDropDownButton.Size = new Size(37, 28);
             // 
-            // BrushColorButton
+            // PenColorButton
             // 
-            this.BrushColorButton.Name = "BrushColorButton";
-            this.BrushColorButton.Size = new Size(205, 22);
-            this.BrushColorButton.Text = "Изменить цвет кисти";
-            this.BrushColorButton.Click += this.PenColorButtonClick;
+            this.PenColorButton.Name = "PenColorButton";
+            this.PenColorButton.Size = new Size(205, 22);
+            this.PenColorButton.Text = "Изменить цвет кисти";
+            this.PenColorButton.Click += this.PenColorButtonClick;
             // 
-            // BrushSizeButton
+            // PenSizeButton
             // 
-            this.BrushSizeButton.Name = "BrushSizeButton";
-            this.BrushSizeButton.Size = new Size(205, 22);
-            this.BrushSizeButton.Text = "Изменить размер кисти";
-            this.BrushSizeButton.Click += this.PenSizeButtonClick;
+            this.PenSizeButton.Name = "PenSizeButton";
+            this.PenSizeButton.Size = new Size(205, 22);
+            this.PenSizeButton.Text = "Изменить размер кисти";
+            this.PenSizeButton.Click += this.PenSizeButtonClick;
             // 
             // FillingDropDownButton
             // 
             this.FillingDropDownButton.AutoToolTip = false;
             this.FillingDropDownButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            this.FillingDropDownButton.DropDownItems.AddRange(new ToolStripItem[] { this.FillingButton, this.FillingColorButton });
+            this.FillingDropDownButton.DropDownItems.AddRange(new ToolStripItem[] { this.FillingButton, this.BrushColorButton });
             this.FillingDropDownButton.Image = (Image)resources.GetObject("FillingDropDownButton.Image");
             this.FillingDropDownButton.ImageTransparentColor = Color.Magenta;
             this.FillingDropDownButton.Margin = new Padding(0, 2, 2, 2);
@@ -438,12 +408,12 @@ namespace Paint
             this.FillingButton.Text = "Заливка";
             this.FillingButton.Click += this.FillingButtonClick;
             // 
-            // FillingColorButton
+            // BrushColorButton
             // 
-            this.FillingColorButton.Name = "FillingColorButton";
-            this.FillingColorButton.Size = new Size(202, 22);
-            this.FillingColorButton.Text = "Изменить цвет заливки";
-            this.FillingColorButton.Click += this.BrushColorButtonClick;
+            this.BrushColorButton.Name = "BrushColorButton";
+            this.BrushColorButton.Size = new Size(202, 22);
+            this.BrushColorButton.Text = "Изменить цвет заливки";
+            this.BrushColorButton.Click += this.BrushColorButtonClick;
             // 
             // FuguresGroupSeparator
             // 
@@ -566,17 +536,6 @@ namespace Paint
             this.EditButton.Text = "Редактирование";
             this.EditButton.Click += this.EditButtonClick;
             // 
-            // CanvasPlaceholder
-            // 
-            this.CanvasPlaceholder.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            this.CanvasPlaceholder.AutoSize = true;
-            this.CanvasPlaceholder.BackColor = Color.Transparent;
-            this.CanvasPlaceholder.Location = new Point(0, 59);
-            this.CanvasPlaceholder.Name = "CanvasPlaceholder";
-            this.CanvasPlaceholder.Size = new Size(1264, 595);
-            this.CanvasPlaceholder.TabIndex = 7;
-            this.CanvasPlaceholder.Visible = false;
-            // 
             // UiMainWindow
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
@@ -584,9 +543,9 @@ namespace Paint
             this.BackColor = Color.White;
             this.ClientSize = new Size(1264, 681);
             this.Controls.Add(this.ToolStrip);
-            this.Controls.Add(this.CanvasPlaceholder);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.MenuStrip);
+            this.DoubleBuffered = true;
             this.Icon = (Icon)resources.GetObject("$this.Icon");
             this.IsMdiContainer = true;
             this.Margin = new Padding(4);
@@ -606,16 +565,14 @@ namespace Paint
         #endregion
 
         private MenuStrip MenuStrip;
-        private ToolStripMenuItem CanvasSizeToolButton;
         private ToolStripMenuItem FileToolButton;
         private ToolStripMenuItem NewFileToolButton;
-        private ToolStripMenuItem SaveFileAsToolButton;
         private ToolStripMenuItem OpenFileToolButton;
         private ToolStripMenuItem SaveFileToolButton;
         private ToolStripMenuItem SettingsToolButton;
+        private ToolStripMenuItem PenColorToolButton;
+        private ToolStripMenuItem PenSizeToolButton;
         private ToolStripMenuItem BrushColorToolButton;
-        private ToolStripMenuItem BrushSizeToolButton;
-        private ToolStripMenuItem FillingColorToolButton;
         private ToolStripMenuItem FigureToolButton;
         private ToolStripMenuItem RectangleToolButton;
         private ToolStripMenuItem EllipseToolButton;
@@ -623,15 +580,14 @@ namespace Paint
         private ToolStripMenuItem CurveLineToolButton;
         private ToolStripMenuItem FillingToolButton;
         private StatusStrip StatusStrip;
-        private ToolStripStatusLabel FillingInfo;
-        private ToolStripStatusLabel CanvasInfo;
         private ToolStripStatusLabel BrushInfo;
+        private ToolStripStatusLabel CanvasInfo;
+        private ToolStripStatusLabel PenInfo;
 		private ToolStripStatusLabel PointerInfo;
         private ToolStrip ToolStrip;
         private ToolStripButton NewFileButton;
         private ToolStripButton SaveFileButton;
         private ToolStripButton OpenFileButton;
-        private ToolStripButton CanvasSizeButton;
         private ToolStripButton RectangleButton;
         private ToolStripButton EllipseButton;
         private ToolStripButton StraightLineButton;
@@ -652,13 +608,12 @@ namespace Paint
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem DrawingToolButton;
         private ToolStripMenuItem EditToolButton;
-        private ToolStripDropDownButton BrushDropDownButton;
-        private ToolStripMenuItem BrushColorButton;
-        private ToolStripMenuItem BrushSizeButton;
+        private ToolStripDropDownButton PenDropDownButton;
+        private ToolStripMenuItem PenColorButton;
+        private ToolStripMenuItem PenSizeButton;
         private ToolStripDropDownButton FillingDropDownButton;
         private ToolStripMenuItem FillingButton;
-        private ToolStripMenuItem FillingColorButton;
-        private Panel CanvasPlaceholder;
+        private ToolStripMenuItem BrushColorButton;
         private ToolStripButton DrawingButton;
         private ToolStripButton EditButton;
     }

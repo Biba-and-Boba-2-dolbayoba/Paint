@@ -5,7 +5,6 @@ using System.ComponentModel;
 
 namespace Paint;
 
-[Serializable()]
 internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public required IState State { get; set; }
@@ -20,8 +19,20 @@ internal partial class UiCanvasWindow : Form {
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
     public UiCanvasWindow() {
-        this.InitializeComponent();
         this.SetDoubleBuffering(true);
+        this.InitializeComponent();
+    }
+
+    public UiCanvasWindow(UiMainWindow parent, string title, Size size, List<IDrawable> figures, IState state) {
+        this.MdiParent = parent;
+        this.Text = title;
+        this.State = state;
+        this.Figures = figures;
+
+        this.SetDoubleBuffering(true);
+        this.InitializeComponent();
+
+        this.Size = size;
     }
 
     private void SetDoubleBuffering(bool isEnable) {
@@ -77,14 +88,16 @@ internal partial class UiCanvasWindow : Form {
         graphicsBuffer.Render();
     }
 
-    public void Render() {
+    private void OnRender(object? sender, EventArgs e) {
         var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
-        var backgroundColor = new SolidBrush(Color.White);
-        this.UpdateGraphicsBuffer(background);
+
+        if (this.GraphicsBuffer is null) {
+            this.UpdateGraphicsBuffer(background);
+        }
 
         if (this.GraphicsBuffer is not null) {
             Graphics graphics = this.GraphicsBuffer.Graphics;
-            graphics.FillRectangle(backgroundColor, background);
+            graphics.Clear(Color.White);
             this.DrawFigures(this.GraphicsBuffer);
         }
     }
@@ -107,8 +120,6 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState) {
             return;
         }
-
-        this.Render();
     }
 
     private void OnMouseMove(object sender, MouseEventArgs e) {
@@ -133,8 +144,6 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState) {
             return;
         }
-
-        this.Render();
     }
 
     private void OnMouseUp(object sender, MouseEventArgs e) {
@@ -155,15 +164,17 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState) {
             return;
         }
-
-        this.Render();
     }
 
     private void OnLoad(object sender, EventArgs e) {
-        if (this.Figures.Count > 0) {
-            this.State.Figures = this.Figures;
-            this.Render();
-        }
+        var timer = new System.Timers.Timer() {
+            Interval = 0.0001,
+        };
+
+        timer.Elapsed += this.OnRender;
+        timer.Start();
+        timer.AutoReset = true;
+        timer.Enabled = true;
     }
 
     private void OnClose(object sender, FormClosingEventArgs e) {
@@ -187,13 +198,12 @@ internal partial class UiCanvasWindow : Form {
             this.State.CanvasSize = this.Size;
         }
 
-        this.Render();
+        this.GraphicsBuffer = null;
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
         if (this.State is SelectState && e.KeyData == Keys.Delete) {
             this.DeleteSelectedFigures();
-            this.Render();
         }
     }
 }

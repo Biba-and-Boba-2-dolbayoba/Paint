@@ -1,14 +1,12 @@
-﻿using System.ComponentModel;
+﻿namespace Paint;
 
-namespace Paint;
+internal partial class UiCanvasSize : Form {
+    private Size CanvasSize { get; set; }
+    private UiMainWindow MainWindow { get; set; }
 
-[Serializable()]
-internal partial class UiCreateCanvas : Form {
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public Size CanvasSize { get; private set; } = new Size(320, 240);
-
-    public UiCreateCanvas() {
+    public UiCanvasSize(UiMainWindow mainWindow) {
         this.InitializeComponent();
+        this.MainWindow = mainWindow;
     }
 
     private void SizeSmallButtonCheckedChanged(object sender, EventArgs e) {
@@ -25,16 +23,19 @@ internal partial class UiCreateCanvas : Form {
 
     private void OkButtonClick(object sender, EventArgs e) {
         if (this.ManualSelectionCheckBox.Checked) {
-            this.CanvasSize = new Size(int.Parse(this.WidthTextBox.Text), int.Parse(this.HeightTextBox.Text));
+            try {
+                this.CanvasSize = new Size(int.Parse(this.WidthTextBox.Text), int.Parse(this.HeightTextBox.Text));
+            } catch (FormatException exception) {
+                _ = MessageBox.Show($"Ошибка при создании холста: {exception.Message}");
+            }
         }
 
+        this.MainWindow.UpdateCanvasInfo(this.CanvasSize);
         this.DialogResult = DialogResult.OK;
         this.Close();
     }
 
-    private void CancelButtonClick(object sender, EventArgs e) {
-
-        this.CanvasSize = new Size(0, 0);
+    private void DeclineButtonClick(object sender, EventArgs e) {
         this.DialogResult = DialogResult.Cancel;
         this.Close();
     }

@@ -47,17 +47,8 @@ internal partial class UiMainWindow : Form {
     }
 
     public void UpdateCanvasInfo(Size canvasSize) {
+        this.CanvasSize = new Size(canvasSize.Width, canvasSize.Height);
         this.CanvasInfo.Text = $"{canvasSize.Width} x {canvasSize.Height}";
-    }
-
-    private void UpdateFontInfo(Font font) {
-        this.TextFont = font;
-
-        this.FontInfo.Text = $"{font.Name}, {font.SizeInPoints} pt";
-
-        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
-            state.TextFont = this.TextFont;
-        }
     }
 
     public void UpdatePenInfo(Color color, int size) {
@@ -69,10 +60,10 @@ internal partial class UiMainWindow : Form {
         );
 
         if (color.IsNamedColor) {
-            this.BrushInfo.Text = $"{color.Name} ({hexColor}), {size} px";
+            this.PenInfo.Text = $"{color.Name} ({hexColor}), {size} px";
         }
 
-        this.BrushInfo.Text = $"{hexColor}, {size} px";
+        this.PenInfo.Text = $"{hexColor}, {size} px";
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.PenColor = this.PenColor;
@@ -88,14 +79,24 @@ internal partial class UiMainWindow : Form {
         );
 
         if (color.IsNamedColor) {
-            this.FillingInfo.Text = $"{color.Name} ({hexColor})";
+            this.BrushInfo.Text = $"{color.Name} ({hexColor})";
             return;
         }
 
-        this.FillingInfo.Text = $"{hexColor}";
+        this.BrushInfo.Text = $"{hexColor}";
 
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.BrushColor = this.BrushColor;
+        }
+    }
+
+    private void UpdateFontInfo(Font font) {
+        this.TextFont = font;
+
+        this.FontInfo.Text = $"{font.Name}, {font.SizeInPoints} pt";
+
+        if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
+            state.TextFont = this.TextFont;
         }
     }
 
@@ -150,101 +151,79 @@ internal partial class UiMainWindow : Form {
         this.UpdateBrushInfo(this.BrushColor);
     }
 
-    private void NewFileButtonClick(object sender, EventArgs e) {
-        var sizeDialog = new UiCreateCanvas();
-        _ = sizeDialog.ShowDialog(this);
+    private void NewCanvasButtonClick(object sender, EventArgs e) {
+        var canvasSizeWindow = new UiCanvasSize(this);
 
-        this.CanvasSize = sizeDialog.CanvasSize;
-        this.CanvasPlaceholder.Size = this.CanvasSize;
-
-        this.DrawingButtonClick(sender, e);
-
-        var state = new DrawState() {
-            CanvasSize = this.CanvasSize,
-            PenColor = this.PenColor,
-            PenSize = this.PenSize,
-            BrushColor = this.BrushColor,
-            TextFont = this.TextFont,
-            FigureType = FiguresEnum.Rectangle,
-        };
-
-        this.UpdateCanvasInfo(this.CanvasSize);
-
-        if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
-            var canvasWindow = new UiCanvasWindow {
-                MdiParent = this,
-                Bounds = this.CanvasPlaceholder.Bounds,
-                Text = "Рисунок " + this.MdiChildren.Length.ToString(),
-                State = state,
-                Size = this.CanvasSize
+        if (canvasSizeWindow.ShowDialog() == DialogResult.OK) {
+            var state = new DrawState() {
+                CanvasSize = this.CanvasSize,
+                PenColor = this.PenColor,
+                PenSize = this.PenSize,
+                BrushColor = this.BrushColor,
+                TextFont = this.TextFont,
+                FigureType = FiguresEnum.Rectangle,
             };
 
-            canvasWindow.Show();
+            if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
+                var canvasWindow = new UiCanvasWindow() {
+                    MdiParent = this,
+                    Text = "Рисунок " + this.MdiChildren.Length.ToString(),
+                    State = state,
+                    Size = this.CanvasSize
+                };
+
+                canvasWindow.Show();
+            }
         }
     }
 
-    private void SaveFileButtonClick(object sender, EventArgs e) {
+    private void SaveCanvasButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
             JsonReader.Save(activeForm.Size, activeForm.Figures);
         }
     }
 
-    private void SaveFileAsButtonClick(object sender, EventArgs e) {
-        if (this.ActiveMdiChild is UiCanvasWindow activeForm) {
-            JsonReader.Save(activeForm.Size, activeForm.Figures);
-        }
-    }
-
-    private void OpenFileButtonClick(object sender, EventArgs e) {
+    private void OpenCanvasButtonClick(object sender, EventArgs e) {
         HashableCanvas? canvas = JsonReader.Open();
 
         if (canvas is null) {
             return;
         }
 
+        List<IDrawable> figures = JsonReader.ToDrawable(canvas.Figures);
+
         this.CanvasSize = new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2);
         this.UpdateCanvasInfo(new Size(canvas.CanvasSize.Item1, canvas.CanvasSize.Item2));
-        this.CanvasPlaceholder.Size = this.CanvasSize;
-
-        this.DrawingButtonClick(sender, e);
 
         var state = new DrawState() {
-            CanvasSize = this.CanvasSize,
             PenColor = this.PenColor,
             PenSize = this.PenSize,
             BrushColor = this.BrushColor,
             TextFont = this.TextFont,
             FigureType = FiguresEnum.Rectangle,
+            Figures = figures,
+            CanvasSize = this.CanvasSize,
         };
 
         if (this.CanvasSize.Width > 0 && this.CanvasSize.Height > 0) {
-            var canvasWindow = new UiCanvasWindow {
+            var canvasWindow = new UiCanvasWindow() {
                 MdiParent = this,
-                Bounds = this.CanvasPlaceholder.Bounds,
                 Text = "Рисунок " + this.MdiChildren.Length.ToString(),
-                State = state,
                 Size = this.CanvasSize,
-                Figures = JsonReader.ToDrawable(canvas.Figures),
+                State = state,
+                Figures = figures,
             };
 
             canvasWindow.Show();
         }
     }
 
-    private void CanvasSizeButtonClick(object sender, EventArgs e) {
-        var sizeDialog = new UiCreateCanvas();
-        _ = sizeDialog.ShowDialog(this);
-        this.CanvasSize = sizeDialog.CanvasSize;
-    }
-
     private void PenSizeButtonClick(object sender, EventArgs e) {
-        var BrushSizeForm = new UiBrushSize {
-            Text = "Изменение размера кисти",
-            MdiParent = this,
-            PenColor = this.PenColor
-        };
+        var penSizeWindow = new UiPenSize(this, this.PenColor);
 
-        BrushSizeForm.Show();
+        if (penSizeWindow.ShowDialog() == DialogResult.OK) {
+            return;
+        }
     }
 
     private void PenColorButtonClick(object sender, EventArgs e) {
@@ -252,12 +231,6 @@ internal partial class UiMainWindow : Form {
         _ = colorDialog.ShowDialog();
 
         this.UpdatePenInfo(colorDialog.Color, this.PenSize);
-    }
-
-    private void FontButtonClick(object sender, EventArgs e) {
-        _ = this.FontDialog.ShowDialog();
-
-        this.UpdateFontInfo(this.FontDialog.Font);
     }
 
     private void BrushColorButtonClick(object sender, EventArgs e) {
@@ -283,6 +256,13 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState state) {
             state.IsFilling = this.IsFilling;
         }
+    }
+
+    private void FontButtonClick(object sender, EventArgs e) {
+        _ = this.FontDialog.ShowDialog();
+        this.FontDialog.Font = this.TextFont;
+
+        this.UpdateFontInfo(this.FontDialog.Font);
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
@@ -341,7 +321,6 @@ internal partial class UiMainWindow : Form {
             };
             child.SelectedFigures.Clear();
             child.State = state;
-            child.Render();
         }
     }
 
@@ -356,7 +335,6 @@ internal partial class UiMainWindow : Form {
             };
 
             child.State = state;
-            child.Render();
         }
     }
 
