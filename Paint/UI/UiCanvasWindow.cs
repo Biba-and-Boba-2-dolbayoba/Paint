@@ -23,6 +23,10 @@ internal partial class UiCanvasWindow : Form {
     private bool IsAbleToUpdate { get; set; } = false;
     private BufferedGraphics? GraphicsBuffer { get; set; }
 
+    private bool ShowGrid { get; set; } = false;
+    private int GridStep { get; set; } = 50;
+    private Color GridColor { get; set; } = Color.Gray;
+
     public UiCanvasWindow() {
         this.SetDoubleBuffering(true);
         this.InitializeComponent();
@@ -52,7 +56,7 @@ internal partial class UiCanvasWindow : Form {
 
         this.SelectedFigures.Clear();
     }
-    
+
     private void CopySelectedFiguresToClipboard() {
         if (this.SelectedFigures.Count == 0) {
             return;
@@ -98,10 +102,10 @@ internal partial class UiCanvasWindow : Form {
             figure.Move(offsetX, offsetY);
         }
     }
-    
+
     private void DrawFigures(BufferedGraphics graphicsBuffer) {
         Graphics graphics = graphicsBuffer.Graphics;
-
+        this.DrawGrid(graphics);
         if (this.State is DrawState) {
             this.DashFigure?.DrawDash(graphics);
 
@@ -123,6 +127,7 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState) {
 
         }
+
 
         graphicsBuffer.Render();
     }
@@ -269,5 +274,23 @@ internal partial class UiCanvasWindow : Form {
                 this.PasteFiguresFromClipboard();
             }
         }
+    }
+
+    private void DrawGrid(Graphics g) {
+        if (!ShowGrid || GridStep <= 0) return;
+
+        using var pen = new Pen(GridColor, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot };
+
+        for (int x = GridStep ; x < this.Size.Width ; x += GridStep) {
+            g.DrawLine(pen, x, 0, x, this.Size.Height);
+        }
+
+        for (int y = GridStep ; y < this.Size.Height ; y += GridStep) {
+            g.DrawLine(pen, 0, y, this.Size.Width, y);
+        }
+    }
+    public void ToggleGrid() {
+        this.ShowGrid = !this.ShowGrid; 
+        this.Invalidate();             
     }
 }

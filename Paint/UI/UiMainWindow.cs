@@ -18,6 +18,8 @@ internal partial class UiMainWindow : Form {
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
     private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> FigureButtons { get; set; }
     private Dictionary<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> StateButtons { get; set; }
+    private bool ShowGrid = false;
+    private bool SnapToGrid { get; set; } = false;
 
     private class ToolStripRenderer : ToolStripProfessionalRenderer {
         public ToolStripRenderer() : base() {
@@ -344,5 +346,21 @@ internal partial class UiMainWindow : Form {
 
     private void EditButtonClick(object sender, EventArgs e) {
 
+    }
+
+
+    private void GridToolButtonClick(object sender, EventArgs e) {
+        if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {
+
+            activeCanvas.ToggleGrid();
+        }
+    }
+
+    private void SnapToGridToolButtonClick(object sender, EventArgs e) {
+        this.SnapToGrid = !this.SnapToGrid;
+
+        
+        this.SnapToGridButton.Checked = this.SnapToGrid;
+        this.SnapToGridToolButton.Checked = this.SnapToGrid;
     }
 }

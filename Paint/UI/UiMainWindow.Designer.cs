@@ -56,10 +56,14 @@ namespace Paint
             this.TextToolButton = new ToolStripMenuItem();
             this.FillingSeparator = new ToolStripSeparator();
             this.FillingToolButton = new ToolStripMenuItem();
-            this.toolStripMenuItem1 = new ToolStripMenuItem();
+            this.StateToolButton = new ToolStripMenuItem();
             this.DrawingToolButton = new ToolStripMenuItem();
             this.SelectionToolButton = new ToolStripMenuItem();
             this.EditToolButton = new ToolStripMenuItem();
+            this.CoordinatToolButton = new ToolStripMenuItem();
+            this.GridToolButton = new ToolStripMenuItem();
+            this.GridStepToolButton = new ToolStripMenuItem();
+            this.SnapToGridToolButton = new ToolStripMenuItem();
             this.StatusStrip = new StatusStrip();
             this.PointerInfo = new ToolStripStatusLabel();
             this.CanvasInfo = new ToolStripStatusLabel();
@@ -89,6 +93,11 @@ namespace Paint
             this.DrawingButton = new ToolStripButton();
             this.SelectionButton = new ToolStripButton();
             this.EditButton = new ToolStripButton();
+            this.CoordinateGridSeparator = new ToolStripSeparator();
+            this.CoordinatDownButton = new ToolStripDropDownButton();
+            this.GridButton = new ToolStripMenuItem();
+            this.GridStepButton = new ToolStripMenuItem();
+            this.SnapToGridButton = new ToolStripMenuItem();
             this.FontDialog = new FontDialog();
             this.MenuStrip.SuspendLayout();
             this.StatusStrip.SuspendLayout();
@@ -98,7 +107,7 @@ namespace Paint
             // MenuStrip
             // 
             this.MenuStrip.BackColor = Color.WhiteSmoke;
-            this.MenuStrip.Items.AddRange(new ToolStripItem[] { this.FileToolButton, this.SettingsToolButton, this.FigureToolButton, this.toolStripMenuItem1 });
+            this.MenuStrip.Items.AddRange(new ToolStripItem[] { this.FileToolButton, this.SettingsToolButton, this.FigureToolButton, this.StateToolButton, this.CoordinatToolButton });
             this.MenuStrip.Location = new Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Padding = new Padding(5, 0, 5, 0);
@@ -116,21 +125,21 @@ namespace Paint
             // NewFileToolButton
             // 
             this.NewFileToolButton.Name = "NewFileToolButton";
-            this.NewFileToolButton.Size = new Size(132, 22);
+            this.NewFileToolButton.Size = new Size(133, 22);
             this.NewFileToolButton.Text = "Новый";
             this.NewFileToolButton.Click += this.NewCanvasButtonClick;
             // 
             // OpenFileToolButton
             // 
             this.OpenFileToolButton.Name = "OpenFileToolButton";
-            this.OpenFileToolButton.Size = new Size(132, 22);
+            this.OpenFileToolButton.Size = new Size(133, 22);
             this.OpenFileToolButton.Text = "Открыть";
             this.OpenFileToolButton.Click += this.OpenCanvasButtonClick;
             // 
             // SaveFileToolButton
             // 
             this.SaveFileToolButton.Name = "SaveFileToolButton";
-            this.SaveFileToolButton.Size = new Size(132, 22);
+            this.SaveFileToolButton.Size = new Size(133, 22);
             this.SaveFileToolButton.Text = "Сохранить";
             this.SaveFileToolButton.Click += this.SaveCanvasButtonClick;
             // 
@@ -225,12 +234,12 @@ namespace Paint
             this.FillingToolButton.Text = "Заливка";
             this.FillingToolButton.Click += this.FillingButtonClick;
             // 
-            // toolStripMenuItem1
+            // StateToolButton
             // 
-            this.toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { this.DrawingToolButton, this.SelectionToolButton, this.EditToolButton });
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new Size(57, 24);
-            this.toolStripMenuItem1.Text = "Режим";
+            this.StateToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.DrawingToolButton, this.SelectionToolButton, this.EditToolButton });
+            this.StateToolButton.Name = "StateToolButton";
+            this.StateToolButton.Size = new Size(57, 24);
+            this.StateToolButton.Text = "Режим";
             // 
             // DrawingToolButton
             // 
@@ -251,6 +260,33 @@ namespace Paint
             this.EditToolButton.Name = "EditToolButton";
             this.EditToolButton.Size = new Size(163, 22);
             this.EditToolButton.Text = "Редактирование";
+            // 
+            // CoordinatToolButton
+            // 
+            this.CoordinatToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.GridToolButton, this.GridStepToolButton, this.SnapToGridToolButton });
+            this.CoordinatToolButton.Name = "CoordinatToolButton";
+            this.CoordinatToolButton.Size = new Size(129, 24);
+            this.CoordinatToolButton.Text = "Координатная сетка";
+            // 
+            // GridToolButton
+            // 
+            this.GridToolButton.Name = "GridToolButton";
+            this.GridToolButton.Size = new Size(180, 22);
+            this.GridToolButton.Text = "Сетка";
+            this.GridToolButton.Click += this.GridToolButtonClick;
+            // 
+            // GridStepToolButton
+            // 
+            this.GridStepToolButton.Name = "GridStepToolButton";
+            this.GridStepToolButton.Size = new Size(180, 22);
+            this.GridStepToolButton.Text = "Шаг сетки";
+            // 
+            // SnapToGridToolButton
+            // 
+            this.SnapToGridToolButton.Name = "SnapToGridToolButton";
+            this.SnapToGridToolButton.Size = new Size(180, 22);
+            this.SnapToGridToolButton.Text = "Привязка к сетке";
+            this.SnapToGridToolButton.Click += this.SnapToGridToolButtonClick;
             // 
             // StatusStrip
             // 
@@ -324,7 +360,7 @@ namespace Paint
             this.ToolStrip.GripMargin = new Padding(0);
             this.ToolStrip.GripStyle = ToolStripGripStyle.Hidden;
             this.ToolStrip.ImageScalingSize = new Size(24, 24);
-            this.ToolStrip.Items.AddRange(new ToolStripItem[] { this.NewFileButton, this.SaveFileButton, this.OpenFileButton, this.BrushGroupSeparator, this.PenDropDownButton, this.FillingDropDownButton, this.FuguresGroupSeparator, this.RectangleButton, this.EllipseButton, this.StraightLineButton, this.CurveLineButton, this.TextGroupSeparator, this.TextButton, this.FontButton, this.SelectionGroupSeparator, this.DrawingButton, this.SelectionButton, this.EditButton });
+            this.ToolStrip.Items.AddRange(new ToolStripItem[] { this.NewFileButton, this.SaveFileButton, this.OpenFileButton, this.BrushGroupSeparator, this.PenDropDownButton, this.FillingDropDownButton, this.FuguresGroupSeparator, this.RectangleButton, this.EllipseButton, this.StraightLineButton, this.CurveLineButton, this.TextGroupSeparator, this.TextButton, this.FontButton, this.SelectionGroupSeparator, this.DrawingButton, this.SelectionButton, this.EditButton, this.CoordinateGridSeparator, this.CoordinatDownButton });
             this.ToolStrip.Location = new Point(0, 24);
             this.ToolStrip.Name = "ToolStrip";
             this.ToolStrip.Padding = new Padding(10, 0, 10, 0);
@@ -545,6 +581,39 @@ namespace Paint
             this.EditButton.Text = "Редактирование";
             this.EditButton.Click += this.EditButtonClick;
             // 
+            // CoordinateGridSeparator
+            // 
+            this.CoordinateGridSeparator.Name = "CoordinateGridSeparator";
+            this.CoordinateGridSeparator.Size = new Size(6, 32);
+            // 
+            // CoordinatDownButton
+            // 
+            this.CoordinatDownButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            this.CoordinatDownButton.DropDownItems.AddRange(new ToolStripItem[] { this.GridButton, this.GridStepButton, this.SnapToGridButton });
+            this.CoordinatDownButton.Image = (Image)resources.GetObject("CoordinatDownButton.Image");
+            this.CoordinatDownButton.ImageTransparentColor = Color.Magenta;
+            this.CoordinatDownButton.Name = "CoordinatDownButton";
+            this.CoordinatDownButton.Size = new Size(37, 29);
+            this.CoordinatDownButton.Text = "toolStripDropDownButton1";
+            // 
+            // GridButton
+            // 
+            this.GridButton.Name = "GridButton";
+            this.GridButton.Size = new Size(167, 22);
+            this.GridButton.Text = "Сетка";
+            // 
+            // GridStepButton
+            // 
+            this.GridStepButton.Name = "GridStepButton";
+            this.GridStepButton.Size = new Size(167, 22);
+            this.GridStepButton.Text = "Шаг сетки";
+            // 
+            // SnapToGridButton
+            // 
+            this.SnapToGridButton.Name = "SnapToGridButton";
+            this.SnapToGridButton.Size = new Size(167, 22);
+            this.SnapToGridButton.Text = "Привязка к сетке";
+            // 
             // UiMainWindow
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
@@ -614,7 +683,7 @@ namespace Paint
         private ToolStripSeparator TextGroupSeparator;
         private ToolStripSeparator SelectionGroupSeparator;
         private ToolStripSeparator FillingSeparator;
-        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem StateToolButton;
         private ToolStripMenuItem DrawingToolButton;
         private ToolStripMenuItem EditToolButton;
         private ToolStripDropDownButton PenDropDownButton;
@@ -625,5 +694,14 @@ namespace Paint
         private ToolStripMenuItem BrushColorButton;
         private ToolStripButton DrawingButton;
         private ToolStripButton EditButton;
+        private ToolStripSeparator CoordinateGridSeparator;
+        private ToolStripDropDownButton CoordinatDownButton;
+        private ToolStripMenuItem CoordinatToolButton;
+        private ToolStripMenuItem GridToolButton;
+        private ToolStripMenuItem GridStepToolButton;
+        private ToolStripMenuItem SnapToGridToolButton;
+        private ToolStripMenuItem GridButton;
+        private ToolStripMenuItem GridStepButton;
+        private ToolStripMenuItem SnapToGridButton;
     }
 }
