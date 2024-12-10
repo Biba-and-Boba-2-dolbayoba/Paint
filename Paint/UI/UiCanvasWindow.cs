@@ -22,10 +22,15 @@ internal partial class UiCanvasWindow : Form {
     private IDrawable? DashFigure { get; set; } = null;
     private bool IsAbleToUpdate { get; set; } = false;
     private BufferedGraphics? GraphicsBuffer { get; set; }
-
-    private bool ShowGrid { get; set; } = false;
-    private int GridStep { get; set; } = 50;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public bool ShowGrid { get; set; } = false;
+    private int GridStep { get; set; } = 10;
     private Color GridColor { get; set; } = Color.Gray;
+
+   
+
+
+
 
     public UiCanvasWindow() {
         this.SetDoubleBuffering(true);
@@ -150,7 +155,7 @@ internal partial class UiCanvasWindow : Form {
 
     private void OnLoad(object sender, EventArgs e) {
         var timer = new System.Timers.Timer() {
-            Interval = 0.00001,
+            Interval = 0.01,
         };
 
         timer.Elapsed += this.OnRender;
@@ -162,7 +167,8 @@ internal partial class UiCanvasWindow : Form {
     private void OnMouseDown(object sender, MouseEventArgs e) {
         if (this.State is DrawState drawing) {
             drawing.MouseDownHandler(e);
-
+            drawing.GridStep = this.GridStep;
+           
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -186,7 +192,8 @@ internal partial class UiCanvasWindow : Form {
 
         if (this.State is DrawState drawing && drawing.IsDrawing) {
             drawing.MouseMoveHandler(e);
-
+            drawing.GridStep = this.GridStep;
+            
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -207,6 +214,8 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is DrawState drawing) {
             drawing.MouseUpHandler(e);
 
+            drawing.GridStep = this.GridStep;
+            
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -290,7 +299,16 @@ internal partial class UiCanvasWindow : Form {
         }
     }
     public void ToggleGrid() {
-        this.ShowGrid = !this.ShowGrid; 
-        this.Invalidate();             
+        this.ShowGrid = !this.ShowGrid;
+        this.Invalidate();
+    }
+    public void SetGridStep(int step) {
+        if (step == 10 || step == 50) {
+            this.GridStep = step;
+            this.Invalidate();
+        }
+    }
+    public int GetGridStep() {
+        return this.GridStep;
     }
 }

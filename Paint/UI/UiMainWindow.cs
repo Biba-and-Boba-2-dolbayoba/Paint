@@ -18,7 +18,6 @@ internal partial class UiMainWindow : Form {
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
     private Dictionary<FiguresEnum, Tuple<ToolStripButton, ToolStripMenuItem>> FigureButtons { get; set; }
     private Dictionary<StatesEnum, Tuple<ToolStripButton, ToolStripMenuItem>> StateButtons { get; set; }
-    private bool ShowGrid = false;
     private bool SnapToGrid { get; set; } = false;
 
     private class ToolStripRenderer : ToolStripProfessionalRenderer {
@@ -316,6 +315,11 @@ internal partial class UiMainWindow : Form {
         this.CheskStateButton(StatesEnum.DrawState);
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
+
+            if (!child.ShowGrid) {
+                SnapToGrid = false;
+                this.SnapToGridToolButton.Checked = false;
+            }
             var state = new DrawState() {
                 PenColor = this.PenColor,
                 PenSize = this.PenSize,
@@ -324,6 +328,7 @@ internal partial class UiMainWindow : Form {
                 FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
                 CanvasSize = child.Size,
+                SnapToGrid = SnapToGrid,
             };
             child.SelectedFigures.Clear();
             child.State = state;
@@ -335,6 +340,7 @@ internal partial class UiMainWindow : Form {
         this.CheskStateButton(StatesEnum.SelectState);
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
+
             var state = new SelectState() {
                 Figures = child.Figures,
                 CanvasSize = child.Size,
@@ -353,14 +359,67 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {
 
             activeCanvas.ToggleGrid();
+
+            if (!activeCanvas.ShowGrid) {
+                if (activeCanvas.State is DrawState drawState) {
+                    drawState.SnapToGrid = false;
+                    this.SnapToGridToolButton.Checked = false;
+                }
+            }
+
+            if (activeCanvas.ShowGrid && this.SnapToGrid) {
+                if (activeCanvas.State is DrawState drawState) {
+                    drawState.SnapToGrid = true;
+                    this.SnapToGridToolButton.Checked = true;
+                }
+            }
+            this.GridToolButton.Checked = activeCanvas.ShowGrid;
+            this.SnapToGridToolButton.Enabled = activeCanvas.ShowGrid;
         }
     }
 
     private void SnapToGridToolButtonClick(object sender, EventArgs e) {
-        this.SnapToGrid = !this.SnapToGrid;
+        if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
 
-        
-        this.SnapToGridButton.Checked = this.SnapToGrid;
-        this.SnapToGridToolButton.Checked = this.SnapToGrid;
+            if (!canvasWindow.ShowGrid) {
+                SnapToGrid = false;
+                this.SnapToGridToolButton.Checked = false;
+                return;
+            }
+
+            SnapToGrid = !SnapToGrid;
+            this.SnapToGridToolButton.Checked = SnapToGrid;
+
+            if (canvasWindow.State is DrawState drawState) {
+                drawState.SnapToGrid = SnapToGrid;
+            }
+
+            canvasWindow.Invalidate();
+        }
+    }
+
+    private void UpdateGridButtonState() {
+        if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
+            
+            int gridStep = canvasWindow.GetGridStep();
+
+            
+            this.DefaultGridStepToolButton.Checked = gridStep == 10;
+            this.MaxGridStepToolButton.Checked = gridStep == 50;
+        }
+    }
+
+    private void DefaultGridStepToolButtonClick(object sender, EventArgs e) {
+        if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
+            canvasWindow.SetGridStep(10);  
+            this.UpdateGridButtonState();  
+        }
+    }
+
+    private void MaxGridStepToolButtonClick(object sender, EventArgs e) {
+        if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
+            canvasWindow.SetGridStep(50);  
+            this.UpdateGridButtonState();  
+        }
     }
 }
