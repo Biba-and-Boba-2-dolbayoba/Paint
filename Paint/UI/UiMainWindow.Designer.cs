@@ -275,7 +275,7 @@ namespace Paint
             // GridToolButton
             // 
             this.GridToolButton.Name = "GridToolButton";
-            this.GridToolButton.Size = new Size(180, 22);
+            this.GridToolButton.Size = new Size(167, 22);
             this.GridToolButton.Text = "Сетка";
             this.GridToolButton.Click += this.GridToolButtonClick;
             // 
@@ -283,27 +283,27 @@ namespace Paint
             // 
             this.GridStepToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.DefaultGridStepToolButton, this.MaxGridStepToolButton });
             this.GridStepToolButton.Name = "GridStepToolButton";
-            this.GridStepToolButton.Size = new Size(180, 22);
+            this.GridStepToolButton.Size = new Size(167, 22);
             this.GridStepToolButton.Text = "Шаг сетки";
             // 
             // DefaultGridStepToolButton
             // 
             this.DefaultGridStepToolButton.Name = "DefaultGridStepToolButton";
-            this.DefaultGridStepToolButton.Size = new Size(180, 22);
+            this.DefaultGridStepToolButton.Size = new Size(102, 22);
             this.DefaultGridStepToolButton.Text = "10 px";
             this.DefaultGridStepToolButton.Click += this.DefaultGridStepToolButtonClick;
             // 
             // MaxGridStepToolButton
             // 
             this.MaxGridStepToolButton.Name = "MaxGridStepToolButton";
-            this.MaxGridStepToolButton.Size = new Size(180, 22);
+            this.MaxGridStepToolButton.Size = new Size(102, 22);
             this.MaxGridStepToolButton.Text = "50 px";
             this.MaxGridStepToolButton.Click += this.MaxGridStepToolButtonClick;
             // 
             // SnapToGridToolButton
             // 
             this.SnapToGridToolButton.Name = "SnapToGridToolButton";
-            this.SnapToGridToolButton.Size = new Size(180, 22);
+            this.SnapToGridToolButton.Size = new Size(167, 22);
             this.SnapToGridToolButton.Text = "Привязка к сетке";
             this.SnapToGridToolButton.Click += this.SnapToGridToolButtonClick;
             // 
@@ -613,7 +613,7 @@ namespace Paint
             this.CoordinatDownButton.ImageTransparentColor = Color.Magenta;
             this.CoordinatDownButton.Name = "CoordinatDownButton";
             this.CoordinatDownButton.Size = new Size(37, 29);
-            this.CoordinatDownButton.Text = "toolStripDropDownButton1";
+            this.CoordinatDownButton.Text = "Редактирование сетки ";
             // 
             // GridButton
             // 
@@ -632,14 +632,14 @@ namespace Paint
             // DefaultGridStepButton
             // 
             this.DefaultGridStepButton.Name = "DefaultGridStepButton";
-            this.DefaultGridStepButton.Size = new Size(180, 22);
+            this.DefaultGridStepButton.Size = new Size(102, 22);
             this.DefaultGridStepButton.Text = "10 px";
             this.DefaultGridStepButton.Click += this.DefaultGridStepToolButtonClick;
             // 
             // MaxGridStepButton
             // 
             this.MaxGridStepButton.Name = "MaxGridStepButton";
-            this.MaxGridStepButton.Size = new Size(180, 22);
+            this.MaxGridStepButton.Size = new Size(102, 22);
             this.MaxGridStepButton.Text = "50 px";
             this.MaxGridStepButton.Click += this.MaxGridStepToolButtonClick;
             // 
