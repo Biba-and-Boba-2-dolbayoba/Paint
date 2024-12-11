@@ -1,6 +1,5 @@
 ﻿using Paint.Figures;
 using Paint.Interfaces;
-using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -95,15 +94,15 @@ internal class DrawState : IState, IDrawing {
             }
         }
     }
-    
+
     private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
-        if (e.Shift && e.KeyCode == Keys.Enter && TextBox is not null && Wrapper is not null && ParentReference is not null) {
-            TextBox.ReadOnly = true;
-            TextBox.Visible = false;
-            Wrapper.Text = TextBox.Text;
-            this.Figures.Add(Wrapper);
-            ParentReference.Figures = this.Figures;
-            TextBox.Dispose();
+        if (e.Shift && e.KeyCode == Keys.Enter && this.TextBox is not null && this.Wrapper is not null && this.ParentReference is not null) {
+            this.TextBox.ReadOnly = true;
+            this.TextBox.Visible = false;
+            this.Wrapper.Text = this.TextBox.Text;
+            this.Figures.Add(this.Wrapper);
+            this.ParentReference.Figures = this.Figures;
+            this.TextBox.Dispose();
         }
     }
 
@@ -148,10 +147,10 @@ internal class DrawState : IState, IDrawing {
                         Text = this.Text,
                     };
 
-                    textBox.KeyDown += OnTextBoxKeyDown;
+                    textBox.KeyDown += this.OnTextBoxKeyDown;
 
-                    Wrapper = textBoxWrapper;
-                    TextBox = textBox;
+                    this.Wrapper = textBoxWrapper;
+                    this.TextBox = textBox;
                 }
 
                 if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height && wrapper is not TextBoxWrapper) {
