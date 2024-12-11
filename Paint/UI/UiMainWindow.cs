@@ -319,9 +319,10 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow child) {
 
             if (!child.ShowGrid) {
-                SnapToGrid = false;
+                this.SnapToGrid = false;
                 this.SnapToGridToolButton.Checked = false;
             }
+
             var state = new DrawState() {
                 PenColor = this.PenColor,
                 PenSize = this.PenSize,
@@ -330,7 +331,7 @@ internal partial class UiMainWindow : Form {
                 FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
                 CanvasSize = child.Size,
-                SnapToGrid = SnapToGrid,
+                SnapToGrid = this.SnapToGrid,
             };
             child.SelectedFigures.Clear();
             child.State = state;
@@ -353,7 +354,17 @@ internal partial class UiMainWindow : Form {
     }
 
     private void EditButtonClick(object sender, EventArgs e) {
+        this.CheckFigureButton(null);
+        this.CheskStateButton(StatesEnum.EditState);
 
+        if (this.ActiveMdiChild is UiCanvasWindow child) {
+            var state = new EditState() {
+                Figures = child.Figures,
+                CanvasSize = child.Size,
+            };
+
+            child.State = state;
+        }
     }
 
     private void GridToolButtonClick(object sender, EventArgs e) {
@@ -374,6 +385,7 @@ internal partial class UiMainWindow : Form {
                     this.SnapToGridToolButton.Checked = true;
                 }
             }
+
             this.GridToolButton.Checked = activeCanvas.ShowGrid;
             this.SnapToGridToolButton.Enabled = activeCanvas.ShowGrid;
         }
@@ -383,16 +395,16 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
 
             if (!canvasWindow.ShowGrid) {
-                SnapToGrid = false;
+                this.SnapToGrid = false;
                 this.SnapToGridToolButton.Checked = false;
                 return;
             }
 
-            SnapToGrid = !SnapToGrid;
-            this.SnapToGridToolButton.Checked = SnapToGrid;
+            this.SnapToGrid = !this.SnapToGrid;
+            this.SnapToGridToolButton.Checked = this.SnapToGrid;
 
             if (canvasWindow.State is DrawState drawState) {
-                drawState.SnapToGrid = SnapToGrid;
+                drawState.SnapToGrid = this.SnapToGrid;
             }
 
             canvasWindow.Invalidate();
@@ -401,10 +413,10 @@ internal partial class UiMainWindow : Form {
 
     private void UpdateGridButtonState() {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
-            
+
             int gridStep = canvasWindow.GetGridStep();
 
-            
+
             this.DefaultGridStepToolButton.Checked = gridStep == 10;
             this.MaxGridStepToolButton.Checked = gridStep == 50;
         }
@@ -412,15 +424,15 @@ internal partial class UiMainWindow : Form {
 
     private void DefaultGridStepToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
-            canvasWindow.SetGridStep(10);  
-            this.UpdateGridButtonState();  
+            canvasWindow.SetGridStep(10);
+            this.UpdateGridButtonState();
         }
     }
 
     private void MaxGridStepToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
-            canvasWindow.SetGridStep(50);  
-            this.UpdateGridButtonState();  
+            canvasWindow.SetGridStep(50);
+            this.UpdateGridButtonState();
         }
     }
 }

@@ -27,11 +27,6 @@ internal partial class UiCanvasWindow : Form {
     private int GridStep { get; set; } = 10;
     private Color GridColor { get; set; } = Color.Gray;
 
-   
-
-
-
-
     public UiCanvasWindow() {
         this.SetDoubleBuffering(true);
         this.InitializeComponent();
@@ -167,7 +162,7 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is DrawState drawing) {
             drawing.MouseDownHandler(e);
             drawing.GridStep = this.GridStep;
-           
+
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -192,7 +187,7 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is DrawState drawing && drawing.IsDrawing) {
             drawing.MouseMoveHandler(e);
             drawing.GridStep = this.GridStep;
-            
+
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -214,7 +209,7 @@ internal partial class UiCanvasWindow : Form {
             drawing.MouseUpHandler(e);
 
             drawing.GridStep = this.GridStep;
-            
+
             this.Figures = drawing.Figures;
             this.DashFigure = drawing.DashFigure;
         }
@@ -304,7 +299,7 @@ internal partial class UiCanvasWindow : Form {
         this.ShowGrid = !this.ShowGrid;
     }
     public void SetGridStep(int step) {
-        if (step == 10 || step == 50) {
+        if (step is 10 or 50) {
             this.GridStep = step;
             this.Invalidate();
         }
