@@ -19,6 +19,9 @@ internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IDrawable> SelectedFigures { get; set; } = [];
 
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public IDrawable? SelectedFigure { get; set; }
+
     private IDrawable? DashFigure { get; set; } = null;
     private bool IsAbleToUpdate { get; set; } = false;
     private BufferedGraphics? GraphicsBuffer { get; set; }
@@ -125,7 +128,13 @@ internal partial class UiCanvasWindow : Form {
         }
 
         if (this.State is EditState) {
-
+            foreach (IDrawable figure in this.Figures) {
+                if (figure == SelectedFigure) {
+                    figure.DrawSelection(graphics);
+                } else {
+                    figure.Draw(graphics);
+                }
+            }
         }
 
         graphicsBuffer.Render();
@@ -174,8 +183,11 @@ internal partial class UiCanvasWindow : Form {
             this.SelectedFigures = selection.SelectedFigures;
         }
 
-        if (this.State is EditState) {
-            return;
+        if (this.State is EditState edit) {
+            edit.MouseDownHandler(e);
+
+            this.Figures = edit.Figures;
+            this.SelectedFigure = edit.SelectedFigure;
         }
     }
 
@@ -199,8 +211,11 @@ internal partial class UiCanvasWindow : Form {
             this.Figures = selection.Figures;
         }
 
-        if (this.State is EditState) {
-            return;
+        if (this.State is EditState edit) {
+            edit.MouseMoveHandler(e);
+
+            this.Figures = edit.Figures;
+            this.SelectedFigure = edit.SelectedFigure;
         }
     }
 
@@ -221,8 +236,11 @@ internal partial class UiCanvasWindow : Form {
             this.SelectedFigures = selection.SelectedFigures;
         }
 
-        if (this.State is EditState) {
-            return;
+        if (this.State is EditState edit) {
+            edit.MouseUpHandler(e);
+
+            this.Figures = edit.Figures;
+            this.SelectedFigure = edit.SelectedFigure;
         }
     }
 

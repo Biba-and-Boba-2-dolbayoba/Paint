@@ -22,7 +22,7 @@ internal class EditState : IState {
                 if (figure.ContainsPoint(point)) {
                     isContains = true;
                     if (SelectedFigure is null) {
-                        this.SelectedFigure = null;
+                        this.SelectedFigure = figure;
                         break;
                     }
                 }
