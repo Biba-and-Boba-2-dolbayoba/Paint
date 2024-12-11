@@ -293,6 +293,5 @@ internal partial class UiCanvasWindow : Form {
 
     public void ToggleGrid() {
         this.ShowGrid = !this.ShowGrid;
-        this.Invalidate();
     }
 }
