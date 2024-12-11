@@ -44,7 +44,6 @@ internal partial class UiMainWindow : Form {
             {StatesEnum.SelectState, new(this.SelectionButton, this.SelectionToolButton)},
             {StatesEnum.EditState, new(this.EditButton, this.EditToolButton)},
         };
-
     }
 
     public void UpdatePointerInfo(Point point) {
@@ -176,6 +175,8 @@ internal partial class UiMainWindow : Form {
                     State = state,
                     Size = this.CanvasSize
                 };
+                state.ParentReference = canvasWindow;
+                canvasWindow.State = state;
 
                 canvasWindow.Show();
             }
@@ -218,7 +219,8 @@ internal partial class UiMainWindow : Form {
                 State = state,
                 Figures = figures,
             };
-
+            state.ParentReference = canvasWindow;
+            canvasWindow.State = state;
             canvasWindow.Show();
         }
     }
@@ -353,7 +355,6 @@ internal partial class UiMainWindow : Form {
     private void EditButtonClick(object sender, EventArgs e) {
 
     }
-
 
     private void GridToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {

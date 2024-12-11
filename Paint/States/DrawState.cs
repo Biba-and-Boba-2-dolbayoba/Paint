@@ -36,6 +36,9 @@ internal class DrawState : IState, IDrawing {
     public int GridStep { get; set; } = 10;
     public bool SnapToGrid { get; set; } = false;
 
+    private TextBoxWrapper? Wrapper { get; set; }
+    private TextBox? TextBox { get; set; }
+
     private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
         { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
         { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
@@ -110,6 +113,17 @@ internal class DrawState : IState, IDrawing {
         }
     }
 
+    private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
+        if (e.Shift && e.KeyCode == Keys.Enter && this.TextBox is not null && this.Wrapper is not null && this.ParentReference is not null) {
+            this.TextBox.ReadOnly = true;
+            this.TextBox.Visible = false;
+            this.Wrapper.Text = this.TextBox.Text;
+            this.Figures.Add(this.Wrapper);
+            this.ParentReference.Figures = this.Figures;
+            this.TextBox.Dispose();
+        }
+    }
+
     public void MouseUpHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
 
@@ -141,9 +155,25 @@ internal class DrawState : IState, IDrawing {
                 if (wrapper is TextBoxWrapper textBoxWrapper) {
                     textBoxWrapper.Text = this.Text;
                     textBoxWrapper.TextFont = this.TextFont;
+
+                    var textBox = new TextBox() {
+                        Parent = this.ParentReference,
+                        Font = this.TextFont,
+                        Multiline = true,
+                        ForeColor = this.PenColor,
+                        Location = this.TopPoint,
+                        Width = this.BotPoint.X - this.TopPoint.X,
+                        Height = this.BotPoint.Y - this.TopPoint.Y,
+                        Text = this.Text,
+                    };
+
+                    textBox.KeyDown += this.OnTextBoxKeyDown;
+
+                    this.Wrapper = textBoxWrapper;
+                    this.TextBox = textBox;
                 }
 
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height && wrapper is not TextBoxWrapper) {
                     this.Figures.Add(wrapper);
                 }
             }

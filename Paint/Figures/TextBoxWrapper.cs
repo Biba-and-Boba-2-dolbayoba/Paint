@@ -58,6 +58,9 @@ internal class TextBoxWrapper : Movable, IDrawable {
             Math.Max(this.TopPoint.Y, this.BotPoint.Y)
         );
 
+        Brush brush = new SolidBrush(this.PenColor);
+
+        graphics.DrawString(this.Text, this.TextFont, brush, rectangle);
         graphics.DrawRectangle(pen, rectangle);
     }
 

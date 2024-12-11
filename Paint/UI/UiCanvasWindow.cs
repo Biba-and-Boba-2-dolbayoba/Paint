@@ -133,7 +133,6 @@ internal partial class UiCanvasWindow : Form {
 
         }
 
-
         graphicsBuffer.Render();
     }
 
@@ -145,11 +144,11 @@ internal partial class UiCanvasWindow : Form {
         }
 
         if (this.GraphicsBuffer is not null) {
-            IsAbleToUpdate = false;
+            this.IsAbleToUpdate = false;
             Graphics graphics = this.GraphicsBuffer.Graphics;
             graphics.Clear(Color.White);
             this.DrawFigures(this.GraphicsBuffer);
-            IsAbleToUpdate = true;
+            this.IsAbleToUpdate = true;
         }
     }
 
@@ -253,13 +252,12 @@ internal partial class UiCanvasWindow : Form {
             this.State.CanvasSize = this.Size;
         }
 
-        if (IsAbleToUpdate) {
+        if (this.IsAbleToUpdate) {
             this.GraphicsBuffer = null;
         }
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
-
         if (this.State is SelectState) {
             if (e.KeyData == Keys.Delete) {
                 this.DeleteSelectedFigures();
@@ -272,8 +270,9 @@ internal partial class UiCanvasWindow : Form {
             if (e.Control && e.KeyCode == Keys.X) {
                 this.CopySelectedFiguresToClipboard();
                 foreach (IDrawable figure in this.SelectedFigures) {
-                    this.Figures.Remove(figure);
+                    _ = this.Figures.Remove(figure);
                 }
+
                 this.SelectedFigures.Clear();
             }
         }
@@ -286,18 +285,21 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void DrawGrid(Graphics g) {
-        if (!ShowGrid || GridStep <= 0) return;
+        if (!this.ShowGrid || this.GridStep <= 0) {
+            return;
+        }
 
-        using var pen = new Pen(GridColor, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot };
+        using var pen = new Pen(this.GridColor, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot };
 
-        for (int x = GridStep ; x < this.Size.Width ; x += GridStep) {
+        for (int x = this.GridStep ; x < this.Size.Width ; x += this.GridStep) {
             g.DrawLine(pen, x, 0, x, this.Size.Height);
         }
 
-        for (int y = GridStep ; y < this.Size.Height ; y += GridStep) {
+        for (int y = this.GridStep ; y < this.Size.Height ; y += this.GridStep) {
             g.DrawLine(pen, 0, y, this.Size.Width, y);
         }
     }
+
     public void ToggleGrid() {
         this.ShowGrid = !this.ShowGrid;
         this.Invalidate();
