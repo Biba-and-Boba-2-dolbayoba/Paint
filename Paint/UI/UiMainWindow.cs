@@ -175,6 +175,8 @@ internal partial class UiMainWindow : Form {
                     State = state,
                     Size = this.CanvasSize
                 };
+                state.ParentReference = canvasWindow;
+                canvasWindow.State = state;
 
                 canvasWindow.Show();
             }
@@ -217,7 +219,8 @@ internal partial class UiMainWindow : Form {
                 State = state,
                 Figures = figures,
             };
-
+            state.ParentReference = canvasWindow;
+            canvasWindow.State = state;
             canvasWindow.Show();
         }
     }
@@ -322,6 +325,7 @@ internal partial class UiMainWindow : Form {
                 FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
                 CanvasSize = child.Size,
+                ParentReference = child,
             };
             child.SelectedFigures.Clear();
             child.State = state;

@@ -164,10 +164,6 @@ internal static class JsonReader {
     public static List<IDrawable> ToFigureList(string json) {
         ListOfHashableFigures? listOfHashableFigures = JsonConvert.DeserializeObject<ListOfHashableFigures>(json);
 
-        if (listOfHashableFigures is null) {
-            return [];
-        }
-
-        return ToDrawable(listOfHashableFigures.Figures);
+        return listOfHashableFigures is null ? ([]) : ToDrawable(listOfHashableFigures.Figures);
     }
 }

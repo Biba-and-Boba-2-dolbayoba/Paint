@@ -1,5 +1,6 @@
 ﻿using Paint.Figures;
 using Paint.Interfaces;
+using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,6 +33,9 @@ internal class DrawState : IState, IDrawing {
 
     public UiCanvasWindow? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
+
+    public UiTextBox? InputControl { get; set; }
+    public TextBoxWrapper? InputWrapper { get; set; } 
 
     private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
         { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
@@ -121,6 +125,13 @@ internal class DrawState : IState, IDrawing {
                 if (wrapper is TextBoxWrapper textBoxWrapper) {
                     textBoxWrapper.Text = this.Text;
                     textBoxWrapper.TextFont = this.TextFont;
+                    InputWrapper = textBoxWrapper;
+
+                    if (ParentReference is not null) {
+                        InputControl = new UiTextBox(textBoxWrapper, ParentReference);
+                        InputControl.CreateTextBox();
+                        InputControl.InputField.Show();
+                    }
                 }
 
                 if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {

@@ -1,6 +1,7 @@
 ﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
+using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,7 +53,7 @@ internal partial class UiCanvasWindow : Form {
 
         this.SelectedFigures.Clear();
     }
-    
+
     private void CopySelectedFiguresToClipboard() {
         if (this.SelectedFigures.Count == 0) {
             return;
@@ -98,7 +99,7 @@ internal partial class UiCanvasWindow : Form {
             figure.Move(offsetX, offsetY);
         }
     }
-    
+
     private void DrawFigures(BufferedGraphics graphicsBuffer) {
         Graphics graphics = graphicsBuffer.Graphics;
 
@@ -135,11 +136,11 @@ internal partial class UiCanvasWindow : Form {
         }
 
         if (this.GraphicsBuffer is not null) {
-            IsAbleToUpdate = false;
+            this.IsAbleToUpdate = false;
             Graphics graphics = this.GraphicsBuffer.Graphics;
             graphics.Clear(Color.White);
             this.DrawFigures(this.GraphicsBuffer);
-            IsAbleToUpdate = true;
+            this.IsAbleToUpdate = true;
         }
     }
 
@@ -239,13 +240,12 @@ internal partial class UiCanvasWindow : Form {
             this.State.CanvasSize = this.Size;
         }
 
-        if (IsAbleToUpdate) {
+        if (this.IsAbleToUpdate) {
             this.GraphicsBuffer = null;
         }
     }
 
     private void OnKeyDown(object sender, KeyEventArgs e) {
-
         if (this.State is SelectState) {
             if (e.KeyData == Keys.Delete) {
                 this.DeleteSelectedFigures();
@@ -258,15 +258,27 @@ internal partial class UiCanvasWindow : Form {
             if (e.Control && e.KeyCode == Keys.X) {
                 this.CopySelectedFiguresToClipboard();
                 foreach (IDrawable figure in this.SelectedFigures) {
-                    this.Figures.Remove(figure);
+                    _ = this.Figures.Remove(figure);
                 }
+
                 this.SelectedFigures.Clear();
             }
         }
 
-        if (this.State is DrawState) {
+        if (this.State is DrawState state) {
             if (e.Control && e.KeyCode == Keys.V) {
                 this.PasteFiguresFromClipboard();
+            }
+
+            if (e.KeyCode == Keys.Enter) {
+                if (state.InputControl is not null && state.InputWrapper is not null) {
+                    this.Figures.Remove(state.InputWrapper);
+                    state.InputWrapper.Text = state.InputControl.Text;
+                    this.Figures.Add(state.InputWrapper);
+                    state.Figures = this.Figures;
+                    state.InputControl.InputField.Dispose();
+                    state.InputControl.Dispose();
+                }
             }
         }
     }
