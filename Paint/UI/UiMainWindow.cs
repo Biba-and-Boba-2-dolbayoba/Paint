@@ -330,6 +330,7 @@ internal partial class UiMainWindow : Form {
                 FigureType = FiguresEnum.Rectangle,
                 Figures = child.Figures,
                 CanvasSize = child.Size,
+                ParentReference = child,
                 SnapToGrid = SnapToGrid,
             };
             child.SelectedFigures.Clear();
@@ -353,7 +354,18 @@ internal partial class UiMainWindow : Form {
     }
 
     private void EditButtonClick(object sender, EventArgs e) {
+        this.CheckFigureButton(null);
+        this.CheskStateButton(StatesEnum.EditState);
 
+        if (this.ActiveMdiChild is UiCanvasWindow child) {
+            var state = new EditState() {
+                Figures = child.Figures, 
+                CanvasSize = child.Size,
+            };
+
+            child.State = state; 
+            child.Invalidate(); 
+        }
     }
 
     private void GridToolButtonClick(object sender, EventArgs e) {
