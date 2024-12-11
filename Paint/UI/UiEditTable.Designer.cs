@@ -218,6 +218,7 @@ partial class UiEditTable {
         // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
         this.ClientSize = new System.Drawing.Size(303, 302);
         this.Controls.Add(this.MoveButton);
         this.Controls.Add(this.CoordinateBox);
@@ -230,6 +231,7 @@ partial class UiEditTable {
         this.Name = "UiEditTable";
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "UiEditTable";
+        this.Load += this.UiEditTable_Load;
         this.menuStrip1.ResumeLayout(false);
         this.menuStrip1.PerformLayout();
         this.CoordinateBox.ResumeLayout(false);
