@@ -2,6 +2,7 @@
 using Paint.Serialization;
 using Paint.Serialization.Models;
 using Paint.States;
+using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -360,14 +361,19 @@ internal partial class UiMainWindow : Form {
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new EditState() {
-                Figures = child.Figures, 
+                Figures = child.Figures,
                 CanvasSize = child.Size,
             };
 
-            child.State = state; 
-            child.Invalidate(); 
+            child.State = state;
+            child.Invalidate();
+
+
+            using var editTable = new UiEditTable();
+            editTable.ShowDialog();
         }
     }
+    
 
     private void GridToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {

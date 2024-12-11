@@ -129,21 +129,21 @@ namespace Paint
             // NewFileToolButton
             // 
             this.NewFileToolButton.Name = "NewFileToolButton";
-            this.NewFileToolButton.Size = new Size(133, 22);
+            this.NewFileToolButton.Size = new Size(180, 22);
             this.NewFileToolButton.Text = "Новый";
             this.NewFileToolButton.Click += this.NewCanvasButtonClick;
             // 
             // OpenFileToolButton
             // 
             this.OpenFileToolButton.Name = "OpenFileToolButton";
-            this.OpenFileToolButton.Size = new Size(133, 22);
+            this.OpenFileToolButton.Size = new Size(180, 22);
             this.OpenFileToolButton.Text = "Открыть";
             this.OpenFileToolButton.Click += this.OpenCanvasButtonClick;
             // 
             // SaveFileToolButton
             // 
             this.SaveFileToolButton.Name = "SaveFileToolButton";
-            this.SaveFileToolButton.Size = new Size(133, 22);
+            this.SaveFileToolButton.Size = new Size(180, 22);
             this.SaveFileToolButton.Text = "Сохранить";
             this.SaveFileToolButton.Click += this.SaveCanvasButtonClick;
             // 
@@ -275,7 +275,7 @@ namespace Paint
             // GridToolButton
             // 
             this.GridToolButton.Name = "GridToolButton";
-            this.GridToolButton.Size = new Size(167, 22);
+            this.GridToolButton.Size = new Size(180, 22);
             this.GridToolButton.Text = "Сетка";
             this.GridToolButton.Click += this.GridToolButtonClick;
             // 
@@ -283,7 +283,7 @@ namespace Paint
             // 
             this.GridStepToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.DefaultGridStepToolButton, this.MaxGridStepToolButton });
             this.GridStepToolButton.Name = "GridStepToolButton";
-            this.GridStepToolButton.Size = new Size(167, 22);
+            this.GridStepToolButton.Size = new Size(180, 22);
             this.GridStepToolButton.Text = "Шаг сетки";
             // 
             // DefaultGridStepToolButton
@@ -303,7 +303,7 @@ namespace Paint
             // SnapToGridToolButton
             // 
             this.SnapToGridToolButton.Name = "SnapToGridToolButton";
-            this.SnapToGridToolButton.Size = new Size(167, 22);
+            this.SnapToGridToolButton.Size = new Size(180, 22);
             this.SnapToGridToolButton.Text = "Привязка к сетке";
             this.SnapToGridToolButton.Click += this.SnapToGridToolButtonClick;
             // 
@@ -618,7 +618,7 @@ namespace Paint
             // GridButton
             // 
             this.GridButton.Name = "GridButton";
-            this.GridButton.Size = new Size(180, 22);
+            this.GridButton.Size = new Size(167, 22);
             this.GridButton.Text = "Сетка";
             this.GridButton.Click += this.GridToolButtonClick;
             // 
@@ -626,7 +626,7 @@ namespace Paint
             // 
             this.GridStepButton.DropDownItems.AddRange(new ToolStripItem[] { this.DefaultGridStepButton, this.MaxGridStepButton });
             this.GridStepButton.Name = "GridStepButton";
-            this.GridStepButton.Size = new Size(180, 22);
+            this.GridStepButton.Size = new Size(167, 22);
             this.GridStepButton.Text = "Шаг сетки";
             // 
             // DefaultGridStepButton
@@ -646,7 +646,7 @@ namespace Paint
             // SnapToGridButton
             // 
             this.SnapToGridButton.Name = "SnapToGridButton";
-            this.SnapToGridButton.Size = new Size(180, 22);
+            this.SnapToGridButton.Size = new Size(167, 22);
             this.SnapToGridButton.Text = "Привязка к сетке";
             this.SnapToGridButton.Click += this.SnapToGridToolButtonClick;
             // 
