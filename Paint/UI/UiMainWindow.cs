@@ -332,7 +332,7 @@ internal partial class UiMainWindow : Form {
                 Figures = child.Figures,
                 CanvasSize = child.Size,
                 ParentReference = child,
-                SnapToGrid = SnapToGrid,
+                SnapToGrid = this.SnapToGrid,
             };
             child.SelectedFigures.Clear();
             child.State = state;
@@ -349,7 +349,8 @@ internal partial class UiMainWindow : Form {
                 Figures = child.Figures,
                 CanvasSize = child.Size,
             };
-
+            state.SelectedFigures.Clear();
+            child.SelectedFigures.Clear();
             child.State = state;
         }
     }
@@ -360,12 +361,12 @@ internal partial class UiMainWindow : Form {
 
         if (this.ActiveMdiChild is UiCanvasWindow child) {
             var state = new EditState() {
-                Figures = child.Figures, 
+                Figures = child.Figures,
                 CanvasSize = child.Size,
             };
-
-            child.State = state; 
-            child.Invalidate(); 
+            state.SelectedFigures.Clear();
+            child.SelectedFigures.Clear();
+            child.State = state;
         }
     }
 
@@ -408,8 +409,6 @@ internal partial class UiMainWindow : Form {
             if (canvasWindow.State is DrawState drawState) {
                 drawState.SnapToGrid = this.SnapToGrid;
             }
-
-            canvasWindow.Invalidate();
         }
     }
 
@@ -417,7 +416,6 @@ internal partial class UiMainWindow : Form {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
 
             int gridStep = canvasWindow.GetGridStep();
-
 
             this.DefaultGridStepToolButton.Checked = gridStep == 10;
             this.MaxGridStepToolButton.Checked = gridStep == 50;
