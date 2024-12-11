@@ -8,7 +8,6 @@ internal class Movable : IMovable {
     public Point TopPoint { get; set; }
     public Point BotPoint { get; set; }
 
-
     public virtual void ValidateEdgePoint() {
         var topPoint = new Point(
             Math.Min(this.TopPoint.X, this.BotPoint.X), Math.Min(this.TopPoint.Y, this.BotPoint.Y)

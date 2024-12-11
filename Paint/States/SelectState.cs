@@ -14,8 +14,7 @@ internal class SelectState : IState, ISelection {
     public Size CanvasSize { get; set; }
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
-    private bool SnapToGrid { get; set; } = true; 
-    private int GridStep { get; set; } = 10;
+    
 
     public void MouseDownHandler(MouseEventArgs e) {
         this.DragStartPoint = new Point(e.X, e.Y);
@@ -54,26 +53,20 @@ internal class SelectState : IState, ISelection {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
 
-            
             foreach (IDrawable figure in this.SelectedFigures) {
                 figure.ValidateEdgePoint();
                 if (!figure.CanMove(dx, dy, this.CanvasSize)) {
                     return;
                 }
             }
-         
             foreach (IDrawable figure in this.SelectedFigures) {
-
-                if (this.SnapToGrid && (Math.Abs(dx) < this.GridStep || Math.Abs(dy) < this.GridStep)) {
-
-                    return;
-                }
                 figure.Move(dx, dy);
+                this.DragStartPoint = new Point(e.X, e.Y);
             }
-            
-            this.DragStartPoint = new Point(this.DragStartPoint.X + dx, this.DragStartPoint.Y + dy);
         }
     }
+
+
 
     public void MouseUpHandler(MouseEventArgs e) {
         this.IsMoving = false;

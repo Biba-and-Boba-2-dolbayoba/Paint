@@ -33,6 +33,9 @@ internal class DrawState : IState, IDrawing {
     public UiCanvasWindow? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
 
+    public int GridStep { get; set; } = 10;
+    public bool SnapToGrid { get; set; } = false;
+
     private TextBoxWrapper? Wrapper { get; set; }
     private TextBox? TextBox { get; set; }
 
@@ -43,19 +46,34 @@ internal class DrawState : IState, IDrawing {
         { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
         { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
+    private Point GetNearestGridPoint(Point point) {
+        if (!SnapToGrid) return point;
+
+        int x = (int)Math.Round((double)point.X / GridStep) * GridStep;
+        int y = (int)Math.Round((double)point.Y / GridStep) * GridStep;
+        return new Point(x, y);
+    }
+
 
     public void MouseDownHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
-            this.TopPoint = new Point(e.X, e.Y);
-            this.BotPoint = new Point(e.X, e.Y);
+
+            this.TopPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
+            this.BotPoint = this.TopPoint;
 
             this.IsDrawing = true;
+
+            if (this.FigureType == FiguresEnum.CurveLine) {
+                this.Points.Clear(); // Очистка массива говна
+                this.Points.Add(this.TopPoint);  // начальная точка 
+            }
         }
     }
 
     public void MouseMoveHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
-            this.BotPoint = new Point(e.X, e.Y);
+            // this.BotPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
+              this.BotPoint = new Point(e.X, e.Y);
 
             var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
 
@@ -108,7 +126,9 @@ internal class DrawState : IState, IDrawing {
 
     public void MouseUpHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
-            this.BotPoint = new Point(e.X, e.Y);
+
+            this.BotPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
+           // this.BotPoint = new Point(e.X, e.Y);
 
             var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
 
