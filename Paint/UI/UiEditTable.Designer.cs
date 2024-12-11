@@ -34,19 +34,19 @@ partial class UiEditTable {
         this.EllipseButton = new System.Windows.Forms.ToolStripMenuItem();
         this.StraightLineButton = new System.Windows.Forms.ToolStripMenuItem();
         this.CurveLineButton = new System.Windows.Forms.ToolStripMenuItem();
-        this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-        this.PenColorButton = new System.Windows.Forms.ToolStripMenuItem();
         this.PenSizeButton = new System.Windows.Forms.ToolStripMenuItem();
+        this.PenColorButton = new System.Windows.Forms.ToolStripMenuItem();
+        this.BrushColorButton = new System.Windows.Forms.ToolStripMenuItem();
         this.FontButton = new System.Windows.Forms.ToolStripMenuItem();
-        this.BackColorButton = new System.Windows.Forms.ToolStripMenuItem();
-        this.CoordinateBox = new System.Windows.Forms.GroupBox();
-        this.TextX = new System.Windows.Forms.TextBox();
-        this.TextY = new System.Windows.Forms.TextBox();
-        this.CoordinateX = new System.Windows.Forms.Label();
-        this.CoordinateY = new System.Windows.Forms.Label();
         this.textBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        this.ColorDialog = new System.Windows.Forms.ColorDialog();
+        this.CoordinateBox = new System.Windows.Forms.GroupBox();
+        this.CoordinateY = new System.Windows.Forms.Label();
+        this.CoordinateX = new System.Windows.Forms.Label();
+        this.TextY = new System.Windows.Forms.TextBox();
+        this.TextX = new System.Windows.Forms.TextBox();
         this.MoveButton = new System.Windows.Forms.Button();
-        this.fontDialog1 = new System.Windows.Forms.FontDialog();
+        this.FontDialog = new System.Windows.Forms.FontDialog();
         this.menuStrip1.SuspendLayout();
         this.CoordinateBox.SuspendLayout();
         this.SuspendLayout();
@@ -75,7 +75,7 @@ partial class UiEditTable {
         // 
         this.menuStrip1.Dock = System.Windows.Forms.DockStyle.Left;
         this.menuStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-        this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.DeleteButton, this.AddButton, this.PenSizeButton, this.PenColorButton, this.BackColorButton, this.FontButton, this.textBoxToolStripMenuItem });
+        this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.DeleteButton, this.AddButton, this.PenSizeButton, this.PenColorButton, this.BrushColorButton, this.FontButton, this.textBoxToolStripMenuItem });
         this.menuStrip1.Location = new System.Drawing.Point(0, 0);
         this.menuStrip1.Name = "menuStrip1";
         this.menuStrip1.Size = new System.Drawing.Size(79, 302);
@@ -124,17 +124,26 @@ partial class UiEditTable {
         this.CurveLineButton.Text = "CurveLine";
         this.CurveLineButton.Click += this.CurveLineClick;
         // 
-        // PenColorButton
-        // 
-        this.PenColorButton.Name = "PenColorButton";
-        this.PenColorButton.Size = new System.Drawing.Size(72, 19);
-        this.PenColorButton.Text = "Pen Color";
-        // 
         // PenSizeButton
         // 
         this.PenSizeButton.Name = "PenSizeButton";
         this.PenSizeButton.Size = new System.Drawing.Size(72, 19);
         this.PenSizeButton.Text = "PenSize";
+        this.PenSizeButton.Click += this.PenSizeClick;
+        // 
+        // PenColorButton
+        // 
+        this.PenColorButton.Name = "PenColorButton";
+        this.PenColorButton.Size = new System.Drawing.Size(72, 19);
+        this.PenColorButton.Text = "Pen Color";
+        this.PenColorButton.Click += this.PenColorClick;
+        // 
+        // BrushColorButton
+        // 
+        this.BrushColorButton.Name = "BrushColorButton";
+        this.BrushColorButton.Size = new System.Drawing.Size(72, 19);
+        this.BrushColorButton.Text = "Back Color";
+        this.BrushColorButton.Click += this.BrushColorButtonClick;
         // 
         // FontButton
         // 
@@ -143,11 +152,12 @@ partial class UiEditTable {
         this.FontButton.Text = "Font";
         this.FontButton.Click += this.FontButtonClick;
         // 
-        // BackColorButton
+        // textBoxToolStripMenuItem
         // 
-        this.BackColorButton.Name = "BackColorButton";
-        this.BackColorButton.Size = new System.Drawing.Size(72, 19);
-        this.BackColorButton.Text = "Back Color";
+        this.textBoxToolStripMenuItem.Name = "textBoxToolStripMenuItem";
+        this.textBoxToolStripMenuItem.Size = new System.Drawing.Size(72, 19);
+        this.textBoxToolStripMenuItem.Text = "TextBox";
+        this.textBoxToolStripMenuItem.Click += this.TextBoxButtonClick;
         // 
         // CoordinateBox
         // 
@@ -162,19 +172,14 @@ partial class UiEditTable {
         this.CoordinateBox.TabStop = false;
         this.CoordinateBox.Text = "Координаты выделенной фигуры";
         // 
-        // TextX
+        // CoordinateY
         // 
-        this.TextX.Location = new System.Drawing.Point(23, 37);
-        this.TextX.Name = "TextX";
-        this.TextX.Size = new System.Drawing.Size(62, 23);
-        this.TextX.TabIndex = 0;
-        // 
-        // TextY
-        // 
-        this.TextY.Location = new System.Drawing.Point(110, 37);
-        this.TextY.Name = "TextY";
-        this.TextY.Size = new System.Drawing.Size(62, 23);
-        this.TextY.TabIndex = 1;
+        this.CoordinateY.AutoSize = true;
+        this.CoordinateY.Location = new System.Drawing.Point(91, 40);
+        this.CoordinateY.Name = "CoordinateY";
+        this.CoordinateY.Size = new System.Drawing.Size(14, 15);
+        this.CoordinateY.TabIndex = 3;
+        this.CoordinateY.Text = "Y";
         // 
         // CoordinateX
         // 
@@ -185,21 +190,19 @@ partial class UiEditTable {
         this.CoordinateX.TabIndex = 2;
         this.CoordinateX.Text = "X";
         // 
-        // CoordinateY
+        // TextY
         // 
-        this.CoordinateY.AutoSize = true;
-        this.CoordinateY.Location = new System.Drawing.Point(91, 40);
-        this.CoordinateY.Name = "CoordinateY";
-        this.CoordinateY.Size = new System.Drawing.Size(14, 15);
-        this.CoordinateY.TabIndex = 3;
-        this.CoordinateY.Text = "Y";
+        this.TextY.Location = new System.Drawing.Point(110, 37);
+        this.TextY.Name = "TextY";
+        this.TextY.Size = new System.Drawing.Size(62, 23);
+        this.TextY.TabIndex = 1;
         // 
-        // textBoxToolStripMenuItem
+        // TextX
         // 
-        this.textBoxToolStripMenuItem.Name = "textBoxToolStripMenuItem";
-        this.textBoxToolStripMenuItem.Size = new System.Drawing.Size(72, 19);
-        this.textBoxToolStripMenuItem.Text = "TextBox";
-        this.textBoxToolStripMenuItem.Click += this.TextBoxButtonClick;
+        this.TextX.Location = new System.Drawing.Point(23, 37);
+        this.TextX.Name = "TextX";
+        this.TextX.Size = new System.Drawing.Size(62, 23);
+        this.TextX.TabIndex = 0;
         // 
         // MoveButton
         // 
@@ -248,8 +251,8 @@ partial class UiEditTable {
     private System.Windows.Forms.ToolStripMenuItem PenColorButton;
     private System.Windows.Forms.ToolStripMenuItem PenSizeButton;
     private System.Windows.Forms.ToolStripMenuItem FontButton;
-    private System.Windows.Forms.ColorDialog colorDialog1;
-    private System.Windows.Forms.ToolStripMenuItem BackColorButton;
+    private System.Windows.Forms.ColorDialog ColorDialog;
+    private System.Windows.Forms.ToolStripMenuItem BrushColorButton;
     private System.Windows.Forms.GroupBox CoordinateBox;
     private System.Windows.Forms.TextBox TextX;
     private System.Windows.Forms.ToolStripMenuItem textBoxToolStripMenuItem;
@@ -257,5 +260,5 @@ partial class UiEditTable {
     private System.Windows.Forms.Label CoordinateX;
     private System.Windows.Forms.TextBox TextY;
     private System.Windows.Forms.Button MoveButton;
-    private System.Windows.Forms.FontDialog fontDialog1;
+    private System.Windows.Forms.FontDialog FontDialog;
 }
