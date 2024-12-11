@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace Paint.States;
 
-internal class EditState : IState {
+internal class EditState : IState, ISelection {
     public List<IDrawable> Figures { get; set; } = [];
-    public IDrawable? SelectedFigure { get; set; }
+    public List<IDrawable> SelectedFigures { get; set; } = [];
 
     public bool IsMoving { get; set; } = false;
     public Size CanvasSize { get; set; }
@@ -21,15 +21,15 @@ internal class EditState : IState {
             foreach (IDrawable figure in this.Figures) {
                 if (figure.ContainsPoint(point)) {
                     isContains = true;
-                    if (SelectedFigure is null) {
-                        this.SelectedFigure = figure;
+                    if (!this.SelectedFigures.Contains(figure) && this.SelectedFigures.Count == 0) {
+                        this.SelectedFigures.Add(figure);
                         break;
                     }
                 }
             }
 
             if (!isContains) {
-                this.SelectedFigure = null;
+                this.SelectedFigures.Clear();
             }
 
             this.IsMoving = true;
@@ -37,8 +37,8 @@ internal class EditState : IState {
 
         if (e.Button == MouseButtons.Right) {
             foreach (IDrawable figure in this.Figures) {
-                if (figure.ContainsPoint(point) && this.SelectedFigure == figure) {
-                    this.SelectedFigure = null;
+                if (figure.ContainsPoint(point) && this.SelectedFigures.Contains(figure)) {
+                    _ = this.SelectedFigures.Remove(figure);
                     break;
                 }
             }
@@ -46,18 +46,21 @@ internal class EditState : IState {
     }
 
     public void MouseMoveHandler(MouseEventArgs e) {
-        if (SelectedFigure is null) return;
-
         if (this.IsMoving) {
             int dx = e.X - this.DragStartPoint.X;
             int dy = e.Y - this.DragStartPoint.Y;
 
-            SelectedFigure.ValidateEdgePoint();
-            if (SelectedFigure.CanMove(dx, dy, this.CanvasSize)) {
-                return;
+            foreach (IDrawable figure in this.SelectedFigures) {
+                figure.ValidateEdgePoint();
+                if (!figure.CanMove(dx, dy, this.CanvasSize)) {
+                    return;
+                }
             }
-            SelectedFigure.Move(dx, dy);
-            this.DragStartPoint = new Point(e.X, e.Y);
+
+            foreach (IDrawable figure in this.SelectedFigures) {
+                figure.Move(dx, dy);
+                this.DragStartPoint = new Point(e.X, e.Y);
+            }
         }
     }
 

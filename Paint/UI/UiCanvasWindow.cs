@@ -19,9 +19,6 @@ internal partial class UiCanvasWindow : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public List<IDrawable> SelectedFigures { get; set; } = [];
 
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public IDrawable? SelectedFigure { get; set; }
-
     private IDrawable? DashFigure { get; set; } = null;
     private bool IsAbleToUpdate { get; set; } = false;
     private BufferedGraphics? GraphicsBuffer { get; set; }
@@ -129,7 +126,7 @@ internal partial class UiCanvasWindow : Form {
 
         if (this.State is EditState) {
             foreach (IDrawable figure in this.Figures) {
-                if (figure == SelectedFigure) {
+                if (this.SelectedFigures.Contains(figure)) {
                     figure.DrawSelection(graphics);
                 } else {
                     figure.Draw(graphics);
@@ -138,21 +135,20 @@ internal partial class UiCanvasWindow : Form {
         }
 
         graphicsBuffer.Render();
+        graphicsBuffer.Dispose();
     }
 
     private void OnRender(object? sender, EventArgs e) {
-        var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
+        lock (e) {
+            var background = new Rectangle(0, 0, this.Size.Width, this.Size.Height);
 
-        if (this.GraphicsBuffer is null) {
             this.UpdateGraphicsBuffer(background);
-        }
 
-        if (this.GraphicsBuffer is not null) {
-            this.IsAbleToUpdate = false;
-            Graphics graphics = this.GraphicsBuffer.Graphics;
-            graphics.Clear(Color.White);
-            this.DrawFigures(this.GraphicsBuffer);
-            this.IsAbleToUpdate = true;
+            if (this.GraphicsBuffer is not null) {
+                Graphics graphics = this.GraphicsBuffer.Graphics;
+                graphics.Clear(Color.White);
+                this.DrawFigures(this.GraphicsBuffer);
+            }
         }
     }
 
@@ -187,7 +183,7 @@ internal partial class UiCanvasWindow : Form {
             edit.MouseDownHandler(e);
 
             this.Figures = edit.Figures;
-            this.SelectedFigure = edit.SelectedFigure;
+            this.SelectedFigures = edit.SelectedFigures;
         }
     }
 
@@ -214,8 +210,8 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState edit) {
             edit.MouseMoveHandler(e);
 
+            this.SelectedFigures = edit.SelectedFigures;
             this.Figures = edit.Figures;
-            this.SelectedFigure = edit.SelectedFigure;
         }
     }
 
@@ -240,7 +236,7 @@ internal partial class UiCanvasWindow : Form {
             edit.MouseUpHandler(e);
 
             this.Figures = edit.Figures;
-            this.SelectedFigure = edit.SelectedFigure;
+            this.SelectedFigures = edit.SelectedFigures;
         }
     }
 
@@ -316,12 +312,14 @@ internal partial class UiCanvasWindow : Form {
     public void ToggleGrid() {
         this.ShowGrid = !this.ShowGrid;
     }
+
     public void SetGridStep(int step) {
         if (step is 10 or 50) {
             this.GridStep = step;
             this.Invalidate();
         }
     }
+
     public int GetGridStep() {
         return this.GridStep;
     }

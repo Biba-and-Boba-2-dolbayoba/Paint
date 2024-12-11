@@ -13,8 +13,6 @@ internal class SelectState : IState, ISelection {
     public Size CanvasSize { get; set; }
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
-
-
     public void MouseDownHandler(MouseEventArgs e) {
         this.DragStartPoint = new Point(e.X, e.Y);
         var point = new Point(e.X, e.Y);
