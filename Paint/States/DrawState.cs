@@ -34,8 +34,8 @@ internal class DrawState : IState, IDrawing {
     public UiCanvasWindow? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
 
-    public UiTextBox? InputControl { get; set; }
-    public TextBoxWrapper? InputWrapper { get; set; } 
+    private TextBoxWrapper? Wrapper { get; set; }
+    private TextBox? TextBox { get; set; }
 
     private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
         { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
@@ -95,6 +95,17 @@ internal class DrawState : IState, IDrawing {
             }
         }
     }
+    
+    private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
+        if (e.Shift && e.KeyCode == Keys.Enter && TextBox is not null && Wrapper is not null && ParentReference is not null) {
+            TextBox.ReadOnly = true;
+            TextBox.Visible = false;
+            Wrapper.Text = TextBox.Text;
+            this.Figures.Add(Wrapper);
+            ParentReference.Figures = this.Figures;
+            TextBox.Dispose();
+        }
+    }
 
     public void MouseUpHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
@@ -125,16 +136,25 @@ internal class DrawState : IState, IDrawing {
                 if (wrapper is TextBoxWrapper textBoxWrapper) {
                     textBoxWrapper.Text = this.Text;
                     textBoxWrapper.TextFont = this.TextFont;
-                    InputWrapper = textBoxWrapper;
 
-                    if (ParentReference is not null) {
-                        InputControl = new UiTextBox(textBoxWrapper, ParentReference);
-                        InputControl.CreateTextBox();
-                        InputControl.InputField.Show();
-                    }
+                    var textBox = new TextBox() {
+                        Parent = this.ParentReference,
+                        Font = this.TextFont,
+                        Multiline = true,
+                        ForeColor = this.PenColor,
+                        Location = this.TopPoint,
+                        Width = this.BotPoint.X - this.TopPoint.X,
+                        Height = this.BotPoint.Y - this.TopPoint.Y,
+                        Text = this.Text,
+                    };
+
+                    textBox.KeyDown += OnTextBoxKeyDown;
+
+                    Wrapper = textBoxWrapper;
+                    TextBox = textBox;
                 }
 
-                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height) {
+                if (this.BotPoint.X < this.CanvasSize.Width && this.BotPoint.Y < this.CanvasSize.Height && wrapper is not TextBoxWrapper) {
                     this.Figures.Add(wrapper);
                 }
             }

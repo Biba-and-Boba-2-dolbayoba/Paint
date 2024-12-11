@@ -1,7 +1,6 @@
 ﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
-using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -128,7 +127,6 @@ internal partial class UiCanvasWindow : Form {
         if (this.State is EditState) {
 
         }
-
 
         graphicsBuffer.Render();
     }
@@ -270,39 +268,31 @@ internal partial class UiCanvasWindow : Form {
             }
         }
 
-        if (this.State is DrawState state) {
+        if (this.State is DrawState) {
             if (e.Control && e.KeyCode == Keys.V) {
                 this.PasteFiguresFromClipboard();
-            }
-
-            if (e.KeyCode == Keys.Enter) {
-                if (state.InputControl is not null && state.InputWrapper is not null) {
-                    this.Figures.Remove(state.InputWrapper);
-                    state.InputWrapper.Text = state.InputControl.Text;
-                    this.Figures.Add(state.InputWrapper);
-                    state.Figures = this.Figures;
-                    state.InputControl.InputField.Dispose();
-                    state.InputControl.Dispose();
-                }
             }
         }
     }
 
     private void DrawGrid(Graphics g) {
-        if (!ShowGrid || GridStep <= 0) return;
+        if (!this.ShowGrid || this.GridStep <= 0) {
+            return;
+        }
 
-        using var pen = new Pen(GridColor, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot };
+        using var pen = new Pen(this.GridColor, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot };
 
-        for (int x = GridStep ; x < this.Size.Width ; x += GridStep) {
+        for (int x = this.GridStep ; x < this.Size.Width ; x += this.GridStep) {
             g.DrawLine(pen, x, 0, x, this.Size.Height);
         }
 
-        for (int y = GridStep ; y < this.Size.Height ; y += GridStep) {
+        for (int y = this.GridStep ; y < this.Size.Height ; y += this.GridStep) {
             g.DrawLine(pen, 0, y, this.Size.Width, y);
         }
     }
+
     public void ToggleGrid() {
-        this.ShowGrid = !this.ShowGrid; 
-        this.Invalidate();             
+        this.ShowGrid = !this.ShowGrid;
+        this.Invalidate();
     }
 }

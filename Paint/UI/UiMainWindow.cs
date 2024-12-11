@@ -45,7 +45,6 @@ internal partial class UiMainWindow : Form {
             {StatesEnum.SelectState, new(this.SelectionButton, this.SelectionToolButton)},
             {StatesEnum.EditState, new(this.EditButton, this.EditToolButton)},
         };
-
     }
 
     public void UpdatePointerInfo(Point point) {
@@ -352,7 +351,6 @@ internal partial class UiMainWindow : Form {
 
     }
 
-
     private void GridToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {
 
@@ -363,7 +361,6 @@ internal partial class UiMainWindow : Form {
     private void SnapToGridToolButtonClick(object sender, EventArgs e) {
         this.SnapToGrid = !this.SnapToGrid;
 
-        
         this.SnapToGridButton.Checked = this.SnapToGrid;
         this.SnapToGridToolButton.Checked = this.SnapToGrid;
     }
