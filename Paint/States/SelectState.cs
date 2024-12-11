@@ -1,5 +1,4 @@
 ﻿using Paint.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -14,7 +13,7 @@ internal class SelectState : IState, ISelection {
     public Size CanvasSize { get; set; }
     public Point DragStartPoint { get; set; } = new Point(0, 0);
 
-    
+
 
     public void MouseDownHandler(MouseEventArgs e) {
         this.DragStartPoint = new Point(e.X, e.Y);
@@ -59,14 +58,13 @@ internal class SelectState : IState, ISelection {
                     return;
                 }
             }
+
             foreach (IDrawable figure in this.SelectedFigures) {
                 figure.Move(dx, dy);
                 this.DragStartPoint = new Point(e.X, e.Y);
             }
         }
     }
-
-
 
     public void MouseUpHandler(MouseEventArgs e) {
         this.IsMoving = false;
