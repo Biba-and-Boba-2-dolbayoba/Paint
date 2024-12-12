@@ -21,6 +21,9 @@ internal partial class UiEditTable : Form {
 
     private FiguresEnum FigureType { get; set; }
 
+    private TextBox? TextBox { get; set; }
+    private TextBoxWrapper? Wrapper { get; set; }
+
     private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
         { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
         { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
@@ -43,35 +46,40 @@ internal partial class UiEditTable : Form {
     private void DeleteButtonClick(object sender, EventArgs e) {
 
     }
+    
     private void RectangleButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
             this.FigureType = FiguresEnum.Rectangle;
         }
     }
+    
     private void EllipseButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
             this.FigureType = FiguresEnum.Ellipse;
         }
     }
+    
     private void StraightLineClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
             this.FigureType = FiguresEnum.StraightLine;
         }
     }
+    
     private void CurveLineClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
             this.FigureType = FiguresEnum.CurveLine;
         }
     }
+    
     private void PenSizeClick(object sender, EventArgs e) {
         var penSizeWindow = new UiPenSize(this, this.PenColor);
 
         if (penSizeWindow.ShowDialog() == DialogResult.OK) {
-            if (this.MdiParent is UiCanvasWindow parent && parent.MdiParent is UiMainWindow grandParent) {
+            if (this.MdiParent is UiCanvasWindow parent && parent.MdiParent is UiMainWindow) {
             }
         }
-
     }
+    
     private void PenColorClick(object sender, EventArgs e) {
 
         var colorDialog = new ColorDialog();
@@ -87,43 +95,78 @@ internal partial class UiEditTable : Form {
             this.BrushColor = colorDialog.Color;
         }
     }
+    
     private void FontButtonClick(object sender, EventArgs e) {
-        
+
         DialogResult result = this.FontDialog.ShowDialog();
         if (result == DialogResult.OK) {
             this.TextFont = this.FontDialog.Font;
         }
     }
-    private void TextBoxButtonClick(object sender, EventArgs e) {
 
-        if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow canvasWindow) {
-            if (canvasWindow.SelectedFigures[0] is TextBoxWrapper textBoxWrapper) {
+    private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
+        if (this.MdiParent is UiMainWindow) {
+            UiCanvasWindow? canvasWindow = null;
+            EditState editState;
+            foreach (Form child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
+                }
+            }
 
-                var textBox = new TextBox() {
-                    Parent = canvasWindow,
-                    Font = textBoxWrapper.TextFont,
-                    Multiline = true,
-                    ForeColor = textBoxWrapper.PenColor,
-                    Location = new Point(textBoxWrapper.TopPoint.X, textBoxWrapper.TopPoint.Y),
-                    Width = textBoxWrapper.BotPoint.X - textBoxWrapper.TopPoint.X,
-                    Height = textBoxWrapper.BotPoint.Y - textBoxWrapper.TopPoint.Y,
-                    Text = textBoxWrapper.Text,
-                };
+            if (canvasWindow is not null && canvasWindow.State is EditState state) {
+                editState = state;
 
-                textBox.LostFocus += (s, eArgs) => {
-
-                    textBoxWrapper.Text = textBox.Text;
-
-                    textBox.Dispose();
-                };
-
-                canvasWindow.Controls.Add(textBox);
-                _ = textBox.Focus();
+                if (e.Shift && e.KeyCode == Keys.Enter && this.TextBox is not null && this.Wrapper is not null && canvasWindow is not null) {
+                    this.TextBox.ReadOnly = true;
+                    this.TextBox.Visible = false;
+                    this.Wrapper.Text = this.TextBox.Text;
+                    canvasWindow.SelectedFigures = editState.SelectedFigures;
+                    canvasWindow.Figures = editState.Figures;
+                    this.TextBox.Dispose();
+                }
             }
         }
     }
-    private void CheckFigureButton(FiguresEnum? figureType) {
 
+    private void TextBoxButtonClick(object sender, EventArgs e) {
+        if (this.MdiParent is UiMainWindow) {
+            UiCanvasWindow? canvasWindow = null;
+            EditState editState;
+            foreach (Form child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
+                }
+            }
+
+            if (canvasWindow is not null && canvasWindow.State is EditState state) {
+                editState = state;
+
+                if (editState.SelectedFigures.Count > 0 && editState.SelectedFigures[0] is TextBoxWrapper textBoxWrapper) {
+                    var textBox = new TextBox() {
+                        Parent = canvasWindow,
+                        Font = this.TextFont,
+                        Multiline = true,
+                        ForeColor = this.PenColor,
+                        Location = textBoxWrapper.TopPoint,
+                        Width = textBoxWrapper.BotPoint.X - textBoxWrapper.TopPoint.X,
+                        Height = textBoxWrapper.BotPoint.Y - textBoxWrapper.TopPoint.Y,
+                        Text = textBoxWrapper.Text,
+                    };
+
+                    textBox.KeyDown += this.OnTextBoxKeyDown;
+
+                    this.Wrapper = textBoxWrapper;
+                    this.TextBox = textBox;
+                }
+
+                canvasWindow.SelectedFigures = editState.SelectedFigures;
+                canvasWindow.Figures = editState.Figures;
+            }
+        }
+    }
+    
+    private void CheckFigureButton(FiguresEnum? figureType) {
         if (figureType is null) {
             foreach (Tuple<ToolStripMenuItem> buttons in this.FigureButton.Values) {
 
@@ -139,13 +182,14 @@ internal partial class UiEditTable : Form {
             }
         }
     }
+    
     private void OkButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow) {
             UiCanvasWindow? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow) {
-                    canvasWindow = (UiCanvasWindow)child;
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
                 }
             }
 
@@ -160,6 +204,7 @@ internal partial class UiEditTable : Form {
                         textBoxWrapper.TextFont = this.TextFont;
                     }
                 }
+
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
             }
@@ -178,8 +223,8 @@ internal partial class UiEditTable : Form {
             UiCanvasWindow? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow) {
-                    canvasWindow = (UiCanvasWindow)child;
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
                 }
             }
 

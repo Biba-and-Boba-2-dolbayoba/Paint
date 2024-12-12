@@ -371,7 +371,6 @@ internal partial class UiMainWindow : Form {
 
             var editTable = new UiEditTable() {
                 MdiParent = this,
-
             };
 
 

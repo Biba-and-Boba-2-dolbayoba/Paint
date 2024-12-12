@@ -31,7 +31,7 @@ internal class EllipseWrapper : Movable, IDrawable {
     public Dictionary<ResizePointsEnum, EllipseWrapper> GetResizeCircles() {
         var circles = new Dictionary<ResizePointsEnum, EllipseWrapper>();
 
-        foreach (var (key, value) in this.ResizePointsDict) {
+        foreach ((ResizePointsEnum key, Point value) in this.ResizePointsDict) {
             circles[key] = GetCircleFromCenter(value, 5);
         }
 
@@ -39,13 +39,13 @@ internal class EllipseWrapper : Movable, IDrawable {
     }
 
     public void UpdateResizePointsDict() {
-        var topLeftPoint = this.TopPoint;
-        var botRightPoint = this.BotPoint;
+        Point topLeftPoint = this.TopPoint;
+        Point botRightPoint = this.BotPoint;
         var topRightPoint = new Point(botRightPoint.X, topLeftPoint.Y);
         var botLeftPoint = new Point(topLeftPoint.X, botRightPoint.Y);
 
-        var middleX = topLeftPoint.X + (topRightPoint.X - topLeftPoint.X) / 2;
-        var middleY = topLeftPoint.Y + (botLeftPoint.Y - topLeftPoint.Y) / 2;
+        int middleX = topLeftPoint.X + ((topRightPoint.X - topLeftPoint.X) / 2);
+        int middleY = topLeftPoint.Y + ((botLeftPoint.Y - topLeftPoint.Y) / 2);
 
         var middleLeftPoint = new Point(topLeftPoint.X, middleY);
         var middleTopPoint = new Point(middleX, topLeftPoint.Y);
@@ -136,8 +136,8 @@ internal class EllipseWrapper : Movable, IDrawable {
     public void DrawResizing(Graphics graphics) {
         this.ValidateEdgePoint();
 
-        var resizePoints = GetResizeCircles();
-        foreach (var (_, value) in resizePoints) {
+        Dictionary<ResizePointsEnum, EllipseWrapper> resizePoints = this.GetResizeCircles();
+        foreach ((ResizePointsEnum _, EllipseWrapper value) in resizePoints) {
             value.Draw(graphics);
         }
     }

@@ -186,8 +186,6 @@ internal partial class UiCanvasWindow : Form {
             this.Figures = edit.Figures;
             this.SelectedFigures = edit.SelectedFigures;
 
-
-
         }
     }
 
