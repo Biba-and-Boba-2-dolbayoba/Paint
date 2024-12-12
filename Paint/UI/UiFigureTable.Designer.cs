@@ -16,12 +16,12 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ReadOnly = true;
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(800, 450);
+            this.dataGridView.Size = new System.Drawing.Size(850, 450);
             this.dataGridView.TabIndex = 0;
             // 
             // UiFigureTable
             // 
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(850, 450);
             this.Controls.Add(this.dataGridView);
             this.Name = "UiFigureTable";
             this.Text = "Список фигур";
