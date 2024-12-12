@@ -330,57 +330,7 @@ internal partial class UiCanvasWindow : Form {
         return this.GridStep;
     }
 
-    public void UpdateFigureTable() {
-     
-
-        List<FigureInfo> figureInfos = new List<FigureInfo>();
-        int index = 1;
-
-        foreach (var figure in this.Figures) {
-            var figureInfo = new FigureInfo {
-                Index = index++,
-                Type = figure.GetType().Name,
-                PenColor = figure.PenColor.Name,
-                BrushColor = figure.BrushColor.Name,
-                TopPoint = $"({figure.TopPoint.X}, {figure.TopPoint.Y})"
-            };
-
-            if (figure is TextBoxWrapper textBox) {
-                figureInfo.Font = textBox.TextFont.Name;
-                figureInfo.FontSize = textBox.TextFont.Size.ToString();
-            }
-
-            figureInfos.Add(figureInfo);
-        }
-
-        this.FigureTable?.LoadFigures(figureInfos);
-    }
-
-    public List<FigureInfo> GetFigureInfos() {
-        List<FigureInfo> figureInfos = new List<FigureInfo>();
-        int index = 1;
-
-        // Здесь собираем информацию о фигурах, аналогично тому, как вы это делаете в UpdateFigureTable
-        foreach (var figure in this.Figures) {
-            var figureInfo = new FigureInfo {
-                Index = index++,
-                Type = figure.GetType().Name,
-                PenColor = figure.PenColor.Name,
-                BrushColor = figure.BrushColor.Name,
-                TopPoint = $"({figure.TopPoint.X}, {figure.TopPoint.Y})"
-            };
-
-            if (figure is TextBoxWrapper textBox) {
-                figureInfo.Font = textBox.TextFont.Name;
-                figureInfo.FontSize = textBox.TextFont.Size.ToString();
-            }
-
-            figureInfos.Add(figureInfo);
-        }
-
-        return figureInfos;
-    }
-
+   
 
 
 }

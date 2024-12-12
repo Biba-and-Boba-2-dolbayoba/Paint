@@ -453,12 +453,12 @@ internal partial class UiMainWindow : Form {
     private void FigureTableButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
            
-            List<FigureInfo> figureInfos = canvasWindow.GetFigureInfos();  
+           
 
             
-            var figureTable = new UiFigureTable(figureInfos);
+            var figureTable = new UiFigureTable(canvasWindow.Figures);
 
-           
+       
             figureTable.ShowDialog();
         }
     }
