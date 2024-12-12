@@ -1,6 +1,7 @@
 ﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
+using Paint.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -185,6 +186,10 @@ internal partial class UiCanvasWindow : Form {
 
             this.Figures = edit.Figures;
             this.SelectedFigures = edit.SelectedFigures;
+
+           
+
+
         }
     }
 
