@@ -47,18 +47,19 @@ internal class DrawState : IState, IDrawing {
         { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
     private Point GetNearestGridPoint(Point point) {
-        if (!SnapToGrid) return point;
+        if (!this.SnapToGrid) {
+            return point;
+        }
 
-        int x = (int)Math.Round((double)point.X / GridStep) * GridStep;
-        int y = (int)Math.Round((double)point.Y / GridStep) * GridStep;
+        int x = (int)Math.Round((double)point.X / this.GridStep) * this.GridStep;
+        int y = (int)Math.Round((double)point.Y / this.GridStep) * this.GridStep;
         return new Point(x, y);
     }
-
 
     public void MouseDownHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && !this.IsDrawing) {
 
-            this.TopPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
+            this.TopPoint = this.SnapToGrid ? this.GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
             this.BotPoint = this.TopPoint;
 
             this.IsDrawing = true;
@@ -73,7 +74,7 @@ internal class DrawState : IState, IDrawing {
     public void MouseMoveHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
             // this.BotPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
-              this.BotPoint = new Point(e.X, e.Y);
+            this.BotPoint = new Point(e.X, e.Y);
 
             var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
 
@@ -127,8 +128,8 @@ internal class DrawState : IState, IDrawing {
     public void MouseUpHandler(MouseEventArgs e) {
         if (e.Button == MouseButtons.Left && this.IsDrawing) {
 
-            this.BotPoint = SnapToGrid ? GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
-           // this.BotPoint = new Point(e.X, e.Y);
+            this.BotPoint = this.SnapToGrid ? this.GetNearestGridPoint(new Point(e.X, e.Y)) : new Point(e.X, e.Y);
+            // this.BotPoint = new Point(e.X, e.Y);
 
             var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[this.FigureType]);
 

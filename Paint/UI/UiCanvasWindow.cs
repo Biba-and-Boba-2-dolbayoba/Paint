@@ -128,6 +128,7 @@ internal partial class UiCanvasWindow : Form {
             foreach (IDrawable figure in this.Figures) {
                 if (this.SelectedFigures.Contains(figure)) {
                     figure.DrawSelection(graphics);
+                    figure.DrawResizing(graphics);
                 } else {
                     figure.Draw(graphics);
                 }

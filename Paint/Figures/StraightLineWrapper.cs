@@ -1,5 +1,6 @@
 ﻿using Paint.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Paint.Figures;
@@ -15,6 +16,8 @@ internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, IToler
     public Point StartPoint { get; set; }
     public Point EndPoint { get; set; }
 
+    public Dictionary<ResizePointsEnum, Point> ResizePointsDict { get; set; } = [];
+
     public int Tolerance { get; set; } = 10;
 
     public override void Move(int dx, int dy) {
@@ -22,6 +25,44 @@ internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, IToler
 
         this.StartPoint = new Point(this.StartPoint.X + dx, this.StartPoint.Y + dy);
         this.EndPoint = new Point(this.EndPoint.X + dx, this.EndPoint.Y + dy);
+    }
+
+    public void CalculateStartEndPoints() {
+        if (this.StartPoint.X < this.EndPoint.X && this.StartPoint.Y < this.EndPoint.Y) {
+            this.StartPoint = new Point(this.TopPoint.X, this.TopPoint.Y);
+            this.EndPoint = new Point(this.BotPoint.X, this.BotPoint.Y);
+            return;
+        }
+
+        if (this.StartPoint.X < this.EndPoint.X && this.StartPoint.Y > this.EndPoint.Y) {
+            this.StartPoint = new Point(this.TopPoint.X, this.BotPoint.Y);
+            this.EndPoint = new Point(this.BotPoint.X, this.TopPoint.Y);
+            return;
+        }
+    }
+
+    public static EllipseWrapper GetCircleFromCenter(Point point, int radius) {
+        var wrapper = new EllipseWrapper() {
+            PenSize = 2,
+            IsFilling = true,
+            PenColor = Color.Black,
+            BrushColor = Color.Black,
+            FigureType = FiguresEnum.Ellipse,
+            TopPoint = new Point(point.X - radius, point.Y - radius),
+            BotPoint = new Point(point.X + radius, point.Y + radius),
+        };
+
+        return wrapper;
+    }
+
+    public Dictionary<ResizePointsEnum, EllipseWrapper> GetResizeCircles() {
+        var circles = new Dictionary<ResizePointsEnum, EllipseWrapper>();
+
+        foreach (var (key, value) in this.ResizePointsDict) {
+            circles[key] = GetCircleFromCenter(value, 5);
+        }
+
+        return circles;
     }
 
     public void Draw(Graphics graphics) {
@@ -61,16 +102,33 @@ internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, IToler
     }
 
     public bool ContainsPoint(Point point) {
-        int coefficientA = this.EndPoint.Y - this.StartPoint.Y;
-        int coefficientB = -(this.EndPoint.X - this.StartPoint.X);
-        int coefficientC = (this.EndPoint.X * this.StartPoint.Y) - (this.EndPoint.Y * this.StartPoint.X);
+        //int coefficientA = this.EndPoint.Y - this.StartPoint.Y;
+        //int coefficientB = -(this.EndPoint.X - this.StartPoint.X);
+        //int coefficientC = (this.EndPoint.X * this.StartPoint.Y) - (this.EndPoint.Y * this.StartPoint.X);
 
-        int numerator = Math.Abs((coefficientA * point.X) + (coefficientB * point.Y) + coefficientC);
+        //int numerator = Math.Abs((coefficientA * point.X) + (coefficientB * point.Y) + coefficientC);
 
-        double denominator = Math.Sqrt(Math.Pow(this.EndPoint.Y - this.StartPoint.Y, 2) + Math.Pow(this.EndPoint.X - this.StartPoint.X, 2));
+        //double denominator = Math.Sqrt(Math.Pow(this.EndPoint.Y - this.StartPoint.Y, 2) + Math.Pow(this.EndPoint.X - this.StartPoint.X, 2));
 
-        double distance = numerator / denominator;
+        //double distance = numerator / denominator;
 
-        return distance <= this.Tolerance;
+        //return distance <= this.Tolerance;
+
+        this.ValidateEdgePoint();
+
+        var rectangle = Rectangle.FromLTRB(
+            this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
+        );
+
+        return rectangle.Contains(point);
+    }
+
+    public void DrawResizing(Graphics graphics) {
+        this.ValidateEdgePoint();
+
+        var resizePoints = GetResizeCircles();
+        foreach (var (_, value) in resizePoints) {
+            value.Draw(graphics);
+        }
     }
 }

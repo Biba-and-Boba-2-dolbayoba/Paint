@@ -1,4 +1,5 @@
 ﻿using Paint.Interfaces;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Paint.Figures;
@@ -10,6 +11,32 @@ internal class EllipseWrapper : Movable, IDrawable {
     public Color PenColor { get; set; }
     public Color BrushColor { get; set; }
     public bool IsFilling { get; set; }
+
+    public Dictionary<ResizePointsEnum, Point> ResizePointsDict { get; set; } = [];
+
+    public static EllipseWrapper GetCircleFromCenter(Point point, int radius) {
+        var wrapper = new EllipseWrapper() {
+            PenSize = 2,
+            IsFilling = true,
+            PenColor = Color.Black,
+            BrushColor = Color.Black,
+            FigureType = FiguresEnum.Ellipse,
+            TopPoint = new Point(point.X - radius, point.Y - radius),
+            BotPoint = new Point(point.X + radius, point.Y + radius),
+        };
+
+        return wrapper;
+    }
+
+    public Dictionary<ResizePointsEnum, EllipseWrapper> GetResizeCircles() {
+        var circles = new Dictionary<ResizePointsEnum, EllipseWrapper>();
+
+        foreach (var (key, value) in this.ResizePointsDict) {
+            circles[key] = GetCircleFromCenter(value, 5);
+        }
+
+        return circles;
+    }
 
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
@@ -68,15 +95,26 @@ internal class EllipseWrapper : Movable, IDrawable {
             this.TopPoint.X, this.TopPoint.Y, this.BotPoint.X, this.BotPoint.Y
         );
 
-        double radiusX = rectangle.Width / 2.0;
-        double radiusY = rectangle.Height / 2.0;
+        //double radiusX = rectangle.Width / 2.0;
+        //double radiusY = rectangle.Height / 2.0;
 
-        double centerX = rectangle.Left + radiusX;
-        double centerY = rectangle.Top + radiusY;
+        //double centerX = rectangle.Left + radiusX;
+        //double centerY = rectangle.Top + radiusY;
 
-        double normalizedX = (point.X - centerX) / radiusX;
-        double normalizedY = (point.Y - centerY) / radiusY;
+        //double normalizedX = (point.X - centerX) / radiusX;
+        //double normalizedY = (point.Y - centerY) / radiusY;
 
-        return (normalizedX * normalizedX) + (normalizedY * normalizedY) <= 1;
+        //return (normalizedX * normalizedX) + (normalizedY * normalizedY) <= 1;
+
+        return rectangle.Contains(point);
+    }
+
+    public void DrawResizing(Graphics graphics) {
+        this.ValidateEdgePoint();
+
+        var resizePoints = GetResizeCircles();
+        foreach (var (_, value) in resizePoints) {
+            value.Draw(graphics);
+        }
     }
 }

@@ -15,6 +15,8 @@ internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
 
     public List<Point> Points { get; set; } = [];
 
+    public Dictionary<ResizePointsEnum, Point> ResizePointsDict { get; set; } = [];
+
     public int Tolerance { get; set; } = 10;
 
     public override void ValidateEdgePoint() {
@@ -47,6 +49,30 @@ internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
         }
 
         this.Points = new List<Point>(points);
+    }
+
+    public static EllipseWrapper GetCircleFromCenter(Point point, int radius) {
+        var wrapper = new EllipseWrapper() {
+            PenSize = 2,
+            IsFilling = true,
+            PenColor = Color.Black,
+            BrushColor = Color.Black,
+            FigureType = FiguresEnum.Ellipse,
+            TopPoint = new Point(point.X - radius, point.Y - radius),
+            BotPoint = new Point(point.X + radius, point.Y + radius),
+        };
+
+        return wrapper;
+    }
+
+    public Dictionary<ResizePointsEnum, EllipseWrapper> GetResizeCircles() {
+        var circles = new Dictionary<ResizePointsEnum, EllipseWrapper>();
+
+        foreach (var (key, value) in this.ResizePointsDict) {
+            circles[key] = GetCircleFromCenter(value, 5);
+        }
+
+        return circles;
     }
 
     public void Draw(Graphics graphics) {
@@ -105,5 +131,14 @@ internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
         }
 
         return false;
+    }
+
+    public void DrawResizing(Graphics graphics) {
+        this.ValidateEdgePoint();
+
+        var resizePoints = GetResizeCircles();
+        foreach (var (_, value) in resizePoints) {
+            value.Draw(graphics);
+        }
     }
 }
