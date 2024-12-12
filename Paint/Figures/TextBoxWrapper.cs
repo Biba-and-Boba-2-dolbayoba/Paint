@@ -67,7 +67,7 @@ internal class TextBoxWrapper : Movable, IDrawable {
     }
 
     public void Draw(Graphics graphics) {
-        var pen = new Pen(this.PenColor, this.PenSize);
+        var pen = new Pen(Color.Transparent, this.PenSize);
 
         this.ValidateEdgePoint();
 

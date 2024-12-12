@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using Paint.Figures;
 using System.Collections.Generic;
-using Paint.Figures;
+using System.Drawing;
 
 namespace Paint.Interfaces;
 

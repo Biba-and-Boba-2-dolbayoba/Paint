@@ -9,7 +9,6 @@ internal partial class UiPenSize : Form {
     private Color PenColor { get; set; }
     private Form MainWindow { get; set; }
 
-
     public UiPenSize(UiMainWindow mainWindow, Color penColor) {
         this.InitializeComponent();
 
@@ -31,12 +30,14 @@ internal partial class UiPenSize : Form {
         if (this.MainWindow is UiMainWindow mainWindow) {
             mainWindow.UpdatePenInfo(this.PenColor, penSize);
         }
+
         if (this.MainWindow is UiEditTable uiEditTable) {
             uiEditTable.PenSize = penSize;
         }
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        
+
+        this.DialogResult = DialogResult.OK;
+        this.Close();
+
     }
 
     private void DeclineButtonClick(object sender, EventArgs e) {

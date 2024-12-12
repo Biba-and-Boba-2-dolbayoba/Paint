@@ -369,18 +369,17 @@ internal partial class UiMainWindow : Form {
             child.SelectedFigures.Clear();
             child.State = state;
 
-            var editTable = new UiEditTable(){
+            var editTable = new UiEditTable() {
                 MdiParent = this,
 
             };
-           
 
-            
+
+
             editTable.Show();
 
         }
     }
-
 
     private void GridToolButtonClick(object sender, EventArgs e) {
         if (this.ActiveMdiChild is UiCanvasWindow activeCanvas) {
