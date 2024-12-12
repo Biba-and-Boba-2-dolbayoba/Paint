@@ -184,19 +184,34 @@ internal partial class UiEditTable : Form {
 
     private void MoveButtonClick(object sender, EventArgs e) {
 
-        if (this.Parent is UiCanvasWindow canvasWindow && canvasWindow.State is EditState editState) {
-            if (editState.SelectedFigures.Count > 0) {
-                if (int.TryParse(this.TextX.Text, out int newX) && int.TryParse(this.TextY.Text, out int newY)) {
+        if (this.MdiParent is UiMainWindow parent) {
+            UiCanvasWindow? canvasWindow = null;
+            EditState editState;
+            foreach (var child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow) {
+                    canvasWindow = (UiCanvasWindow)child;
+                }
+            }
+            if (canvasWindow is not null && canvasWindow.State is EditState state) {
+                editState = state;
+               
+                    if (editState.SelectedFigures.Count > 0) {
+                   if (int.TryParse(this.TextX.Text, out int newX) && int.TryParse(this.TextY.Text, out int newY)) {
+                        
+                        foreach (var figure in editState.SelectedFigures) {
 
-                    foreach (var figure in editState.SelectedFigures) {
-
-                        int dx = newX - figure.TopPoint.X;
-                        int dy = newY - figure.TopPoint.Y;
+                            int dx = newX - figure.TopPoint.X;
+                            int dy = newY - figure.TopPoint.Y;
 
 
-                        if (figure.CanMove(dx, dy, editState.CanvasSize)) {
-                            figure.Move(dx, dy);
+                            if (figure.CanMove(dx, dy, editState.CanvasSize)) {
+                                figure.Move(dx, dy);
+                                editState.Up
+                            }
                         }
+                        canvasWindow.SelectedFigures = editState.SelectedFigures;
+                        canvasWindow.Figures = editState.Figures;
+                        
                     }
                 }
             }

@@ -369,7 +369,13 @@ internal partial class UiMainWindow : Form {
             child.SelectedFigures.Clear();
             child.State = state;
 
-            var editTable = new UiEditTable();
+            var editTable = new UiEditTable(){
+                MdiParent = this,
+
+            };
+           
+
+            
             editTable.Show();
 
         }
