@@ -41,7 +41,31 @@ internal partial class UiEditTable : Form {
     }
 
     private void DeleteButtonClick(object sender, EventArgs e) {
+        if (this.MdiParent is UiMainWindow) {
+            UiCanvasWindow? canvasWindow = null;
+            EditState editState;
+            foreach (Form child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow) {
+                    canvasWindow = (UiCanvasWindow)child;
+                }
+            }
 
+            if (canvasWindow is not null && canvasWindow.State is EditState state) {
+                editState = state;
+
+                if (editState.SelectedFigures.Count > 0) {
+
+                    foreach (var figure in editState.SelectedFigures) {
+                        editState.Figures.Remove(figure);
+                    }
+
+                    editState.SelectedFigures.Clear();
+
+                    canvasWindow.SelectedFigures = editState.SelectedFigures;
+                    canvasWindow.Figures = editState.Figures;
+                }
+            }
+        }
     }
     private void RectangleButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
@@ -122,23 +146,23 @@ internal partial class UiEditTable : Form {
             }
         }
     }
-    private void CheckFigureButton(FiguresEnum? figureType) {
+    //private void CheckFigureButton(FiguresEnum? figureType) {
 
-        if (figureType is null) {
-            foreach (Tuple<ToolStripMenuItem> buttons in this.FigureButton.Values) {
+    //    if (figureType is null) {
+    //        foreach (Tuple<ToolStripMenuItem> buttons in this.FigureButton.Values) {
 
-                buttons.Item1.Checked = false;
-            }
-        } else {
+    //            buttons.Item1.Checked = false;
+    //        }
+    //    } else {
 
-            foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripMenuItem>> pair in this.FigureButton) {
-                FiguresEnum figureEnum = pair.Key;
-                Tuple<ToolStripMenuItem> buttonPair = pair.Value;
+    //        foreach (KeyValuePair<FiguresEnum, Tuple<ToolStripMenuItem>> pair in this.FigureButton) {
+    //            FiguresEnum figureEnum = pair.Key;
+    //            Tuple<ToolStripMenuItem> buttonPair = pair.Value;
 
-                buttonPair.Item1.Checked = figureEnum == figureType;
-            }
-        }
-    }
+    //            buttonPair.Item1.Checked = figureEnum == figureType;
+    //        }
+    //    }
+    //}
     private void OkButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow) {
             UiCanvasWindow? canvasWindow = null;
