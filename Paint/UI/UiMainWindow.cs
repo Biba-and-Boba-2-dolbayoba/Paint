@@ -369,14 +369,17 @@ internal partial class UiMainWindow : Form {
             child.SelectedFigures.Clear();
             child.State = state;
 
+            foreach (var mdiChild in this.MdiChildren) {
+                if (mdiChild is UiEditTable) {
+                    return;
+                }
+            }
+
             var editTable = new UiEditTable() {
                 MdiParent = this,
             };
 
-
-
             editTable.Show();
-
         }
     }
 

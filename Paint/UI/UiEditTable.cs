@@ -10,11 +10,9 @@ using System.Windows.Forms;
 namespace Paint.UI;
 
 internal partial class UiEditTable : Form {
-    private Size CanvasSize { get; set; }
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int PenSize { get; set; } = 2;
     private Color PenColor { get; set; } = Color.Black;
-    private bool IsFilling { get; set; } = false;
     private Color BrushColor { get; set; } = Color.White;
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
     private Dictionary<FiguresEnum, Tuple<ToolStripMenuItem>> FigureButton { get; set; }
@@ -28,6 +26,9 @@ internal partial class UiEditTable : Form {
         { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
         { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
     };
+
+    private TextBoxWrapper? Wrapper { get; set; }
+    private TextBox? TextBox { get; set; }
 
     public UiEditTable() {
         this.InitializeComponent();
@@ -125,7 +126,31 @@ internal partial class UiEditTable : Form {
             this.TextFont = this.FontDialog.Font;
         }
     }
-    
+
+    private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
+        if (this.MdiParent is UiMainWindow) {
+            UiCanvasWindow? canvasWindow = null;
+            EditState editState;
+            foreach (Form child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
+                }
+            }
+
+            if (canvasWindow is not null && canvasWindow.State is EditState state) {
+                editState = state;
+                if (e.Shift && e.KeyCode == Keys.Enter && this.TextBox is not null && this.Wrapper is not null) {
+                    this.TextBox.ReadOnly = true;
+                    this.TextBox.Visible = false;
+                    this.Wrapper.Text = this.TextBox.Text;
+                    this.TextBox.Dispose();
+                }
+                canvasWindow.SelectedFigures = editState.SelectedFigures;
+                canvasWindow.Figures = editState.Figures;
+            }
+        }
+    }
+
     private void TextBoxButtonClick(object sender, EventArgs e) {
         if (this.MdiParent is UiMainWindow) {
             UiCanvasWindow? canvasWindow = null;
@@ -138,14 +163,23 @@ internal partial class UiEditTable : Form {
 
             if (canvasWindow is not null && canvasWindow.State is EditState state) {
                 editState = state;
+                if (editState.SelectedFigures[0] is TextBoxWrapper textBoxWrapper) {
+                    textBoxWrapper.TextFont = this.TextFont;
+                    var textBox = new TextBox() {
+                        Parent = canvasWindow,
+                        Font = textBoxWrapper.TextFont,
+                        Multiline = true,
+                        ForeColor = textBoxWrapper.PenColor,
+                        Location = textBoxWrapper.TopPoint,
+                        Width = textBoxWrapper.BotPoint.X - textBoxWrapper.TopPoint.X,
+                        Height = textBoxWrapper.BotPoint.Y - textBoxWrapper.TopPoint.Y,
+                        Text = textBoxWrapper.Text,
+                    };
 
-                if (editState.SelectedFigures.Count > 0) {
-                    editState.SelectedFigures[0].PenSize = this.PenSize;
-                    editState.SelectedFigures[0].BrushColor = this.BrushColor;
-                    editState.SelectedFigures[0].PenColor = this.PenColor;
-                    if (editState.SelectedFigures[0] is TextBoxWrapper textBoxWrapper) {
-                        textBoxWrapper.TextFont = this.TextFont;
-                    }
+                    textBox.KeyDown += this.OnTextBoxKeyDown;
+
+                    this.Wrapper = textBoxWrapper;
+                    this.TextBox = textBox;
                 }
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
