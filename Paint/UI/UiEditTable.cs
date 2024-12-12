@@ -37,7 +37,7 @@ internal partial class UiEditTable : Form {
         { FiguresEnum.Rectangle,new(this.RectangleButton) },
         { FiguresEnum.Ellipse, new(this.EllipseButton) },
         { FiguresEnum.StraightLine, new(this.StraightLineButton) },
-        { FiguresEnum.CurveLine, new(this.CurveLineButton) }
+       
     };
     }
 
