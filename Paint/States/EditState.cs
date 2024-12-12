@@ -6,7 +6,7 @@ using Paint.Figures;
 
 namespace Paint.States;
 
-internal class EditState : IState, ISelection {
+internal class EditState : IState, ISelection, IEditable {
     public List<IDrawable> Figures { get; set; } = [];
     public List<IDrawable> SelectedFigures { get; set; } = [];
 

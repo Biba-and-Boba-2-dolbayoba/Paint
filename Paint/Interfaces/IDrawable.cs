@@ -26,6 +26,7 @@ internal enum ResizePointsEnum {
 internal interface IDrawable : IFigureType, IMovable, IDrawTools {
     public Dictionary<ResizePointsEnum, Point> ResizePointsDict { get; set; }
     public Dictionary<ResizePointsEnum, EllipseWrapper> GetResizeCircles();
+    public void UpdateResizePointsDict();
     public void Draw(Graphics graphics);
     public void DrawDash(Graphics graphics);
     public void DrawSelection(Graphics graphics);
