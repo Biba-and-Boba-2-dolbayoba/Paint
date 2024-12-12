@@ -1,4 +1,5 @@
-﻿using Paint.Interfaces;
+﻿using Paint.Figures;
+using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using static Paint.UiFigureTable;
 
 namespace Paint;
 
@@ -26,6 +28,8 @@ internal partial class UiCanvasWindow : Form {
     public bool ShowGrid { get; set; } = false;
     private int GridStep { get; set; } = 10;
     private Color GridColor { get; set; } = Color.Gray;
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public UiFigureTable? FigureTable { get; set; }
 
     public UiCanvasWindow() {
         this.SetDoubleBuffering(true);
@@ -325,4 +329,58 @@ internal partial class UiCanvasWindow : Form {
     public int GetGridStep() {
         return this.GridStep;
     }
+
+    public void UpdateFigureTable() {
+     
+
+        List<FigureInfo> figureInfos = new List<FigureInfo>();
+        int index = 1;
+
+        foreach (var figure in this.Figures) {
+            var figureInfo = new FigureInfo {
+                Index = index++,
+                Type = figure.GetType().Name,
+                PenColor = figure.PenColor.Name,
+                BrushColor = figure.BrushColor.Name,
+                TopPoint = $"({figure.TopPoint.X}, {figure.TopPoint.Y})"
+            };
+
+            if (figure is TextBoxWrapper textBox) {
+                figureInfo.Font = textBox.TextFont.Name;
+                figureInfo.FontSize = textBox.TextFont.Size.ToString();
+            }
+
+            figureInfos.Add(figureInfo);
+        }
+
+        this.FigureTable?.LoadFigures(figureInfos);
+    }
+
+    public List<FigureInfo> GetFigureInfos() {
+        List<FigureInfo> figureInfos = new List<FigureInfo>();
+        int index = 1;
+
+        // Здесь собираем информацию о фигурах, аналогично тому, как вы это делаете в UpdateFigureTable
+        foreach (var figure in this.Figures) {
+            var figureInfo = new FigureInfo {
+                Index = index++,
+                Type = figure.GetType().Name,
+                PenColor = figure.PenColor.Name,
+                BrushColor = figure.BrushColor.Name,
+                TopPoint = $"({figure.TopPoint.X}, {figure.TopPoint.Y})"
+            };
+
+            if (figure is TextBoxWrapper textBox) {
+                figureInfo.Font = textBox.TextFont.Name;
+                figureInfo.FontSize = textBox.TextFont.Size.ToString();
+            }
+
+            figureInfos.Add(figureInfo);
+        }
+
+        return figureInfos;
+    }
+
+
+
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static Paint.UiFigureTable;
 
 namespace Paint;
 
@@ -448,4 +449,20 @@ internal partial class UiMainWindow : Form {
             this.UpdateGridButtonState();
         }
     }
+
+    private void FigureTableButtonClick(object sender, EventArgs e) {
+        if (this.ActiveMdiChild is UiCanvasWindow canvasWindow) {
+           
+            List<FigureInfo> figureInfos = canvasWindow.GetFigureInfos();  
+
+            
+            var figureTable = new UiFigureTable(figureInfos);
+
+           
+            figureTable.ShowDialog();
+        }
+    }
+
+
+
 }

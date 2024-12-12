@@ -103,6 +103,7 @@ namespace Paint
             this.MaxGridStepButton = new ToolStripMenuItem();
             this.SnapToGridButton = new ToolStripMenuItem();
             this.FontDialog = new FontDialog();
+            this.FigureTableButton = new ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.StatusStrip.SuspendLayout();
             this.ToolStrip.SuspendLayout();
@@ -111,7 +112,7 @@ namespace Paint
             // MenuStrip
             // 
             this.MenuStrip.BackColor = Color.WhiteSmoke;
-            this.MenuStrip.Items.AddRange(new ToolStripItem[] { this.FileToolButton, this.SettingsToolButton, this.FigureToolButton, this.StateToolButton, this.CoordinatToolButton });
+            this.MenuStrip.Items.AddRange(new ToolStripItem[] { this.FileToolButton, this.SettingsToolButton, this.FigureToolButton, this.StateToolButton, this.CoordinatToolButton, this.FigureTableButton });
             this.MenuStrip.Location = new Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
             this.MenuStrip.Padding = new Padding(5, 0, 5, 0);
@@ -275,7 +276,7 @@ namespace Paint
             // GridToolButton
             // 
             this.GridToolButton.Name = "GridToolButton";
-            this.GridToolButton.Size = new Size(180, 22);
+            this.GridToolButton.Size = new Size(167, 22);
             this.GridToolButton.Text = "Сетка";
             this.GridToolButton.Click += this.GridToolButtonClick;
             // 
@@ -283,7 +284,7 @@ namespace Paint
             // 
             this.GridStepToolButton.DropDownItems.AddRange(new ToolStripItem[] { this.DefaultGridStepToolButton, this.MaxGridStepToolButton });
             this.GridStepToolButton.Name = "GridStepToolButton";
-            this.GridStepToolButton.Size = new Size(180, 22);
+            this.GridStepToolButton.Size = new Size(167, 22);
             this.GridStepToolButton.Text = "Шаг сетки";
             // 
             // DefaultGridStepToolButton
@@ -303,7 +304,7 @@ namespace Paint
             // SnapToGridToolButton
             // 
             this.SnapToGridToolButton.Name = "SnapToGridToolButton";
-            this.SnapToGridToolButton.Size = new Size(180, 22);
+            this.SnapToGridToolButton.Size = new Size(167, 22);
             this.SnapToGridToolButton.Text = "Привязка к сетке";
             this.SnapToGridToolButton.Click += this.SnapToGridToolButtonClick;
             // 
@@ -650,6 +651,13 @@ namespace Paint
             this.SnapToGridButton.Text = "Привязка к сетке";
             this.SnapToGridButton.Click += this.SnapToGridToolButtonClick;
             // 
+            // FigureTableButton
+            // 
+            this.FigureTableButton.Name = "FigureTableButton";
+            this.FigureTableButton.Size = new Size(126, 24);
+            this.FigureTableButton.Text = "Фигуры на рисунке";
+            this.FigureTableButton.Click += this.FigureTableButtonClick;
+            // 
             // UiMainWindow
             // 
             this.AutoScaleDimensions = new SizeF(7F, 15F);
@@ -743,5 +751,6 @@ namespace Paint
         private ToolStripMenuItem MaxGridStepToolButton;
         private ToolStripMenuItem DefaultGridStepButton;
         private ToolStripMenuItem MaxGridStepButton;
+        private ToolStripMenuItem FigureTableButton;
     }
 }
