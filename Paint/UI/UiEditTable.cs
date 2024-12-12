@@ -17,7 +17,7 @@ internal partial class UiEditTable : Form {
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
     private Dictionary<FiguresEnum, Tuple<ToolStripMenuItem>> FigureButton { get; set; }
 
-    private FiguresEnum FigureType { get; set; }
+    private FiguresEnum? FigureType { get; set; } = null;
 
     private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
         { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
@@ -70,27 +70,19 @@ internal partial class UiEditTable : Form {
     }
     
     private void RectangleButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
-            this.FigureType = FiguresEnum.Rectangle;
-        }
+        this.FigureType = FiguresEnum.Rectangle;
     }
     
     private void EllipseButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
-            this.FigureType = FiguresEnum.Ellipse;
-        }
+        this.FigureType = FiguresEnum.Ellipse;
     }
     
     private void StraightLineClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
-            this.FigureType = FiguresEnum.StraightLine;
-        }
+        this.FigureType = FiguresEnum.StraightLine;
     }
     
     private void CurveLineClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow parent && parent.ActiveMdiChild is UiCanvasWindow children && children.State is DrawState) {
-            this.FigureType = FiguresEnum.CurveLine;
-        }
+        this.FigureType = FiguresEnum.CurveLine;
     }
     
     private void PenSizeClick(object sender, EventArgs e) {
@@ -218,7 +210,37 @@ internal partial class UiEditTable : Form {
     }
 
     private void SaveButtonClick(object sender, EventArgs e) {
+        if (this.MdiParent is UiMainWindow) {
+            UiCanvasWindow? canvasWindow = null;
+            foreach (Form child in this.MdiParent.MdiChildren) {
+                if (child is UiCanvasWindow window) {
+                    canvasWindow = window;
+                }
+            }
 
+            if (canvasWindow is not null && canvasWindow.State is EditState editState && this.FigureType is not null) {
+                var figureType = (FiguresEnum)this.FigureType;
+                var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[figureType]);
+
+                if (wrapper is not null) {
+                    wrapper.PenSize = this.PenSize;
+                    wrapper.PenColor = this.PenColor;
+                    wrapper.BrushColor = this.BrushColor;
+                    wrapper.TopPoint = new Point(100, 100);
+                    wrapper.BotPoint = new Point(400, 400);
+                    wrapper.IsFilling = false;
+                    wrapper.FigureType = figureType;
+
+                    if (wrapper is StraightLineWrapper straightLineWrapper) {
+                        straightLineWrapper.StartPoint = new Point(wrapper.TopPoint.X, wrapper.TopPoint.Y);
+                        straightLineWrapper.EndPoint = new Point(wrapper.TopPoint.X, wrapper.TopPoint.Y);
+                    }
+                    editState.Figures.Add(wrapper);
+                }
+                canvasWindow.SelectedFigures = editState.SelectedFigures;
+                canvasWindow.Figures = editState.Figures;
+            }
+        }
     }
 
     private void MoveButtonClick(object sender, EventArgs e) {

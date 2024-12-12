@@ -33,7 +33,6 @@ partial class UiEditTable {
         this.RectangleButton = new System.Windows.Forms.ToolStripMenuItem();
         this.EllipseButton = new System.Windows.Forms.ToolStripMenuItem();
         this.StraightLineButton = new System.Windows.Forms.ToolStripMenuItem();
-        this.CurveLineButton = new System.Windows.Forms.ToolStripMenuItem();
         this.PenSizeButton = new System.Windows.Forms.ToolStripMenuItem();
         this.PenColorButton = new System.Windows.Forms.ToolStripMenuItem();
         this.BrushColorButton = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +90,7 @@ partial class UiEditTable {
         // 
         // AddButton
         // 
-        this.AddButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.RectangleButton, this.EllipseButton, this.StraightLineButton, this.CurveLineButton });
+        this.AddButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.RectangleButton, this.EllipseButton, this.StraightLineButton });
         this.AddButton.Name = "AddButton";
         this.AddButton.Size = new System.Drawing.Size(72, 19);
         this.AddButton.Text = "Add";
@@ -99,30 +98,23 @@ partial class UiEditTable {
         // RectangleButton
         // 
         this.RectangleButton.Name = "RectangleButton";
-        this.RectangleButton.Size = new System.Drawing.Size(137, 22);
+        this.RectangleButton.Size = new System.Drawing.Size(180, 22);
         this.RectangleButton.Text = "Rectangle";
         this.RectangleButton.Click += this.RectangleButtonClick;
         // 
         // EllipseButton
         // 
         this.EllipseButton.Name = "EllipseButton";
-        this.EllipseButton.Size = new System.Drawing.Size(137, 22);
+        this.EllipseButton.Size = new System.Drawing.Size(180, 22);
         this.EllipseButton.Text = "Ellipse";
         this.EllipseButton.Click += this.EllipseButtonClick;
         // 
         // StraightLineButton
         // 
         this.StraightLineButton.Name = "StraightLineButton";
-        this.StraightLineButton.Size = new System.Drawing.Size(137, 22);
+        this.StraightLineButton.Size = new System.Drawing.Size(180, 22);
         this.StraightLineButton.Text = "StraightLine";
         this.StraightLineButton.Click += this.StraightLineClick;
-        // 
-        // CurveLineButton
-        // 
-        this.CurveLineButton.Name = "CurveLineButton";
-        this.CurveLineButton.Size = new System.Drawing.Size(137, 22);
-        this.CurveLineButton.Text = "CurveLine";
-        this.CurveLineButton.Click += this.CurveLineClick;
         // 
         // PenSizeButton
         // 
@@ -249,7 +241,6 @@ partial class UiEditTable {
     private System.Windows.Forms.ToolStripMenuItem RectangleButton;
     private System.Windows.Forms.ToolStripMenuItem EllipseButton;
     private System.Windows.Forms.ToolStripMenuItem StraightLineButton;
-    private System.Windows.Forms.ToolStripMenuItem CurveLineButton;
     private System.Windows.Forms.ToolStripMenuItem PenColorButton;
     private System.Windows.Forms.ToolStripMenuItem PenSizeButton;
     private System.Windows.Forms.ToolStripMenuItem FontButton;
