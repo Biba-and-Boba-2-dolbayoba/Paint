@@ -75,6 +75,30 @@ internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
         return circles;
     }
 
+    public void UpdateResizePointsDict() {
+        var topLeftPoint = this.TopPoint;
+        var botRightPoint = this.BotPoint;
+        var topRightPoint = new Point(botRightPoint.X, topLeftPoint.Y);
+        var botLeftPoint = new Point(topLeftPoint.X, botRightPoint.Y);
+
+        var middleX = topLeftPoint.X + (topRightPoint.X - topLeftPoint.X) / 2;
+        var middleY = topLeftPoint.Y + (botLeftPoint.Y - topLeftPoint.Y) / 2;
+
+        var middleLeftPoint = new Point(topLeftPoint.X, middleY);
+        var middleTopPoint = new Point(middleX, topLeftPoint.Y);
+        var middleRightPoint = new Point(botRightPoint.X, middleY);
+        var middleBotPoint = new Point(middleX, botRightPoint.Y);
+
+        this.ResizePointsDict[ResizePointsEnum.TopLeft] = topLeftPoint;
+        this.ResizePointsDict[ResizePointsEnum.BotRight] = botRightPoint;
+        this.ResizePointsDict[ResizePointsEnum.TopRight] = topRightPoint;
+        this.ResizePointsDict[ResizePointsEnum.BotLeft] = botLeftPoint;
+        this.ResizePointsDict[ResizePointsEnum.MiddleLeft] = middleLeftPoint;
+        this.ResizePointsDict[ResizePointsEnum.MiddleTop] = middleTopPoint;
+        this.ResizePointsDict[ResizePointsEnum.MiddleRight] = middleRightPoint;
+        this.ResizePointsDict[ResizePointsEnum.MiddleBot] = middleBotPoint;
+    }
+
     public void Draw(Graphics graphics) {
         var pen = new Pen(this.PenColor, this.PenSize);
 
