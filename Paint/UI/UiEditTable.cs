@@ -37,7 +37,7 @@ internal partial class UiEditTable : Form {
         { FiguresEnum.Rectangle,new(this.RectangleButton) },
         { FiguresEnum.Ellipse, new(this.EllipseButton) },
         { FiguresEnum.StraightLine, new(this.StraightLineButton) },
-       
+
     };
     }
 
@@ -56,8 +56,8 @@ internal partial class UiEditTable : Form {
 
                 if (editState.SelectedFigures.Count > 0) {
 
-                    foreach (var figure in editState.SelectedFigures) {
-                        editState.Figures.Remove(figure);
+                    foreach (IDrawable figure in editState.SelectedFigures) {
+                        _ = editState.Figures.Remove(figure);
                     }
 
                     editState.SelectedFigures.Clear();
@@ -68,33 +68,32 @@ internal partial class UiEditTable : Form {
             }
         }
     }
-    
+
     private void RectangleButtonClick(object sender, EventArgs e) {
         this.FigureType = FiguresEnum.Rectangle;
     }
-    
+
     private void EllipseButtonClick(object sender, EventArgs e) {
         this.FigureType = FiguresEnum.Ellipse;
     }
-    
+
     private void StraightLineClick(object sender, EventArgs e) {
         this.FigureType = FiguresEnum.StraightLine;
     }
-    
+
     private void CurveLineClick(object sender, EventArgs e) {
         this.FigureType = FiguresEnum.CurveLine;
     }
-    
+
     private void PenSizeClick(object sender, EventArgs e) {
         var penSizeWindow = new UiPenSize(this, this.PenColor);
 
         if (penSizeWindow.ShowDialog() == DialogResult.OK) {
-            if (this.MdiParent is UiCanvasWindow parent && parent.MdiParent is UiMainWindow grandParent) {
+            if (this.MdiParent is UiCanvasWindow parent && parent.MdiParent is UiMainWindow) {
             }
         }
-
     }
-    
+
     private void PenColorClick(object sender, EventArgs e) {
 
         var colorDialog = new ColorDialog();
@@ -110,7 +109,7 @@ internal partial class UiEditTable : Form {
             this.BrushColor = colorDialog.Color;
         }
     }
-    
+
     private void FontButtonClick(object sender, EventArgs e) {
 
         DialogResult result = this.FontDialog.ShowDialog();
@@ -137,6 +136,7 @@ internal partial class UiEditTable : Form {
                     this.Wrapper.Text = this.TextBox.Text;
                     this.TextBox.Dispose();
                 }
+
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
             }
@@ -173,6 +173,7 @@ internal partial class UiEditTable : Form {
                     this.Wrapper = textBoxWrapper;
                     this.TextBox = textBox;
                 }
+
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
             }
@@ -200,6 +201,7 @@ internal partial class UiEditTable : Form {
                         textBoxWrapper.TextFont = this.TextFont;
                     }
                 }
+
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
             }
@@ -235,8 +237,10 @@ internal partial class UiEditTable : Form {
                         straightLineWrapper.StartPoint = new Point(wrapper.TopPoint.X, wrapper.TopPoint.Y);
                         straightLineWrapper.EndPoint = new Point(wrapper.TopPoint.X, wrapper.TopPoint.Y);
                     }
+
                     editState.Figures.Add(wrapper);
                 }
+
                 canvasWindow.SelectedFigures = editState.SelectedFigures;
                 canvasWindow.Figures = editState.Figures;
             }
