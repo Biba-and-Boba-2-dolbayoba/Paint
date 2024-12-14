@@ -1,5 +1,4 @@
-﻿using Paint.Figures;
-using Paint.Interfaces;
+﻿using Paint.Interfaces;
 using Paint.Serialization;
 using Paint.States;
 using System;
@@ -7,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using static Paint.UiFigureTable;
 
 namespace Paint;
 
@@ -329,8 +327,4 @@ internal partial class UiCanvasWindow : Form {
     public int GetGridStep() {
         return this.GridStep;
     }
-
-   
-
-
 }
