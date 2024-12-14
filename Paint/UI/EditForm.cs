@@ -9,44 +9,44 @@ using System.Windows.Forms;
 
 namespace Paint.UI;
 
-internal partial class UiEditTable : Form {
+internal partial class EditForm : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public int PenSize { get; set; } = 2;
     private Color PenColor { get; set; } = Color.Black;
     private Color BrushColor { get; set; } = Color.White;
     private Font TextFont { get; set; } = new("Times New Roman", 12.0f);
-    private Dictionary<FiguresEnum, Tuple<ToolStripMenuItem>> FigureButton { get; set; }
+    private Dictionary<FigureTypes, Tuple<ToolStripMenuItem>> FigureButton { get; set; }
 
-    private FiguresEnum? FigureType { get; set; } = null;
+    private FigureTypes? FigureType { get; set; } = null;
 
-    private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
-        { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
-        { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
-        { FiguresEnum.StraightLine, typeof(StraightLineWrapper) },
-        { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
-        { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
+    private static Dictionary<FigureTypes, Type> WrapperTypes { get; set; } = new() {
+        { FigureTypes.Rectangle, typeof(RectangleWrapper) },
+        { FigureTypes.Ellipse, typeof(EllipseWrapper) },
+        { FigureTypes.StraightLine, typeof(StraightLineWrapper) },
+        { FigureTypes.CurveLine, typeof(CurveLineWrapper) },
+        { FigureTypes.TextBox, typeof(TextBoxWrapper) },
     };
 
     private TextBoxWrapper? Wrapper { get; set; }
     private TextBox? TextBox { get; set; }
 
-    public UiEditTable() {
+    public EditForm() {
         this.InitializeComponent();
 
         this.FigureButton = new() {
-        { FiguresEnum.Rectangle,new(this.RectangleButton) },
-        { FiguresEnum.Ellipse, new(this.EllipseButton) },
-        { FiguresEnum.StraightLine, new(this.StraightLineButton) },
+        { FigureTypes.Rectangle,new(this.RectangleButton) },
+        { FigureTypes.Ellipse, new(this.EllipseButton) },
+        { FigureTypes.StraightLine, new(this.StraightLineButton) },
 
     };
     }
 
     private void DeleteButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }
@@ -70,26 +70,26 @@ internal partial class UiEditTable : Form {
     }
 
     private void RectangleButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Rectangle;
+        this.FigureType = FigureTypes.Rectangle;
     }
 
     private void EllipseButtonClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.Ellipse;
+        this.FigureType = FigureTypes.Ellipse;
     }
 
     private void StraightLineClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.StraightLine;
+        this.FigureType = FigureTypes.StraightLine;
     }
 
     private void CurveLineClick(object sender, EventArgs e) {
-        this.FigureType = FiguresEnum.CurveLine;
+        this.FigureType = FigureTypes.CurveLine;
     }
 
     private void PenSizeClick(object sender, EventArgs e) {
-        var penSizeWindow = new UiPenSize(this, this.PenColor);
+        var penSizeWindow = new PenSizeForm(this, this.PenColor);
 
         if (penSizeWindow.ShowDialog() == DialogResult.OK) {
-            if (this.MdiParent is UiCanvasWindow parent && parent.MdiParent is UiMainWindow) {
+            if (this.MdiParent is CanvasForm parent && parent.MdiParent is MainForm) {
             }
         }
     }
@@ -119,11 +119,11 @@ internal partial class UiEditTable : Form {
     }
 
     private void OnTextBoxKeyDown(object? sender, KeyEventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }
@@ -144,11 +144,11 @@ internal partial class UiEditTable : Form {
     }
 
     private void TextBoxButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }
@@ -181,11 +181,11 @@ internal partial class UiEditTable : Form {
     }
 
     private void OkButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }
@@ -212,16 +212,16 @@ internal partial class UiEditTable : Form {
     }
 
     private void SaveButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }
 
             if (canvasWindow is not null && canvasWindow.State is EditState editState && this.FigureType is not null) {
-                var figureType = (FiguresEnum)this.FigureType;
+                var figureType = (FigureTypes)this.FigureType;
                 var wrapper = (IDrawable?)Activator.CreateInstance(WrapperTypes[figureType]);
 
                 if (wrapper is not null) {
@@ -248,11 +248,11 @@ internal partial class UiEditTable : Form {
     }
 
     private void MoveButtonClick(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow) {
-            UiCanvasWindow? canvasWindow = null;
+        if (this.MdiParent is MainForm) {
+            CanvasForm? canvasWindow = null;
             EditState editState;
             foreach (Form child in this.MdiParent.MdiChildren) {
-                if (child is UiCanvasWindow window) {
+                if (child is CanvasForm window) {
                     canvasWindow = window;
                 }
             }

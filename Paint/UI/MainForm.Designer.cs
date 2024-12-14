@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Paint
 {
-    partial class UiMainWindow
+    partial class MainForm
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -37,7 +37,7 @@ namespace Paint
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiMainWindow));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MenuStrip = new MenuStrip();
             this.FileToolButton = new ToolStripMenuItem();
             this.NewFileToolButton = new ToolStripMenuItem();
@@ -656,7 +656,6 @@ namespace Paint
             this.FigureTableButton.Name = "FigureTableButton";
             this.FigureTableButton.Size = new Size(126, 24);
             this.FigureTableButton.Text = "Фигуры на рисунке";
-            this.FigureTableButton.Click += this.FigureTableButtonClick;
             // 
             // UiMainWindow
             // 

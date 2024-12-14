@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Paint;
 
-internal partial class UiCanvasWindow : Form {
+internal partial class CanvasForm : Form {
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public required IState State { get; set; }
 
@@ -27,9 +27,9 @@ internal partial class UiCanvasWindow : Form {
     private int GridStep { get; set; } = 10;
     private Color GridColor { get; set; } = Color.Gray;
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    public UiFigureTable? FigureTable { get; set; }
+    public FigureTableForm? FigureTable { get; set; }
 
-    public UiCanvasWindow() {
+    public CanvasForm() {
         this.SetDoubleBuffering(true);
         this.InitializeComponent();
     }
@@ -192,7 +192,7 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnMouseMove(object sender, MouseEventArgs e) {
-        if (this.MdiParent is UiMainWindow parent) {
+        if (this.MdiParent is MainForm parent) {
             parent.UpdatePointerInfo(new Point(e.X, e.Y));
         }
 
@@ -257,7 +257,7 @@ internal partial class UiCanvasWindow : Form {
     }
 
     private void OnResize(object sender, EventArgs e) {
-        if (this.MdiParent is UiMainWindow parent) {
+        if (this.MdiParent is MainForm parent) {
             parent.UpdateCanvasInfo(this.Size);
         }
 

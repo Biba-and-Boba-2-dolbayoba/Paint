@@ -11,12 +11,12 @@ using System.Windows.Forms;
 namespace Paint.Serialization;
 
 internal static class JsonReader {
-    private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
-        { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
-        { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
-        { FiguresEnum.StraightLine, typeof(StraightLineWrapper) },
-        { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
-        { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
+    private static Dictionary<FigureTypes, Type> WrapperTypes { get; set; } = new() {
+        { FigureTypes.Rectangle, typeof(RectangleWrapper) },
+        { FigureTypes.Ellipse, typeof(EllipseWrapper) },
+        { FigureTypes.StraightLine, typeof(StraightLineWrapper) },
+        { FigureTypes.CurveLine, typeof(CurveLineWrapper) },
+        { FigureTypes.TextBox, typeof(TextBoxWrapper) },
     };
 
     public static List<HashableFigure> ToHashableFigures(List<IDrawable> figures) {

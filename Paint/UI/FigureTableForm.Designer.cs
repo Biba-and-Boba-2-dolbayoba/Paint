@@ -1,5 +1,5 @@
 ﻿namespace Paint {
-    partial class UiFigureTable {
+    partial class FigureTableForm {
         private System.Windows.Forms.DataGridView dataGridView;
 
         private void InitializeComponent() {

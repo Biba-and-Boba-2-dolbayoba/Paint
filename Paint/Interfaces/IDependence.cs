@@ -13,7 +13,7 @@ internal interface IFigures : IDependence {
 }
 
 internal interface IFigureType : IDependence {
-    public FiguresEnum FigureType { get; set; }
+    public FigureTypes FigureType { get; set; }
 }
 
 internal interface IDrawTools : IDependence {

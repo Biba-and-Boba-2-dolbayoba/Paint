@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace Paint.Interfaces;
 
-internal enum FiguresEnum {
+internal enum FigureTypes {
     Rectangle,
     Ellipse,
     StraightLine,

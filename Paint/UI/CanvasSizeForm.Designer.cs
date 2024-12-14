@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Paint
 {
-    partial class UiCanvasSize
+    partial class CanvasSizeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCanvasSize));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasSizeForm));
             this.SizeSmallButton = new RadioButton();
             this.SizeAverageButton = new RadioButton();
             this.SizeBigButton = new RadioButton();

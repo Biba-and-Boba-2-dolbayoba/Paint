@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Paint.Figures;
 
 internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, ITolerance {
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.StraightLine;
+    public FigureTypes FigureType { get; set; } = FigureTypes.StraightLine;
 
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -46,7 +46,7 @@ internal class StraightLineWrapper : Movable, IDrawable, IStartEndPoints, IToler
             IsFilling = true,
             PenColor = Color.Black,
             BrushColor = Color.Black,
-            FigureType = FiguresEnum.Ellipse,
+            FigureType = FigureTypes.Ellipse,
             TopPoint = new Point(point.X - radius, point.Y - radius),
             BotPoint = new Point(point.X + radius, point.Y + radius),
         };

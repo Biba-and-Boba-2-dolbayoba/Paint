@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Windows.Forms;
 
 namespace Paint;
-internal partial class UiFigureTable : Form {
+internal partial class FigureTableForm : Form {
     private List<IDrawable> Figures { get; set; }
-    public UiFigureTable(List<IDrawable> figuresInfo) {
+    public FigureTableForm(List<IDrawable> figuresInfo) {
         this.Figures = figuresInfo;
         this.InitializeComponent();
 
@@ -21,12 +21,12 @@ internal partial class UiFigureTable : Form {
     private void SetupData() {
 
         int counter = 0;
-        var figureEnum = new Dictionary<FiguresEnum, string>() {
-            { FiguresEnum.Rectangle,"Прямоугольник" },
-            { FiguresEnum.Ellipse,"Эллипс" },
-            { FiguresEnum.StraightLine,"Прямая линия" },
-            { FiguresEnum.CurveLine,"Кривая линия" },
-            { FiguresEnum.TextBox,"Текст" },
+        var figureEnum = new Dictionary<FigureTypes, string>() {
+            { FigureTypes.Rectangle,"Прямоугольник" },
+            { FigureTypes.Ellipse,"Эллипс" },
+            { FigureTypes.StraightLine,"Прямая линия" },
+            { FigureTypes.CurveLine,"Кривая линия" },
+            { FigureTypes.TextBox,"Текст" },
 
     };
         foreach (IDrawable figure in this.Figures) {

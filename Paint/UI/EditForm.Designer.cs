@@ -1,6 +1,6 @@
 ﻿namespace Paint.UI;
 
-partial class UiEditTable {
+partial class EditForm {
     /// <summary>
     /// Required designer variable.
     /// </summary>
@@ -24,7 +24,7 @@ partial class UiEditTable {
     /// the contents of this method with the code editor.
     /// </summary>
     private void InitializeComponent() {
-        var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiEditTable));
+        var resources = new System.ComponentModel.ComponentResourceManager(typeof(EditForm));
         this.OkButton = new System.Windows.Forms.Button();
         this.button4 = new System.Windows.Forms.Button();
         this.menuStrip1 = new System.Windows.Forms.MenuStrip();

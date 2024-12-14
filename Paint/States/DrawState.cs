@@ -26,11 +26,11 @@ internal class DrawState : IState, IDrawing {
     public string Text { get; set; } = "";
     public Font TextFont { get; set; } = new Font("Times New Roman", 12.0f);
 
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.Rectangle;
+    public FigureTypes FigureType { get; set; } = FigureTypes.Rectangle;
     public IDrawable? DashFigure { get; set; } = null;
     public List<IDrawable> Figures { get; set; } = [];
 
-    public UiCanvasWindow? ParentReference { get; set; }
+    public CanvasForm? ParentReference { get; set; }
     public BufferedGraphics? GraphicsBuffer { get; set; }
 
     public int GridStep { get; set; } = 10;
@@ -39,12 +39,12 @@ internal class DrawState : IState, IDrawing {
     private TextBoxWrapper? Wrapper { get; set; }
     private TextBox? TextBox { get; set; }
 
-    private static Dictionary<FiguresEnum, Type> WrapperTypes { get; set; } = new() {
-        { FiguresEnum.Rectangle, typeof(RectangleWrapper) },
-        { FiguresEnum.Ellipse, typeof(EllipseWrapper) },
-        { FiguresEnum.StraightLine, typeof(StraightLineWrapper) },
-        { FiguresEnum.CurveLine, typeof(CurveLineWrapper) },
-        { FiguresEnum.TextBox, typeof(TextBoxWrapper) },
+    private static Dictionary<FigureTypes, Type> WrapperTypes { get; set; } = new() {
+        { FigureTypes.Rectangle, typeof(RectangleWrapper) },
+        { FigureTypes.Ellipse, typeof(EllipseWrapper) },
+        { FigureTypes.StraightLine, typeof(StraightLineWrapper) },
+        { FigureTypes.CurveLine, typeof(CurveLineWrapper) },
+        { FigureTypes.TextBox, typeof(TextBoxWrapper) },
     };
     private Point GetNearestGridPoint(Point point) {
         if (!this.SnapToGrid) {
@@ -64,7 +64,7 @@ internal class DrawState : IState, IDrawing {
 
             this.IsDrawing = true;
 
-            if (this.FigureType == FiguresEnum.CurveLine) {
+            if (this.FigureType == FigureTypes.CurveLine) {
                 this.Points.Clear(); // Очистка массива говна
                 this.Points.Add(this.TopPoint);  // начальная точка 
             }

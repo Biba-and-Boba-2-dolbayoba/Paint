@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Paint.Figures;
 
 internal class EllipseWrapper : Movable, IDrawable {
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.Ellipse;
+    public FigureTypes FigureType { get; set; } = FigureTypes.Ellipse;
 
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -20,7 +20,7 @@ internal class EllipseWrapper : Movable, IDrawable {
             IsFilling = true,
             PenColor = Color.Black,
             BrushColor = Color.Black,
-            FigureType = FiguresEnum.Ellipse,
+            FigureType = FigureTypes.Ellipse,
             TopPoint = new Point(point.X - radius, point.Y - radius),
             BotPoint = new Point(point.X + radius, point.Y + radius),
         };

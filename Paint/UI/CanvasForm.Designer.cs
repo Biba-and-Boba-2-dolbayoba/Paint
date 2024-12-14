@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Paint
 {
-    partial class UiCanvasWindow
+    partial class CanvasForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,7 +37,7 @@ namespace Paint
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            var resources = new System.ComponentModel.ComponentResourceManager(typeof(UiCanvasWindow));
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(CanvasForm));
             this.SuspendLayout();
             // 
             // UiCanvasWindow

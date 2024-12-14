@@ -26,7 +26,7 @@ internal class HashableFigure {
     public required bool IsFilling { get; set; }
 
     [JsonProperty("type")]
-    public required FiguresEnum FigureType { get; set; }
+    public required FigureTypes FigureType { get; set; }
 
     [JsonProperty("start_point")]
     public required Tuple<int, int> StartPoint { get; set; }

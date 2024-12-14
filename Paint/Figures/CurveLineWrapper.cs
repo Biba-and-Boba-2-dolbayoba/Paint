@@ -6,7 +6,7 @@ using System.Drawing;
 namespace Paint.Figures;
 
 internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.CurveLine;
+    public FigureTypes FigureType { get; set; } = FigureTypes.CurveLine;
 
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -57,7 +57,7 @@ internal class CurveLineWrapper : Movable, IDrawable, IPoints, ITolerance {
             IsFilling = true,
             PenColor = Color.Black,
             BrushColor = Color.Black,
-            FigureType = FiguresEnum.Ellipse,
+            FigureType = FigureTypes.Ellipse,
             TopPoint = new Point(point.X - radius, point.Y - radius),
             BotPoint = new Point(point.X + radius, point.Y + radius),
         };

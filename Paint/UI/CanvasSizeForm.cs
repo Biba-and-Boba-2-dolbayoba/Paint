@@ -4,11 +4,11 @@ using System.Windows.Forms;
 
 namespace Paint;
 
-internal partial class UiCanvasSize : Form {
+internal partial class CanvasSizeForm : Form {
     private Size CanvasSize { get; set; } = new Size(320, 240);
-    private UiMainWindow MainWindow { get; set; }
+    private MainForm MainWindow { get; set; }
 
-    public UiCanvasSize(UiMainWindow mainWindow) {
+    public CanvasSizeForm(MainForm mainWindow) {
         this.InitializeComponent();
         this.MainWindow = mainWindow;
     }

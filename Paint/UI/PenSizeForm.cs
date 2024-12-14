@@ -5,11 +5,11 @@ using System.Windows.Forms;
 
 namespace Paint;
 
-internal partial class UiPenSize : Form {
+internal partial class PenSizeForm : Form {
     private Color PenColor { get; set; }
     private Form MainWindow { get; set; }
 
-    public UiPenSize(UiMainWindow mainWindow, Color penColor) {
+    public PenSizeForm(MainForm mainWindow, Color penColor) {
         this.InitializeComponent();
 
         this.PenColor = penColor;
@@ -17,7 +17,7 @@ internal partial class UiPenSize : Form {
         this.PenSizeNumericForm.Value = 2;
     }
 
-    public UiPenSize(UiEditTable uiEditTable, Color penColor) {
+    public PenSizeForm(EditForm uiEditTable, Color penColor) {
         this.InitializeComponent();
 
         this.PenColor = penColor;
@@ -27,11 +27,11 @@ internal partial class UiPenSize : Form {
 
     private void OkButtonClick(object sender, EventArgs e) {
         int penSize = (int)this.PenSizeNumericForm.Value;
-        if (this.MainWindow is UiMainWindow mainWindow) {
+        if (this.MainWindow is MainForm mainWindow) {
             mainWindow.UpdatePenInfo(this.PenColor, penSize);
         }
 
-        if (this.MainWindow is UiEditTable uiEditTable) {
+        if (this.MainWindow is EditForm uiEditTable) {
             uiEditTable.PenSize = penSize;
         }
 

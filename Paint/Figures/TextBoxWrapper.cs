@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Paint.Figures;
 
 internal class TextBoxWrapper : Movable, IDrawable {
-    public FiguresEnum FigureType { get; set; } = FiguresEnum.TextBox;
+    public FigureTypes FigureType { get; set; } = FigureTypes.TextBox;
 
     public int PenSize { get; set; }
     public Color PenColor { get; set; }
@@ -23,7 +23,7 @@ internal class TextBoxWrapper : Movable, IDrawable {
             IsFilling = true,
             PenColor = Color.Black,
             BrushColor = Color.Black,
-            FigureType = FiguresEnum.Ellipse,
+            FigureType = FigureTypes.Ellipse,
             TopPoint = new Point(point.X - radius, point.Y - radius),
             BotPoint = new Point(point.X + radius, point.Y + radius),
         };
