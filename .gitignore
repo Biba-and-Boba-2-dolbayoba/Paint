@@ -99,3 +99,6 @@ Desktop.ini
 .localhistory
 /.vs
 /.vs
+
+#depricated versions
+**/depricated/

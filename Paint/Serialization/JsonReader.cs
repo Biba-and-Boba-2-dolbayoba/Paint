@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Paint.Figures;
-using Paint.Interfaces;
+using Paint.depricated.Figures;
+using Paint.depricated.Interfaces;
 using Paint.Serialization.Models;
 using System;
 using System.Collections.Generic;

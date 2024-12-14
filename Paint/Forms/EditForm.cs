@@ -1,6 +1,6 @@
-﻿using Paint.Figures;
-using Paint.Interfaces;
-using Paint.States;
+﻿using Paint.depricated.Figures;
+using Paint.depricated.Interfaces;
+using Paint.States.depricated;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

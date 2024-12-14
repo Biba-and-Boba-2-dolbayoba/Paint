@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Paint.Interfaces;
+using Paint.depricated.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

@@ -1,7 +1,8 @@
-﻿using Paint.Interfaces;
+﻿using Paint.depricated.Interfaces;
 using Paint.Serialization;
 using Paint.Serialization.Models;
 using Paint.States;
+using Paint.States.depricated;
 using Paint.UI;
 using System;
 using System.Collections.Generic;

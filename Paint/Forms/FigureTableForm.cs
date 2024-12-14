@@ -1,5 +1,5 @@
-﻿using Paint.Figures;
-using Paint.Interfaces;
+﻿using Paint.depricated.Figures;
+using Paint.depricated.Interfaces;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;

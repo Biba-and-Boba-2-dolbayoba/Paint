@@ -1,4 +1,4 @@
-﻿using Paint.Interfaces;
+﻿using Paint.depricated.Interfaces;
 using Paint.States;
 using System.Drawing;
 
