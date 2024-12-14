@@ -101,4 +101,4 @@ Desktop.ini
 /.vs
 
 #depricated versions
-**/depricated/
+**/.depricated

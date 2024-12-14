@@ -7,6 +7,25 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include=".depricated\Figures\CurveLineWrapper.cs" />
+    <Compile Include=".depricated\Figures\EllipseWrapper.cs" />
+    <Compile Include=".depricated\Figures\Movable.cs" />
+    <Compile Include=".depricated\Figures\RectangleWrapper.cs" />
+    <Compile Include=".depricated\Figures\StraightLineWrapper.cs" />
+    <Compile Include=".depricated\Figures\TextBoxWrapper.cs" />
+    <Compile Include=".depricated\Interfaces\IDependence.cs" />
+    <Compile Include=".depricated\Interfaces\IDrawable.cs" />
+    <Compile Include=".depricated\Interfaces\IDrawing.cs" />
+    <Compile Include=".depricated\Interfaces\IEditable.cs" />
+    <Compile Include=".depricated\Interfaces\IMovable.cs" />
+    <Compile Include=".depricated\Interfaces\ISelection.cs" />
+    <Compile Include=".depricated\Interfaces\IState.cs" />
+    <Compile Include=".depricated\States\DrawState.cs" />
+    <Compile Include=".depricated\States\EditState.cs" />
+    <Compile Include=".depricated\States\SelectState.cs" />
+    <Compile Include=".depricated\States\StateFactory.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -30,8 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Interfaces\" />
     <Folder Include="Properties\DataSources\" />
-    <Folder Include="Wrappers\Interfaces\" />
   </ItemGroup>
 </Project>
