@@ -1,9 +1,11 @@
-﻿using Paint.depricated.Interfaces;
+﻿using Paint.Enums;
 using Paint.States;
+using Paint.States.Interfaces;
 using System.Drawing;
 
 namespace Paint.Context;
 
+//TODO: Make Singleton
 internal class MainFormContext {
     public Size CanvasSize { get; set; } = new Size(320, 240);
     public int PenSize { get; set; } = 2;
@@ -13,7 +15,7 @@ internal class MainFormContext {
     public Font TextFont { get; set; } = new("Times New Roman", 12.0f);
     public FigureTypes CurrentFigure { get; set; } = FigureTypes.Rectangle;
     public IState CurrentState { get; set; } = new DrawState();
-    public bool IsDridEnabled { get; set; } = false;
+    public bool IsGridEnabled { get; set; } = false;
     public int GridStep { get; set; } = 10;
     public bool SnapToGrid { get; set; } = false;
 }
